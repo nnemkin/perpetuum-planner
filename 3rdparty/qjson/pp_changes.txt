@@ -1,0 +1,5 @@
+
+Differences from original version:
+
+* DLL-related defines are removed from qjson_export.h
+* Serializer indents its output with tabs.

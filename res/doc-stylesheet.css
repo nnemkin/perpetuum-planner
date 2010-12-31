@@ -1,0 +1,44 @@
+/*
+    Copyright (C) 2010 Nikita Nemkin <nikita@nemkin.ru>
+
+    This file is part of PerpetuumPlanner.
+
+    PerpetuumPlanner is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PerpetuumPlanner is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PerpetuumPlanner. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* In-document styles */
+
+h1 { font: bold 16px 'Myriad Pro Cond'; margin: 0 0 0.2em 0; }
+h2 { font: 14px 'Franklin Gothic Medium'; margin: 0.3em 0 0.1em 0; }
+h3 { font: bold 13px 'Franklin Gothic Medium'; margin: 0.4em 0 0.4em 0; }
+
+a { color: #ffd000; text-decoration: none; }
+p { margin: 0 0 0.6em 0; }
+
+table td { padding: 1px 4px; }
+
+.current { color: #44e300; }
+.planned { color: #ffe506; }
+.next { color: #aaa; }
+
+.levelchooser { font: 8px 'uni 05_53'; color: #989a99; }
+
+.counter { font: 10px 'Franklin Gothic Medium'; margin: 0; }
+.counter > .time { color: #fff; font: 8px 'uni 05_53'; }
+
+.level { font: 20px 'Franklin Gothic Medium'; }
+
+.group { font: bold 18px 'Myriad Pro Cond'; color: #fff; }
+
+.complexity { font: 8px 'uni 05_53'; color: #fff; }

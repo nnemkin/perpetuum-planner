@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/i18n">
+        <file>perpetuumplanner_en.qm</file>
+        <file>perpetuumplanner_hu.qm</file>
+        <file>perpetuumplanner_de.qm</file>
+        <file>perpetuumplanner_ru.qm</file>
+        <file>perpetuumplanner_it.qm</file>
+        <file>qt_de.qm</file>
+        <file>qt_hu.qm</file>
+        <file>qt_ru.qm</file>
+        <file>qt_it.qm</file>
+    </qresource>
+</RCC>

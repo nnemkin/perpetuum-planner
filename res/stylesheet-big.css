@@ -1,0 +1,41 @@
+/*
+    Copyright (C) 2010 Nikita Nemkin <nikita@nemkin.ru>
+
+    This file is part of PerpetuumPlanner.
+
+    PerpetuumPlanner is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PerpetuumPlanner is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PerpetuumPlanner. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Perpetuum Widget Style - Bigger fonts overlay */
+
+/* Fonts */
+
+QWidget { font-size: 13px; }
+QPushButton { font-size: 12px; }
+QGroupBox, QTabBar { font-size: 8px; }
+#points > QLabel { font-size: 13px; }
+QHeaderView::section { font-size: 12px; }
+QMenu::item { font-size: 13px; }
+QTextBrowser { font-size: 14px; }
+QComboBox { font-size: 11px; }
+
+/* Heights */
+
+QAbstractItemView::item { height: 21px; }
+QLineEdit { max-height: 17px; }
+
+#labelCurrentPoints { margin-top: -1px; }
+#labelPlannedPoints { margin-bottom: -1px; }
+
+ItemsView #tabWidget QHeaderView::section { height: 32px; padding: 3px; }

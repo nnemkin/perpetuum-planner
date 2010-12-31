@@ -1,0 +1,12 @@
+build
+doc
+www
+data/compiled
+data/yaml
+data/re
+data/icons
+releases
+*.pro.user
+*.pyc
+*.qm
+MyriadPro*

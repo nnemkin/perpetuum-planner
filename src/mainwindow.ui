@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>643</width>
+    <height>730</height>
+   </rect>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Perpetuum Planner</string>
+  </property>
+  <widget class="QWidget" name="central">
+   <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,1">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="TitleBar" name="titleBar" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>17</height>
+         </size>
+        </property>
+        <property name="helpButtonVisible" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="windowHeader" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0,0,0">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>8</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="windowHeaderLabel">
+           <property name="text">
+            <string>Perpetuum Planner</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="listLanguage">
+           <item>
+            <property name="text">
+             <string notr="true" extracomment="language_english">English</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../res/resources.qrc">
+              <normaloff>:/flag-en.png</normaloff>:/flag-en.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true" extracomment="language_hungarian">Hungarian (Magyar)</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../res/resources.qrc">
+              <normaloff>:/flag-hu.png</normaloff>:/flag-hu.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true" extracomment="language_german">German (Deutsch)</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../res/resources.qrc">
+              <normaloff>:/flag-de.png</normaloff>:/flag-de.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true" extracomment="language_russian">Russian (Русский)</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../res/resources.qrc">
+              <normaloff>:/flag-ru.png</normaloff>:/flag-ru.png</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true" extracomment="language_italian">Italian (Italiano)</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../res/resources.qrc">
+              <normaloff>:/flag-it.png</normaloff>:/flag-it.png</iconset>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonHelp">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text">
+            <string extracomment="menu_help">&amp;Help</string>
+           </property>
+           <property name="role" stdset="0">
+            <string notr="true">dialog-button</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonOptions">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text">
+            <string extracomment="menu_options">&amp;Options</string>
+           </property>
+           <property name="role" stdset="0">
+            <string notr="true">dialog-button</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAbout">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text">
+            <string>A&amp;bout</string>
+           </property>
+           <property name="role" stdset="0">
+            <string notr="true">dialog-button</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QWidget" name="windowFrame" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
+        <number>1</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="tabParent" native="true">
+         <property name="role" stdset="0">
+          <string notr="true">tab-parent</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QTabWidget" name="tabWidget">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="ExtensionsView" name="extensionsView">
+             <attribute name="title">
+              <string extracomment="characterprofile_progress">&amp;EXTENSIONS</string>
+             </attribute>
+            </widget>
+            <widget class="ItemsView" name="itemsView">
+             <property name="styleSheet">
+              <string notr="true">ItemsView {}</string>
+             </property>
+             <attribute name="title">
+              <string>&amp;ITEM DATABASE</string>
+             </attribute>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionOptions">
+   <property name="text">
+    <string>Options</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TitleBar</class>
+   <extends>QWidget</extends>
+   <header>titlebar.h</header>
+   <container>1</container>
+   <slots>
+    <signal>closeRequest()</signal>
+    <signal>showNormalRequest()</signal>
+    <signal>showMaximizedRequest()</signal>
+    <signal>showMinimizedRequest()</signal>
+    <signal>helpRequest()</signal>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>ExtensionsView</class>
+   <extends>QWidget</extends>
+   <header>extensionsview.h</header>
+   <container>1</container>
+   <slots>
+    <signal>closeRequest()</signal>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>ItemsView</class>
+   <extends>QWidget</extends>
+   <header>itemsview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../res/resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>titleBar</sender>
+   <signal>showMaximizedRequest()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showMaximized()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>206</x>
+     <y>0</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>-11</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>titleBar</sender>
+   <signal>showMinimizedRequest()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showMinimized()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>0</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>222</x>
+     <y>-3</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>titleBar</sender>
+   <signal>showNormalRequest()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showNormal()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>312</x>
+     <y>0</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>-9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>titleBar</sender>
+   <signal>closeRequest()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>178</x>
+     <y>0</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>173</x>
+     <y>-6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonHelp</sender>
+   <signal>clicked()</signal>
+   <receiver>actionHelp</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>290</x>
+     <y>12</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAbout</sender>
+   <signal>clicked()</signal>
+   <receiver>actionAbout</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>450</x>
+     <y>12</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOptions</sender>
+   <signal>clicked()</signal>
+   <receiver>actionOptions</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>370</x>
+     <y>12</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>titleBar</sender>
+   <signal>helpRequest()</signal>
+   <receiver>actionHelp</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>251</x>
+     <y>0</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
