@@ -61,7 +61,7 @@ void StyleTweaks::drawPrimitive(PrimitiveElement element, const QStyleOption *op
 void StyleTweaks::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     if (element == CE_HeaderLabel) {
-        // prevent vertically aligned text to go above the top line
+        // prevent vertically aligned text from going above the top line
         if (const QStyleOptionHeader *vopt = qstyleoption_cast<const QStyleOptionHeader *>(option)) {
             if (vopt->icon.isNull()) {
                 if (vopt->state & QStyle::State_On) {

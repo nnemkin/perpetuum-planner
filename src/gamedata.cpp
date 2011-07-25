@@ -34,9 +34,8 @@ AttributeSet::AttributeSet()
 AttributeSet::AttributeSet(QVariant data)
 {
     QVariantList dataList = data.toList();
-    for (int i = 0; i < NumAttributes; ++i) {
+    for (int i = 0; i < NumAttributes; ++i)
         m_attributes[i] = dataList.at(i).toInt();
-    }
 }
 
 AttributeSet::AttributeSet(const AttributeSet& other)
@@ -47,18 +46,16 @@ AttributeSet::AttributeSet(const AttributeSet& other)
 AttributeSet::operator QVariant() const
 {
     QVariantList dataList;
-    for (int i = 0; i < NumAttributes; ++i) {
+    for (int i = 0; i < NumAttributes; ++i)
         dataList << m_attributes[i];
-    }
     return dataList;
 }
 
 AttributeSet AttributeSet::operator+(const AttributeSet& other) const
 {
     AttributeSet sum(other);
-    for (int i = 0; i < NumAttributes; ++i) {
+    for (int i = 0; i < NumAttributes; ++i)
         sum.m_attributes[i] += m_attributes[i];
-    }
     return sum;
 }
 
@@ -68,9 +65,8 @@ AttributeSet AttributeSet::operator+(const AttributeSet& other) const
 void GameObject::load(const QVariantMap &dataMap)
 {
     m_descToken = dataMap.value("desc").toString();
-    if (m_descToken.isEmpty()) {
+    if (m_descToken.isEmpty())
         m_descToken = objectName() + QLatin1String("_desc");
-    }
 }
 
 
@@ -94,11 +90,9 @@ const ExtensionSet *Extension::transitiveReqs() const
 {
     if (!m_requirements.isEmpty() && m_transitiveReqs.isEmpty()) {
         m_transitiveReqs = m_requirements;
-        for (ExtensionSet::const_iterator i = m_requirements.constBegin(); i != m_requirements.constEnd(); ++i) {
-            if (i.key()->transitiveReqs()) {
+        for (ExtensionSet::const_iterator i = m_requirements.constBegin(); i != m_requirements.constEnd(); ++i)
+            if (i.key()->transitiveReqs())
                 m_transitiveReqs += *i.key()->transitiveReqs();
-            }
-        }
     }
     return m_transitiveReqs.isEmpty() ? 0 : &m_transitiveReqs;
 }
@@ -110,9 +104,8 @@ void Parameter::load(const QVariantMap &dataMap)
     GameObject::load(dataMap);
 
     QString unitToken = objectName() + QLatin1String("_unit");
-    if (!gameData()->translate(unitToken).isEmpty()) {
+    if (!gameData()->translate(unitToken).isEmpty())
         m_unitToken = unitToken;
-    }
 
     m_precision = dataMap.value("prec").toInt();
     m_lessIsBetter = dataMap.value("less_is_better").toBool();
@@ -128,9 +121,8 @@ QString Parameter::format(const QVariant &value) const
     else {
         sValue = QString::number(value.toDouble(), 'f', m_precision);
 
-        if (!m_unitToken.isEmpty()) {
+        if (!m_unitToken.isEmpty())
             sValue = QString("%1 %2").arg(sValue, gameData()->translate(m_unitToken));
-        }
     }
     return sValue;
 }
@@ -156,7 +148,8 @@ QPixmap Item::icon(int size) const
 {
     QPixmap pixmap;
     if (!m_icon.isEmpty()) {
-        if (!size) size = 120;
+        if (!size)
+            size = 120;
         QString key = QString("item-icon-%1-%2").arg(m_icon).arg(size);
         if (!QPixmapCache::find(key, &pixmap)) {
             pixmap.load(QLatin1String(":/icons/") + m_icon, 0, Qt::NoOpaqueDetection);
@@ -178,12 +171,10 @@ void ExtensionSet::load(GameData *gameData, const QVariantMap &dataMap)
     m_levels.clear();
     for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
         Extension *extension = gameData->findObject<Extension *>(i.key());
-        if (extension) {
+        if (extension)
             m_levels.insert(extension, i.value().toInt());
-        }
-        else {
+        else
             qDebug() << "Unknown extension:" << i.key();
-        }
     }
 }
 
@@ -191,12 +182,10 @@ ExtensionSet &ExtensionSet::operator+=(const ExtensionSet &other)
 {
     for (const_iterator i = other.m_levels.constBegin(); i != other.m_levels.constEnd(); ++i) {
         iterator j = m_levels.find(i.key());
-        if (j != m_levels.end()) {
+        if (j != m_levels.end())
             j.value() = qMax(j.value(), i.value());
-        }
-        else {
+        else
             m_levels.insert(i.key(), i.value());
-        }
     }
     return *this;
 }
@@ -210,9 +199,8 @@ void ParameterSet::load(GameData *gameData, const QVariantMap &dataMap)
         Parameter *parameter = gameData->findObject<Parameter *>(i.key());
         if (parameter) {
             QVariant value = i.value();
-            if (parameter->precision()) {
+            if (parameter->precision())
                 value.convert(QVariant::Double);
-            }
             m_values.insert(parameter, value);
         }
         else {
@@ -229,12 +217,10 @@ void ComponentSet::load(GameData *gameData, const QVariantMap &dataMap)
     m_components.clear();
     for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
         Item *item = gameData->findObject<Item *>(i.key());
-        if (item) {
+        if (item)
             m_components.insert(item, i.value().toInt());
-        }
-        else {
+        else
             qDebug() << "Unknown item:" << i.key();
-        }
     }
 }
 
@@ -270,9 +256,8 @@ const QList<GameObject *> &ObjectGroup::allObjects() const
     if (!m_allObjectsInitialized) {
         m_allObjects = m_objects;
 
-        foreach (const ObjectGroup *group, m_groups) {
+        foreach (const ObjectGroup *group, m_groups)
             m_allObjects.append(group->allObjects());
-        }
 
         m_allObjectsInitialized = true;
     }
@@ -293,12 +278,11 @@ GameObject *GameData::findObject(const QString& id)
 template <class T>
 void GameData::loadObjects(const QVariantMap &dataMap)
 {
-    for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
+    for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i)
         m_objects.insert(i.key(), new T(this, i.key()));
-    }
-    for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
+
+    for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i)
         m_objects.value(i.key())->load(i.value().toMap());
-    }
 }
 
 QVariantMap GameData::loadVariantMap(QIODevice *io)
@@ -349,13 +333,13 @@ bool GameData::load(QIODevice *io)
         object->setOrder(order++);
 
     QVariantMap starterAttributes = dataMap.value("starter_attributes").toMap();
-    for (QVariantMap::const_iterator i = starterAttributes.constBegin(); i != starterAttributes.constEnd(); ++i) {
+    for (QVariantMap::const_iterator i = starterAttributes.constBegin(); i != starterAttributes.constEnd(); ++i)
         m_starterAttributes.insert(i.key(), AttributeSet(i.value()));
-    }
+
     QVariantMap sparkBonuses = dataMap.value("spark_bonus").toMap();
-    for (QVariantMap::const_iterator i = sparkBonuses.constBegin(); i != sparkBonuses.constEnd(); ++i) {
+    for (QVariantMap::const_iterator i = sparkBonuses.constBegin(); i != sparkBonuses.constEnd(); ++i)
         m_sparkBonuses.insert(i.key(), AttributeSet(i.value()));
-    }
+
     QVariantMap starterExtensions = dataMap.value("starter_extensions").toMap();
     for (QVariantMap::const_iterator i = starterExtensions.constBegin(); i != starterExtensions.constEnd(); ++i) {
         ExtensionSet extensions;
@@ -363,9 +347,8 @@ bool GameData::load(QIODevice *io)
         m_starterExtensions.insert(i.key(), extensions);
     }
     QVariantMap starterNames = dataMap.value("starter_names").toMap();
-    for (QVariantMap::const_iterator i = starterNames.constBegin(); i != starterNames.constEnd(); ++i) {
+    for (QVariantMap::const_iterator i = starterNames.constBegin(); i != starterNames.constEnd(); ++i)
         m_starterNames.insert(i.key(), i.value().toString());
-    }
 
     QVariantMap storedNames = dataMap.value("stored_names").toMap();
     for (QVariantMap::const_iterator i = storedNames.constBegin(); i != storedNames.constEnd(); ++i) {
@@ -380,14 +363,12 @@ bool GameData::load(QIODevice *io)
 bool GameData::loadTranslation(QIODevice *io)
 {
     QVariantMap transMap = loadVariantMap(io);
-    if (transMap.isEmpty()) {
+    if (transMap.isEmpty())
         return false;
-    }
 
     m_translation.clear();
-    for (QVariantMap::const_iterator i = transMap.constBegin(); i != transMap.constEnd(); ++i) {
+    for (QVariantMap::const_iterator i = transMap.constBegin(); i != transMap.constEnd(); ++i)
         m_translation.insert(i.key(), i.value().toString());
-    }
 
     return true;
 }
@@ -395,17 +376,17 @@ bool GameData::loadTranslation(QIODevice *io)
 ExtensionSet GameData::starterExtensions(QString choices) const
 {
     QString choice = choices.left(3);
-    while (choice.endsWith(QLatin1Char(' '))) {
+    while (choice.endsWith(QLatin1Char(' ')))
         choice.chop(1);
-    }
+
     return m_starterExtensions.value(choice);
 }
 
 AttributeSet GameData::starterAttributes(QString choices) const
 {
     QString choice = choices.mid(1, 3);
-    while (choice.endsWith(QLatin1Char(' '))) {
+    while (choice.endsWith(QLatin1Char(' ')))
         choice.chop(1);
-    }
+
     return m_starterAttributes.value(choice) + m_sparkBonuses.value(choices.right(2));
 }

@@ -394,9 +394,8 @@ void ExtensionsView::customEvent(QEvent *event)
         treeExtensions->header()->resizeSection(4, bigFonts ? 70 : 65);
         treeExtensions->header()->resizeSection(5, bigFonts ? 75 : 70);
 
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 5; ++i)
             Application::sendEvent(treeExtensions->itemDelegateForColumn(i), event);
-        }
     }
 }
 
@@ -432,9 +431,8 @@ bool ExtensionsView::eventFilter(QObject *object, QEvent *event)
         }
     }
     else if (object == attributes) {
-        if (event->type() == QEvent::MouseButtonPress && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton) {
+        if (event->type() == QEvent::MouseButtonPress && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton)
             actionAttributeEditor->trigger();
-        }
     }
     return false;
 }
@@ -445,10 +443,9 @@ bool ExtensionsView::canClose()
         //: window_confirm
         int result = MessageBox::exec(this, tr("Confirmation"), tr("Save changes to '%1'?").arg(m_agent->name()),
                                       QDialogButtonBox::Yes | QDialogButtonBox::No);
-        if (result == QDialogButtonBox::Yes) {
+        if (result == QDialogButtonBox::Yes)
             if (m_agent->fileName().isEmpty())
                 actionSave->trigger();
-        }
     }
     return true;
 }
@@ -495,9 +492,8 @@ void ExtensionsView::actionSetLevelTriggered()
 
     foreach (QModelIndex index, treeExtensions->selectionModel()->selectedRows(0)) {
         Extension *extension = static_cast<ExtensionsModel *>(treeExtensions->model())->fromIndex<Extension *>(index);
-        if (extension) {
+        if (extension)
             extensionLevels->setLevel(extension, level + relative * extensionLevels->level(extension));
-        }
     }
 }
 
@@ -525,9 +521,8 @@ void ExtensionsView::on_treeExtensions_doubleClicked(QModelIndex index)
 {
     if (index.column() > 0) {
         QModelIndex first = index.sibling(index.row(), 0);
-        if (first.model()->hasChildren(first)) {
+        if (first.model()->hasChildren(first))
             treeExtensions->setExpanded(first, !treeExtensions->isExpanded(first));
-        }
     }
     if (index.column() != 3)
         actionInformation->trigger();

@@ -35,37 +35,32 @@
 QList<Extension *> ExtensionLevels::extensions() const
 {
     QList<Extension *> list = m_levels.keys();
-    if (m_base) {
+    if (m_base)
         list.append(m_base->extensions());
-    }
     return list;
 }
 
 void ExtensionLevels::setBase(const ExtensionLevels *base)
 {
-    if (m_base) {
+    if (m_base)
         disconnect(m_base, 0, this, 0);
-    }
     m_base = base;
-    if (m_base) {
+    if (m_base)
         connect(m_base, SIGNAL(levelChanged(Extension*,int)), this, SLOT(baseLevelChanged(Extension*,int)));
-    }
+
     baseLevelChanged(0, 0);
 }
 
 void ExtensionLevels::baseLevelChanged(Extension *extension, int level)
 {
     if (extension) {
-        if (m_levels.value(extension) <= level) {
+        if (m_levels.value(extension) <= level)
             m_levels.remove(extension);
-        }
     }
     else {
-        foreach (Extension *extension, m_base->extensions()) {
-            if (m_levels.value(extension) < m_base->level(extension)) {
+        foreach (Extension *extension, m_base->extensions())
+            if (m_levels.value(extension) < m_base->level(extension))
                 m_levels.remove(extension);
-            }
-        }
     }
     emit levelChanged(extension, level);
 }
@@ -77,25 +72,21 @@ void ExtensionLevels::setLevel(Extension *extension, int lvl)
     if (lvl > 0 && extension->requirements()) {
         foreach (Extension *req, extension->requirements()->extensions()) {
             int reqLevel = extension->requirements()->level(req);
-            if (reqLevel > level(req)) {
+            if (reqLevel > level(req))
                 setLevel(req, reqLevel);
-            }
         }
     }
     // drop extensions with broken requirements
     if (lvl < 10) {
-        foreach (Extension *ext, m_levels.keys()) {
-            if (ext->requirements() && ext->requirements()->level(extension) > lvl) {
+        foreach (Extension *ext, m_levels.keys())
+            if (ext->requirements() && ext->requirements()->level(extension) > lvl)
                 setLevel(ext, 0);
-            }
-        }
     }
-    if (lvl > baseLevel(extension)) {
+    if (lvl > baseLevel(extension))
         m_levels.insert(extension, lvl);
-    }
-    else {
+    else
         m_levels.remove(extension);
-    }
+
     emit levelChanged(extension, lvl);
 }
 
@@ -121,12 +112,10 @@ bool ExtensionLevels::load(GameData *gameData, const QVariantMap &dataMap)
     m_levels.clear();
     for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
         Extension *extension = gameData->findObject<Extension *>(i.key());
-        if (extension) {
+        if (extension)
             m_levels.insert(extension, i.value().toInt());
-        }
-        else {
+        else
             qDebug() << "Unknown extension:" << i.key();
-        }
     }
     return true;
 }
@@ -134,11 +123,10 @@ bool ExtensionLevels::load(GameData *gameData, const QVariantMap &dataMap)
 QVariantMap ExtensionLevels::save() const
 {
     QVariantMap dataMap;
-    for (LevelMap::const_iterator i = m_levels.constBegin(); i != m_levels.constEnd(); ++i) {
-        if (i.value() > baseLevel(i.key())) {
+    for (LevelMap::const_iterator i = m_levels.constBegin(); i != m_levels.constEnd(); ++i)
+        if (i.value() > baseLevel(i.key()))
             dataMap.insert(i.key()->storedName(), i.value());
-        }
-    }
+
     return dataMap;
 }
 
@@ -147,7 +135,8 @@ int ExtensionLevels::points() const
     int total = m_base ? m_base->points() : 0;
     for (LevelMap::const_iterator i = m_levels.constBegin(); i != m_levels.constEnd(); ++i) {
         total += points(i.key(), i.value());
-        if (m_base) total -= m_base->points(i.key());
+        if (m_base)
+            total -= m_base->points(i.key());
     }
     return total;
 }
@@ -164,12 +153,11 @@ int ExtensionLevels::points(ObjectGroup *group) const
 
 int ExtensionLevels::nextLevelPoints(Extension *extension, int lvl) const
 {
-    if (lvl < 0) {
+    if (lvl < 0)
         lvl = level(extension);
-    }
-    if (lvl >= 10) {
+    if (lvl >= 10)
         return 0;
-    }
+
     return points(extension, lvl + 1) - points(extension, lvl);
 }
 
@@ -180,9 +168,8 @@ int ExtensionLevels::reqPoints(Extension *extension) const
         foreach (Extension *req, extension->transitiveReqs()->extensions()) {
             int reqLevel = extension->transitiveReqs()->level(req);
             int hasLevel = level(req);
-            if (reqLevel > hasLevel) {
+            if (reqLevel > hasLevel)
                 total += points(req, reqLevel) - points(req, hasLevel);
-            }
         }
     }
     return total;
@@ -193,12 +180,10 @@ int ExtensionLevels::points(Extension *extension, int lvl) const
     // increments are 1, 2, 3, 4, 5, 12, 21, 32, 45, 100
     static int multipliers[] = { 0, 1, 3, 6, 10, 15, 27, 48, 80, 125, 225 };
 
-    if (lvl < 0) {
+    if (lvl < 0)
         lvl = level(extension);
-    }
-    if (lvl == 0) {
+    if (lvl == 0)
         return 0;
-    }
 
     Agent *a = agent();
     int base = a ? (200 - 2 * a->attributes()[extension->primaryAttribute()] - a->attributes()[extension->secondaryAttribute()]) : 200;
@@ -233,7 +218,6 @@ void Agent::plannedExtensionsChanged()
 {
     m_modified = true;
     emit persistenceChanged();
-
     emit extensionsChanged();
 }
 
@@ -295,9 +279,9 @@ bool Agent::save(QIODevice *io)
 bool Agent::save(const QString& fileName)
 {
     QString saveFileName = !fileName.isEmpty() ? fileName : m_fileName;
-    if (saveFileName.isEmpty()) {
+    if (saveFileName.isEmpty())
         return false;
-    }
+
     QFile file(saveFileName);
     return save(&file);
 }
@@ -355,9 +339,8 @@ void Agent::optimizeAttributes()
 
     for (int i = 0; i < 3*27*9; ++i) {
         QString choices(QLatin1Char("TIA"[i % 3]));
-        for (int j = 0, ii = i / 3; j < 5; ++j, ii /= 3) {
+        for (int j = 0, ii = i / 3; j < 5; ++j, ii /= 3)
             choices += QLatin1Char("MIL"[ii % 3]);
-        }
 
         m_attributes = m_gameData->starterAttributes(choices);
         starterExtensions->setFrom(m_gameData->starterExtensions(choices));
@@ -374,12 +357,10 @@ void Agent::optimizeAttributes()
     delete currentExtensions;
     delete plannedExtensions;
 
-    if (minChoices != m_starterChoices) {
+    if (minChoices != m_starterChoices)
         setStarterChoices(minChoices);
-    }
-    else {
+    else
         m_attributes = m_gameData->starterAttributes(m_starterChoices);
-    }
 }
 
 
@@ -399,9 +380,8 @@ public:
         if (other->id() == ID) {
             const StarterChoicesCommand* otherCommand = static_cast<const StarterChoicesCommand*>(other);
 
-            if (otherCommand->m_choices == otherCommand->m_prevChoices) {
+            if (otherCommand->m_choices == otherCommand->m_prevChoices)
                 return true;
-            }
         }
         return false;
     }
@@ -419,9 +399,8 @@ public:
     LevelChangeCommand(ExtensionLevels *extensionLevels, const LevelMap &levels)
         : m_extensionLevels(extensionLevels), m_time(QTime::currentTime()), m_levels(levels)
     {
-        for (LevelMap::const_iterator i = levels.constBegin(); i != levels.constEnd(); ++i) {
+        for (LevelMap::const_iterator i = levels.constBegin(); i != levels.constEnd(); ++i)
             m_prevLevels.insert(i.key(), extensionLevels->level(i.key()));
-        }
     }
 
     LevelChangeCommand(ExtensionLevels *extensionLevels, Extension *extension, int level)
@@ -441,19 +420,17 @@ public:
         if (other->id() == ID) {
             const LevelChangeCommand* otherCommand = static_cast<const LevelChangeCommand*>(other);
 
-            if (otherCommand->m_levels.isEmpty()) {
+            if (otherCommand->m_levels.isEmpty())
                 return true;
-            }
 
             if (m_time.msecsTo(otherCommand->m_time) < 1000) {
-                for (LevelMap::const_iterator i = otherCommand->m_levels.constBegin(); i != otherCommand->m_levels.constEnd(); ++i) {
+                for (LevelMap::const_iterator i = otherCommand->m_levels.constBegin(); i != otherCommand->m_levels.constEnd(); ++i)
                     m_levels.insert(i.key(), i.value());
-                }
-                for (LevelMap::const_iterator i = otherCommand->m_prevLevels.constBegin(); i != otherCommand->m_prevLevels.constEnd(); ++i) {
-                    if (!m_prevLevels.contains(i.key())) {
+
+                for (LevelMap::const_iterator i = otherCommand->m_prevLevels.constBegin(); i != otherCommand->m_prevLevels.constEnd(); ++i)
+                    if (!m_prevLevels.contains(i.key()))
                         m_prevLevels.insert(i.key(), i.value());
-                    }
-                }
+
                 return true;
             }
         }

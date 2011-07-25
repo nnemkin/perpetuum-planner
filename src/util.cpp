@@ -34,15 +34,13 @@ QString Formatter::formatTimeSpan(int seconds) {
     seconds %= 3600;
     int minutes = seconds / 60;
 
-    if (days) {
+    if (days)
         span += QLatin1Char(' ') + tr("%n day(s)", 0, days);
-    }
-    if (hours) {
+    if (hours)
         span += QLatin1Char(' ') + tr("%n hour(s)", 0, hours);
-    }
-    if (minutes || !days && !hours) {
+    if (minutes || !days && !hours)
         span += QLatin1Char(' ') + tr("%n minute(s)", 0, minutes);
-    }
+
     return span.mid(1);
 }
 
@@ -54,15 +52,13 @@ QString Formatter::formatTimeSpanCompact(int seconds) {
     int minutes = seconds / 60;
 
     QString span;
-    if (days) {
+    if (days)
         span += QLatin1Char(' ') + tr("%nd", 0, days);
-    }
-    if (hours) {
+    if (hours)
         span += QLatin1Char(' ') + tr("%nh", 0, hours);
-    }
-    if (minutes || !days && !hours) {
+    if (minutes || !days && !hours)
         span += QLatin1Char(' ') + tr("%nm", 0, minutes);
-    }
+
     return span.mid(1);
 }
 

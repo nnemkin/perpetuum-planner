@@ -161,9 +161,9 @@ bool Updater::unpack(const QString& zipFileName)
 
     char buf[4096];
     int read = 0;
-    while ((read = inFile.read(buf, sizeof(buf))) > 0) {
+    while ((read = inFile.read(buf, sizeof(buf))) > 0)
         outFile.write(buf, read);
-    }
+
     if (read == -1)
         return false;
 
