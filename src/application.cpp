@@ -263,7 +263,9 @@ void Application::applySettings()
     bool enableClearType = settings.value("EnableClearType").toBool();
     if (enableClearType != m_gdipp.enableClearType()) {
         m_gdipp.setEnableClearType(enableClearType);
+#ifndef QT_DLL
         QFontCache::instance()->clear(); // XXX: Qt private
+#endif
         updateStyleSheet = true;
     }
 
