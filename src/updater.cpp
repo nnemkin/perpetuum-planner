@@ -39,7 +39,8 @@
 
 
 Updater::Updater(QString fileName, QUrl url, QWidget *parent) :
-    QDialog(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint), m_reply(0), m_tempFile(0), m_aborted(false)
+    QDialog(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::MSWindowsFixedSizeDialogHint),
+    m_reply(0), m_tempFile(0), m_aborted(false)
 {
     setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose, true);

@@ -24,7 +24,8 @@
 
 
 AttributeEditor::AttributeEditor(Agent *agent, QWidget *parent)
-    : QDialog(parent, Qt::Tool | Qt::WindowSystemMenuHint | Qt::FramelessWindowHint), m_agent(agent)
+    : QDialog(parent, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::MSWindowsFixedSizeDialogHint),
+      m_agent(agent)
 {
     setupUi(this);
 

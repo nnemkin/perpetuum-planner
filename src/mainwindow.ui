@@ -25,30 +25,6 @@
      <number>0</number>
     </property>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="TitleBar" name="titleBar" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>17</height>
-         </size>
-        </property>
-        <property name="helpButtonVisible" stdset="0">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QWidget" name="windowHeader" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0,0,0">
          <property name="spacing">
@@ -164,8 +140,6 @@
         </layout>
        </widget>
       </item>
-     </layout>
-    </item>
     <item>
      <widget class="QWidget" name="windowFrame" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -246,19 +220,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>TitleBar</class>
-   <extends>QWidget</extends>
-   <header>titlebar.h</header>
-   <container>1</container>
-   <slots>
-    <signal>closeRequest()</signal>
-    <signal>showNormalRequest()</signal>
-    <signal>showMaximizedRequest()</signal>
-    <signal>showMinimizedRequest()</signal>
-    <signal>helpRequest()</signal>
-   </slots>
-  </customwidget>
-  <customwidget>
    <class>ExtensionsView</class>
    <extends>QWidget</extends>
    <header>extensionsview.h</header>
@@ -279,66 +240,18 @@
  </resources>
  <connections>
   <connection>
-   <sender>titleBar</sender>
-   <signal>showMaximizedRequest()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>showMaximized()</slot>
+   <sender>buttonAbout</sender>
+   <signal>clicked()</signal>
+   <receiver>actionAbout</receiver>
+   <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>206</x>
-     <y>0</y>
+     <x>450</x>
+     <y>12</y>
     </hint>
     <hint type="destinationlabel">
-     <x>202</x>
-     <y>-11</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>titleBar</sender>
-   <signal>showMinimizedRequest()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>showMinimized()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>227</x>
-     <y>0</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>222</x>
-     <y>-3</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>titleBar</sender>
-   <signal>showNormalRequest()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>showNormal()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>312</x>
-     <y>0</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>309</x>
-     <y>-9</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>titleBar</sender>
-   <signal>closeRequest()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>178</x>
-     <y>0</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>173</x>
-     <y>-6</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
@@ -359,22 +272,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonAbout</sender>
-   <signal>clicked()</signal>
-   <receiver>actionAbout</receiver>
-   <slot>trigger()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>450</x>
-     <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>buttonOptions</sender>
    <signal>clicked()</signal>
    <receiver>actionOptions</receiver>
@@ -383,22 +280,6 @@
     <hint type="sourcelabel">
      <x>370</x>
      <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>titleBar</sender>
-   <signal>helpRequest()</signal>
-   <receiver>actionHelp</receiver>
-   <slot>trigger()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>251</x>
-     <y>0</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

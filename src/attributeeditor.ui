@@ -19,1195 +19,1170 @@
   <property name="windowTitle">
    <string notr="true"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="sizeConstraint">
     <enum>QLayout::SetFixedSize</enum>
    </property>
-   <property name="margin">
-    <number>0</number>
-   </property>
    <item>
-    <widget class="TitleBar" name="titleBar" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+    <widget class="QWidget" name="choices" native="true">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string extracomment="characterinfo_cw_school">School:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="index" stdset="0">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QToolButton" name="toolButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Military</string>
+        </property>
+        <property name="text">
+         <string>Military</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">military school</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">M</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>1</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupSchool</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QToolButton" name="toolButton_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Industrial</string>
+        </property>
+        <property name="text">
+         <string>Industrial</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">industrial school</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">I</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>1</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupSchool</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QToolButton" name="toolButton_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Logistic</string>
+        </property>
+        <property name="text">
+         <string>Logistic</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">logistic school</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">L</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>1</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupSchool</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string extracomment="characterinfo_cw_major">Speciality:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="index" stdset="0">
+         <number>2</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QToolButton" name="toolButton_4">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Military</string>
+        </property>
+        <property name="text">
+         <string>Military</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">military speciality</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">M</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>2</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupSpeciality</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QToolButton" name="toolButton_5">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Industrial</string>
+        </property>
+        <property name="text">
+         <string>Industrial</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">industrial speciality</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">I</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>2</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupSpeciality</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QToolButton" name="toolButton_6">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Logistic</string>
+        </property>
+        <property name="text">
+         <string>Logistic</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">logistic speciality</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">L</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>2</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupSpeciality</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string extracomment="characterinfo_cw_corporation">Corporation:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="index" stdset="0">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QToolButton" name="toolButton_7">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Military</string>
+        </property>
+        <property name="text">
+         <string>Military</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">military corporation</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">M</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>3</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupCorporation</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QToolButton" name="toolButton_8">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Industrial</string>
+        </property>
+        <property name="text">
+         <string>Industrial</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">industrial corporation</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">I</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>3</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupCorporation</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QToolButton" name="toolButton_9">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Logistic</string>
+        </property>
+        <property name="text">
+         <string>Logistic</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">logistic corporation</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">L</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>3</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupCorporation</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string extracomment="characterinfo_cw_spark">Spark:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="index" stdset="0">
+         <number>4</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1" colspan="3">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QToolButton" name="toolButton_10">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Ubenor (Military)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/spark_mm.png</normaloff>:/spark_mm.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="value" stdset="0">
+           <string notr="true">MM</string>
+          </property>
+          <property name="index" stdset="0">
+           <number>4</number>
+          </property>
+          <attribute name="buttonGroup">
+           <string>buttonGroupSpark</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QToolButton" name="toolButton_11">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Geinos (Military-Industrial)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/spark_mi.png</normaloff>:/spark_mi.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="value" stdset="0">
+           <string notr="true">MI</string>
+          </property>
+          <property name="index" stdset="0">
+           <number>4</number>
+          </property>
+          <attribute name="buttonGroup">
+           <string>buttonGroupSpark</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QToolButton" name="toolButton_16">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Yolleon (Military-Logistic)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/spark_mc.png</normaloff>:/spark_mc.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="value" stdset="0">
+           <string notr="true">ML</string>
+          </property>
+          <property name="index" stdset="0">
+           <number>4</number>
+          </property>
+          <attribute name="buttonGroup">
+           <string>buttonGroupSpark</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QToolButton" name="toolButton_12">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Pastex (Industrial-Military)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/spark_im.png</normaloff>:/spark_im.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="value" stdset="0">
+           <string notr="true">IM</string>
+          </property>
+          <property name="index" stdset="0">
+           <number>4</number>
+          </property>
+          <attribute name="buttonGroup">
+           <string>buttonGroupSpark</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QToolButton" name="toolButton_15">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Apsidaz (Industrial)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/spark_ii.png</normaloff>:/spark_ii.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="value" stdset="0">
+           <string notr="true">II</string>
+          </property>
+          <property name="index" stdset="0">
+           <number>4</number>
+          </property>
+          <attribute name="buttonGroup">
+           <string>buttonGroupSpark</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QToolButton" name="toolButton_13">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Oprater (Industrial-Logistic)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/spark_ic.png</normaloff>:/spark_ic.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="value" stdset="0">
+           <string notr="true">IL</string>
+          </property>
+          <property name="index" stdset="0">
+           <number>4</number>
+          </property>
+          <attribute name="buttonGroup">
+           <string>buttonGroupSpark</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QToolButton" name="toolButton_18">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Yphet (Logistic-Military)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/spark_cm.png</normaloff>:/spark_cm.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="value" stdset="0">
+           <string notr="true">LM</string>
+          </property>
+          <property name="index" stdset="0">
+           <number>4</number>
+          </property>
+          <attribute name="buttonGroup">
+           <string>buttonGroupSpark</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QToolButton" name="toolButton_17">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Qassol (Logistic-Industrial)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/spark_ci.png</normaloff>:/spark_ci.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="value" stdset="0">
+           <string notr="true">LI</string>
+          </property>
+          <property name="index" stdset="0">
+           <number>4</number>
+          </property>
+          <attribute name="buttonGroup">
+           <string>buttonGroupSpark</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QToolButton" name="toolButton_14">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Nivalla (Logistic)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/spark_cc.png</normaloff>:/spark_cc.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="value" stdset="0">
+           <string notr="true">LL</string>
+          </property>
+          <property name="index" stdset="0">
+           <number>4</number>
+          </property>
+          <attribute name="buttonGroup">
+           <string>buttonGroupSpark</string>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <widget class="QToolButton" name="toolButton_19">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Truhold-Markson</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../res/resources.qrc">
+          <normaloff>:/megacorp-tm.png</normaloff>:/megacorp-tm.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>48</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">megacorp</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">T</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>0</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupMegacorp</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QToolButton" name="toolButton_20">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>ICS</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../res/resources.qrc">
+          <normaloff>:/megacorp-ics.png</normaloff>:/megacorp-ics.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>48</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">megacorp</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">I</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>0</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupMegacorp</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QToolButton" name="toolButton_21">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Asintec</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../res/resources.qrc">
+          <normaloff>:/megacorp-asi.png</normaloff>:/megacorp-asi.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>48</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">megacorp</string>
+        </property>
+        <property name="value" stdset="0">
+         <string notr="true">A</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>0</number>
+        </property>
+        <attribute name="buttonGroup">
+         <string>buttonGroupMegacorp</string>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_17">
+        <property name="text">
+         <string extracomment="characterinfo_cw_race">Megacorporation:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="index" stdset="0">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_18">
+     <property name="text">
+      <string extracomment="extension_attributes">Attributes</string>
      </property>
-     <property name="minimizeButtonVisible" stdset="0">
-      <bool>false</bool>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="role" stdset="0">
+      <string notr="true">header</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="windowFrame" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>9</number>
+    <widget class="QWidget" name="attributeBars" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="margin">
+       <number>0</number>
       </property>
-      <item>
-       <widget class="QWidget" name="choices" native="true">
-        <layout class="QGridLayout" name="gridLayout_3">
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string extracomment="characterinfo_cw_school">School:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-           <property name="index" stdset="0">
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QToolButton" name="toolButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Military</string>
-           </property>
-           <property name="text">
-            <string>Military</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">military school</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">M</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>1</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupSchool</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QToolButton" name="toolButton_2">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Industrial</string>
-           </property>
-           <property name="text">
-            <string>Industrial</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">industrial school</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">I</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>1</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupSchool</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="1" column="3">
-          <widget class="QToolButton" name="toolButton_3">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Logistic</string>
-           </property>
-           <property name="text">
-            <string>Logistic</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">logistic school</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">L</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>1</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupSchool</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string extracomment="characterinfo_cw_major">Speciality:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-           <property name="index" stdset="0">
-            <number>2</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QToolButton" name="toolButton_4">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Military</string>
-           </property>
-           <property name="text">
-            <string>Military</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">military speciality</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">M</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>2</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupSpeciality</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QToolButton" name="toolButton_5">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Industrial</string>
-           </property>
-           <property name="text">
-            <string>Industrial</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">industrial speciality</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">I</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>2</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupSpeciality</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="2" column="3">
-          <widget class="QToolButton" name="toolButton_6">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Logistic</string>
-           </property>
-           <property name="text">
-            <string>Logistic</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">logistic speciality</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">L</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>2</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupSpeciality</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_9">
-           <property name="text">
-            <string extracomment="characterinfo_cw_corporation">Corporation:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-           <property name="index" stdset="0">
-            <number>3</number>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QToolButton" name="toolButton_7">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Military</string>
-           </property>
-           <property name="text">
-            <string>Military</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">military corporation</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">M</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>3</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupCorporation</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QToolButton" name="toolButton_8">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Industrial</string>
-           </property>
-           <property name="text">
-            <string>Industrial</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">industrial corporation</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">I</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>3</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupCorporation</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="3" column="3">
-          <widget class="QToolButton" name="toolButton_9">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Logistic</string>
-           </property>
-           <property name="text">
-            <string>Logistic</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">logistic corporation</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">L</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>3</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupCorporation</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_10">
-           <property name="text">
-            <string extracomment="characterinfo_cw_spark">Spark:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-           <property name="index" stdset="0">
-            <number>4</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1" colspan="3">
-          <layout class="QGridLayout" name="gridLayout_2">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QToolButton" name="toolButton_10">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Ubenor (Military)</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../res/resources.qrc">
-               <normaloff>:/spark_mm.png</normaloff>:/spark_mm.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="value" stdset="0">
-              <string notr="true">MM</string>
-             </property>
-             <property name="index" stdset="0">
-              <number>4</number>
-             </property>
-             <attribute name="buttonGroup">
-              <string>buttonGroupSpark</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QToolButton" name="toolButton_11">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Geinos (Military-Industrial)</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../res/resources.qrc">
-               <normaloff>:/spark_mi.png</normaloff>:/spark_mi.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="value" stdset="0">
-              <string notr="true">MI</string>
-             </property>
-             <property name="index" stdset="0">
-              <number>4</number>
-             </property>
-             <attribute name="buttonGroup">
-              <string>buttonGroupSpark</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QToolButton" name="toolButton_16">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Yolleon (Military-Logistic)</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../res/resources.qrc">
-               <normaloff>:/spark_mc.png</normaloff>:/spark_mc.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="value" stdset="0">
-              <string notr="true">ML</string>
-             </property>
-             <property name="index" stdset="0">
-              <number>4</number>
-             </property>
-             <attribute name="buttonGroup">
-              <string>buttonGroupSpark</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QToolButton" name="toolButton_12">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Pastex (Industrial-Military)</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../res/resources.qrc">
-               <normaloff>:/spark_im.png</normaloff>:/spark_im.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="value" stdset="0">
-              <string notr="true">IM</string>
-             </property>
-             <property name="index" stdset="0">
-              <number>4</number>
-             </property>
-             <attribute name="buttonGroup">
-              <string>buttonGroupSpark</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QToolButton" name="toolButton_15">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Apsidaz (Industrial)</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../res/resources.qrc">
-               <normaloff>:/spark_ii.png</normaloff>:/spark_ii.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="value" stdset="0">
-              <string notr="true">II</string>
-             </property>
-             <property name="index" stdset="0">
-              <number>4</number>
-             </property>
-             <attribute name="buttonGroup">
-              <string>buttonGroupSpark</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QToolButton" name="toolButton_13">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Oprater (Industrial-Logistic)</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../res/resources.qrc">
-               <normaloff>:/spark_ic.png</normaloff>:/spark_ic.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="value" stdset="0">
-              <string notr="true">IL</string>
-             </property>
-             <property name="index" stdset="0">
-              <number>4</number>
-             </property>
-             <attribute name="buttonGroup">
-              <string>buttonGroupSpark</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QToolButton" name="toolButton_18">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Yphet (Logistic-Military)</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../res/resources.qrc">
-               <normaloff>:/spark_cm.png</normaloff>:/spark_cm.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="value" stdset="0">
-              <string notr="true">LM</string>
-             </property>
-             <property name="index" stdset="0">
-              <number>4</number>
-             </property>
-             <attribute name="buttonGroup">
-              <string>buttonGroupSpark</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QToolButton" name="toolButton_17">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Qassol (Logistic-Industrial)</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../res/resources.qrc">
-               <normaloff>:/spark_ci.png</normaloff>:/spark_ci.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="value" stdset="0">
-              <string notr="true">LI</string>
-             </property>
-             <property name="index" stdset="0">
-              <number>4</number>
-             </property>
-             <attribute name="buttonGroup">
-              <string>buttonGroupSpark</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QToolButton" name="toolButton_14">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="toolTip">
-              <string>Nivalla (Logistic)</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../res/resources.qrc">
-               <normaloff>:/spark_cc.png</normaloff>:/spark_cc.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="value" stdset="0">
-              <string notr="true">LL</string>
-             </property>
-             <property name="index" stdset="0">
-              <number>4</number>
-             </property>
-             <attribute name="buttonGroup">
-              <string>buttonGroupSpark</string>
-             </attribute>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="0" column="1">
-          <widget class="QToolButton" name="toolButton_19">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Truhold-Markson</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/resources.qrc">
-             <normaloff>:/megacorp-tm.png</normaloff>:/megacorp-tm.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>48</width>
-             <height>36</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">megacorp</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">T</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>0</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupMegacorp</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QToolButton" name="toolButton_20">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>ICS</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/resources.qrc">
-             <normaloff>:/megacorp-ics.png</normaloff>:/megacorp-ics.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>48</width>
-             <height>36</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">megacorp</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">I</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>0</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupMegacorp</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QToolButton" name="toolButton_21">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>Asintec</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/resources.qrc">
-             <normaloff>:/megacorp-asi.png</normaloff>:/megacorp-asi.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>48</width>
-             <height>36</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">megacorp</string>
-           </property>
-           <property name="value" stdset="0">
-            <string notr="true">A</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>0</number>
-           </property>
-           <attribute name="buttonGroup">
-            <string>buttonGroupMegacorp</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_17">
-           <property name="text">
-            <string extracomment="characterinfo_cw_race">Megacorporation:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-           <property name="index" stdset="0">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_18">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
-         <string extracomment="extension_attributes">Attributes</string>
+         <string extracomment="attributeA">Tactics</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="role" stdset="0">
-         <string notr="true">header</string>
+         <string notr="true">label</string>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QWidget" name="attributeBars" native="true">
-        <layout class="QGridLayout" name="gridLayout">
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string extracomment="attributeA">Tactics</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">label</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" rowspan="7">
-          <widget class="QWidget" name="pole" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>10</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">pole</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_3">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string extracomment="attributeB">Mechatronics</string>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">label</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_16">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string notr="true">0</string>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">bar tactics left</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="label_4">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string notr="true">0</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">bar mechatronics right</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_15">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string extracomment="attributeC">Heavy Industry</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">label</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QLabel" name="label_11">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string extracomment="attributeD">Research and development</string>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">label</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_13">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string notr="true">0</string>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">bar industry left</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>2</number>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QLabel" name="label_5">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string notr="true">0</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">bar research right</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>3</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_12">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string extracomment="attributeE">Politics</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">label</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
-          <widget class="QLabel" name="label_2">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string extracomment="attributeF">Economics</string>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">label</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_6">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string notr="true">0</string>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">bar politics left</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>4</number>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="2">
-          <widget class="QLabel" name="label_14">
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string notr="true">0</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">bar economics right</string>
-           </property>
-           <property name="index" stdset="0">
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>4</width>
-             <height>4</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
+      <item row="0" column="1" rowspan="7">
+       <widget class="QWidget" name="pole" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>10</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">pole</string>
+        </property>
        </widget>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>10</width>
-            <height>10</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonReset">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="text">
-           <string>Reset</string>
-          </property>
-          <property name="role" stdset="0">
-           <string notr="true">dialog-button</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonOptimize">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="text">
-           <string>Optimize</string>
-          </property>
-          <property name="role" stdset="0">
-           <string notr="true">dialog-button</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonClose">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="text">
-           <string>Close</string>
-          </property>
-          <property name="role" stdset="0">
-           <string notr="true">dialog-button</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>10</width>
-            <height>10</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_3">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string extracomment="attributeB">Mechatronics</string>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">label</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_16">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">0</string>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">bar tactics left</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_4">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">bar mechatronics right</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string extracomment="attributeC">Heavy Industry</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">label</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_11">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string extracomment="attributeD">Research and development</string>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">label</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">0</string>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">bar industry left</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>2</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="label_5">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">bar research right</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string extracomment="attributeE">Politics</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">label</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string extracomment="attributeF">Economics</string>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">label</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">0</string>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">bar politics left</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>4</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel" name="label_14">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="role" stdset="0">
+         <string notr="true">bar economics right</string>
+        </property>
+        <property name="index" stdset="0">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>4</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>10</width>
+         <height>10</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonReset">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string>Reset</string>
+       </property>
+       <property name="role" stdset="0">
+        <string notr="true">dialog-button</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOptimize">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string>Optimize</string>
+       </property>
+       <property name="role" stdset="0">
+        <string notr="true">dialog-button</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonClose">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string>Close</string>
+       </property>
+       <property name="role" stdset="0">
+        <string notr="true">dialog-button</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>10</width>
+         <height>10</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
   </layout>
   <action name="actionReset">
@@ -1226,41 +1201,10 @@
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>TitleBar</class>
-   <extends>QWidget</extends>
-   <header>titlebar.h</header>
-   <container>1</container>
-   <slots>
-    <signal>closeRequest()</signal>
-    <signal>showNormalRequest()</signal>
-    <signal>showMaximizedRequest()</signal>
-    <signal>showMinimizedRequest()</signal>
-    <signal>helpRequest()</signal>
-   </slots>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../res/resources.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>titleBar</sender>
-   <signal>closeRequest()</signal>
-   <receiver>AttributeEditor</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>9</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>-2</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>buttonClose</sender>
    <signal>clicked()</signal>

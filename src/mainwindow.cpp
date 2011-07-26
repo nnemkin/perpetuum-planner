@@ -32,7 +32,8 @@
 
 
 MainWindow::MainWindow(GameData *gameData, QString fileName, QWidget *parent)
-    : QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint), m_gameData(gameData)
+    : QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint),
+      m_gameData(gameData)
 {
     setupUi(this);
 

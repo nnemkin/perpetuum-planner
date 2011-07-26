@@ -22,9 +22,12 @@
 #include <QPainter>
 #include <QPixmapCache>
 #include <QTreeView>
+#include <QMainWindow>
+#include <QDialog>
 #include <QDebug>
 
 #include "styletweaks.h"
+#include "titlebar.h"
 
 
 StyleTweaks::StyleTweaks() : QProxyStyle(QStyleFactory::create("windows"))
@@ -93,4 +96,12 @@ void StyleTweaks::drawItemText(QPainter *painter, const QRect &rect, int flags, 
 {
     flags |= Qt::TextBypassShaping;
     QProxyStyle::drawItemText(painter, rect, flags, pal, enabled, text, textRole);
+}
+
+void StyleTweaks::polish(QWidget *widget)
+{
+    QProxyStyle::polish(widget);
+
+    if (qobject_cast<QMainWindow *>(widget) || qobject_cast<QDialog *>(widget))
+        new TitleBar(widget);
 }

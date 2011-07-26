@@ -23,36 +23,55 @@
 #include "util.h"
 
 
-TitleBar::TitleBar(QWidget *parent) : QWidget(parent) {
+TitleBar::TitleBar(QWidget *parent) : QWidget(parent), m_titleBarHeight(0) {
     setAttribute(Qt::WA_StyledBackground);
     setupUi(this);
+
     buttonHelp->setVisible(false);
-
-    connect(buttonHelp, SIGNAL(clicked()), this, SIGNAL(helpRequest()));
-    connect(buttonMinimize, SIGNAL(clicked()), this, SIGNAL(showMinimizedRequest()));
-    connect(buttonClose, SIGNAL(clicked()), this, SIGNAL(closeRequest()));
-
+    buttonMinimize->setVisible(window()->windowType() == Qt::Window);
     label->setText(window()->windowTitle());
+
+    // connect(buttonHelp, SIGNAL(clicked()), window(), SIGNAL(helpRequest()));
+    connect(buttonMinimize, SIGNAL(clicked()), window(), SLOT(showMinimized()));
+    connect(buttonClose, SIGNAL(clicked()), window(), SLOT(close()));
+
     window()->installEventFilter(this);
 }
 
-bool TitleBar::eventFilter(QObject *watched, QEvent *event)
+void TitleBar::resizeEvent(QResizeEvent *)
 {
-    if (event->type() == QEvent::WindowTitleChange)
-        label->setText(window()->windowTitle());
+    if (m_titleBarHeight != height()) {
+        m_titleBarHeight = height();
 
-    return QWidget::eventFilter(watched, event);
+        QMargins margins = window()->contentsMargins();
+        margins.setTop(margins.top() + m_titleBarHeight);
+        window()->setContentsMargins(margins);
+    }
+}
+
+bool TitleBar::eventFilter(QObject *, QEvent *event)
+{
+    switch (event->type()) {
+    case QEvent::WindowTitleChange:
+        label->setText(window()->windowTitle());
+        break;
+    case QEvent::Resize:
+        resize(window()->width(), height());
+        break;
+    }
+
+    return false;
 }
 
 void TitleBar::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         if (event->x() < height())
-            emit closeRequest();
+            window()->close();
         else if (window()->windowState() & Qt::WindowMaximized)
-            emit showNormalRequest();
+            window()->showNormal();
         else
-            emit showMaximizedRequest();
+            window()->showMaximized();
         event->accept();
     }
 }

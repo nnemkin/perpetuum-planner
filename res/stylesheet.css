@@ -51,7 +51,7 @@ TitleBar #buttonHelp:hover { background: url(:/button-help-hover.png) no-repeat;
 #windowHeader, #windowHeader > QLabel { font: bold 17px 'Myriad Pro Cond'; padding: 0 20px 2px 20px; text-transform: uppercase; }
 #windowHeader > QPushButton { width: 70px; }
 
-#windowFrame { border: 1px solid #666; border-top-style: none; }
+QDialog, #windowFrame { border: 1px solid #666; border-top-style: none; }
 
 QSizeGrip { width: 9px; height: 9px; margin: 1px; background: transparent url(:/size-grip.png) no-repeat; }
 

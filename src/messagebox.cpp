@@ -19,6 +19,7 @@
 
 #include <QApplication>
 #include <QSettings>
+#include <QAbstractButton>
 
 #include "messagebox.h"
 #include "application.h"

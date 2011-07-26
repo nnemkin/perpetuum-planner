@@ -26,7 +26,8 @@
 #include "application.h"
 
 
-OptionsDialog::OptionsDialog(QWidget *parent) : QDialog(parent, Qt::WindowSystemMenuHint | Qt::FramelessWindowHint)
+OptionsDialog::OptionsDialog(QWidget *parent)
+    : QDialog(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::MSWindowsFixedSizeDialogHint)
 {
     setAttribute(Qt::WA_DeleteOnClose, true);
     setupUi(this);

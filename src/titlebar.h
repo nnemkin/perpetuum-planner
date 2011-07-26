@@ -26,24 +26,8 @@ class TitleBar : public QWidget, private Ui::TitleBar
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool minimizeButtonVisible READ minimizeButtonVisible WRITE setMinimizeButtonVisible)
-    Q_PROPERTY(bool helpButtonVisible READ helpButtonVisible WRITE setHelpButtonVisible)
-
 public:
     explicit TitleBar(QWidget *parent = 0);
-
-    bool minimizeButtonVisible() { return buttonMinimize->isVisible(); }
-    void setMinimizeButtonVisible(bool visible) { buttonMinimize->setVisible(visible); }
-
-    bool helpButtonVisible() { return buttonHelp->isVisible(); }
-    void setHelpButtonVisible(bool visible) { buttonHelp->setVisible(visible); }
-
-signals:
-    void closeRequest();
-    void helpRequest();
-    void showNormalRequest();
-    void showMinimizedRequest();
-    void showMaximizedRequest();
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *);
@@ -51,11 +35,13 @@ protected:
     void mouseMoveEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
 
+    void resizeEvent(QResizeEvent *);
     bool eventFilter(QObject *, QEvent *);
 
 private:
     QPoint m_dragPoint;
     bool m_inDrag;
+    int m_titleBarHeight;
 };
 
 #endif // TITLEBAR_H
