@@ -31,8 +31,10 @@ public:
     explicit OptionsDialog(QWidget *parent = 0);
     ~OptionsDialog();
 
+    void accept();
+
 public slots:
-    void apply();
+    bool apply();
 
 protected:
     void changeEvent(QEvent *e);

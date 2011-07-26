@@ -31,7 +31,6 @@ OptionsDialog::OptionsDialog(QWidget *parent) : QDialog(parent, Qt::WindowSystem
     setAttribute(Qt::WA_DeleteOnClose, true);
     setupUi(this);
 
-    connect(this, SIGNAL(accepted()), this, SLOT(apply()));
     connect(buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
 
     QSettings settings;
@@ -63,14 +62,21 @@ void OptionsDialog::showEvent(QShowEvent *event)
     QDialog::showEvent(event);
 }
 
-void OptionsDialog::apply()
+void OptionsDialog::accept()
+{
+    if (apply())
+        QDialog::accept();
+}
+
+bool OptionsDialog::apply()
 {
     if (checkUseProxy->isChecked())    {
         QUrl proxyUrl(QLatin1String("http://") + textProxy->text());
         if (!proxyUrl.isValid() || proxyUrl.host().isEmpty() || proxyUrl.port(-1) == -1
                 || !proxyUrl.path().isEmpty() || proxyUrl.hasQuery() || proxyUrl.hasFragment()) {
             //: combatlog_error
-            MessageBox::show(this, tr("Error"), tr("Invalid proxy address."));
+            MessageBox::exec(this, tr("Error"), tr("Invalid proxy address."));
+            return false;
         }
     }
 
@@ -83,4 +89,6 @@ void OptionsDialog::apply()
     settings.setValue(QLatin1String("ProxyAddress"), textProxy->text());
 
     qApp->settingsChanged();
+
+    return true;
 }
