@@ -127,6 +127,7 @@ RESOURCES += \
     data/data.qrc
 
 TRANSLATIONS = \
+    i18n/qt_it.ts \
     i18n/perpetuumplanner_en.ts \
     i18n/perpetuumplanner_hu.ts \
     i18n/perpetuumplanner_de.ts \
@@ -135,7 +136,13 @@ TRANSLATIONS = \
 
 RC_FILE = res/winres.rc
 
-INCLUDEPATH += inc 3rdparty/qtsingleapplication/src 3rdparty/qjson/src 3rdparty/gdi++ 3rdparty/quazip/src 3rdparty/zlib
+INCLUDEPATH += \
+    inc \
+    3rdparty/qtsingleapplication/src \
+    3rdparty/qjson/src \
+    3rdparty/gdi++ \
+    3rdparty/quazip/src \
+    3rdparty/zlib
 
 QMAKE_RESOURCE_FLAGS += -threshold 0 -compress 9
 
