@@ -409,13 +409,13 @@ void ExtensionsView::dropEvent(QDropEvent *event)
 {
     QList<QUrl> urls = event->mimeData()->urls();
     if (!urls.isEmpty()) {
-        canClose();
+        if (canClose()) {
+            m_agent->load(urls.at(0).toLocalFile());
 
-        m_agent->load(urls.at(0).toLocalFile());
-
-        QWidget *w = window();
-        w->activateWindow();
-        w->raise();
+            QWidget *w = window();
+            w->activateWindow();
+            w->raise();
+        }
     }
 }
 
@@ -437,15 +437,19 @@ bool ExtensionsView::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
+
+
 bool ExtensionsView::canClose()
 {
     if (m_agent->isModified()) {
         //: window_confirm
         int result = MessageBox::exec(this, tr("Confirmation"), tr("Save changes to '%1'?").arg(m_agent->name()),
-                                      QDialogButtonBox::Yes | QDialogButtonBox::No);
+                                      QDialogButtonBox::Yes | QDialogButtonBox::No /*| QDialogButtonBox::Cancel*/);
+        if (result == QDialogButtonBox::Cancel)
+            return false;
+
         if (result == QDialogButtonBox::Yes)
-            if (m_agent->fileName().isEmpty())
-                actionSave->trigger();
+            actionSave->trigger();
     }
     return true;
 }
@@ -578,15 +582,15 @@ void ExtensionsView::on_actionLoad_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Load plan"), lastUsedDir,    tr("Agents (*.agent);;All files (*.*)"));
     if (!fileName.isEmpty()) {
         settings.setValue("LastUsedDir", QFileInfo(fileName).dir().canonicalPath());
-        canClose();
-        m_agent->load(fileName);
+        if (canClose())
+            m_agent->load(fileName);
     }
 }
 
 void ExtensionsView::on_actionNew_triggered()
 {
-    canClose();
-    m_agent->reset();
+    if (canClose())
+        m_agent->reset();
 }
 
 
