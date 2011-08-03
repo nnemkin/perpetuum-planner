@@ -98,7 +98,7 @@ int Application::exec()
     else {
         QFile gameDataFile(":/compiled/game.dat");
         if (!m_gameData->load(&gameDataFile)) {
-            MessageBox::exec(0, QApplication::translate("Main", "Error"), m_gameData->lastError());
+            MessageBox::exec(0, QApplication::translate("Main", "Error"), tr("Invalid data file."));
             return -1;
         }
         handleArguments(arguments());

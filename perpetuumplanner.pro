@@ -127,7 +127,6 @@ RESOURCES += \
     data/data.qrc
 
 TRANSLATIONS = \
-    i18n/qt_it.ts \
     i18n/perpetuumplanner_en.ts \
     i18n/perpetuumplanner_hu.ts \
     i18n/perpetuumplanner_de.ts \

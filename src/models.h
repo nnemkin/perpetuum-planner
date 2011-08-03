@@ -21,6 +21,7 @@
 #define MODELS_H
 
 #include <QAbstractItemModel>
+#include <QVector>
 #include <functional>
 
 class GameData;
@@ -50,10 +51,10 @@ protected:
     struct Node {
         Node *parent;
         QObject *object;
-        QList<Node *> children;
+        QVector<Node *> children;
         QVariantList data;
 
-        Node(Node *aparent, QObject *aobject = 0) : parent(aparent), object(aobject) {}
+        Node(Node *aParent, QObject *aObject = 0) : parent(aParent), object(aObject) {}
         ~Node() { qDeleteAll(children); }
 
         inline int row() { return parent->children.indexOf(this); }
@@ -222,7 +223,7 @@ protected:
 
 private:
     Item *m_sortComponent;
-    QList<Node *> m_originalOrder;
+    QVector<Node *> m_originalOrder;
 
     bool m_smallComponentIcons;
 };
@@ -243,7 +244,7 @@ protected:
     QString columnName(int index) const;
 
 private:
-    QList<Node *> m_originalOrder;
+    QVector<Node *> m_originalOrder;
 };
 
 

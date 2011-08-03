@@ -28,7 +28,7 @@
 
 AttributeSet::AttributeSet()
 {
-    qMemSet(m_attributes, 0, sizeof(m_attributes));
+    memset(m_attributes, 0, sizeof(m_attributes));
 }
 
 AttributeSet::AttributeSet(QVariant data)
@@ -40,7 +40,7 @@ AttributeSet::AttributeSet(QVariant data)
 
 AttributeSet::AttributeSet(const AttributeSet& other)
 {
-    qMemCopy(m_attributes, other.m_attributes, sizeof(m_attributes));
+    memcpy(m_attributes, other.m_attributes, sizeof(m_attributes));
 }
 
 AttributeSet::operator QVariant() const
@@ -168,11 +168,11 @@ QPixmap Item::icon(int size) const
 
 void ExtensionSet::load(GameData *gameData, const QVariantMap &dataMap)
 {
-    m_levels.clear();
+    clear();
     for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
         Extension *extension = gameData->findObject<Extension *>(i.key());
         if (extension)
-            m_levels.insert(extension, i.value().toInt());
+            insert(extension, i.value().toInt());
         else
             qDebug() << "Unknown extension:" << i.key();
     }
@@ -180,28 +180,29 @@ void ExtensionSet::load(GameData *gameData, const QVariantMap &dataMap)
 
 ExtensionSet &ExtensionSet::operator+=(const ExtensionSet &other)
 {
-    for (const_iterator i = other.m_levels.constBegin(); i != other.m_levels.constEnd(); ++i) {
-        iterator j = m_levels.find(i.key());
-        if (j != m_levels.end())
+    for (const_iterator i = other.constBegin(); i != other.constEnd(); ++i) {
+        iterator j = find(i.key());
+        if (j != end())
             j.value() = qMax(j.value(), i.value());
         else
-            m_levels.insert(i.key(), i.value());
+            insert(i.key(), i.value());
     }
     return *this;
 }
+
 
 // ParameterSet
 
 void ParameterSet::load(GameData *gameData, const QVariantMap &dataMap)
 {
-    m_values.clear();
+    clear();
     for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
         Parameter *parameter = gameData->findObject<Parameter *>(i.key());
         if (parameter) {
             QVariant value = i.value();
             if (parameter->precision())
                 value.convert(QVariant::Double);
-            m_values.insert(parameter, value);
+            insert(parameter, value);
         }
         else {
             qDebug() << "Unknown parameter:" << i.key();
@@ -214,11 +215,11 @@ void ParameterSet::load(GameData *gameData, const QVariantMap &dataMap)
 
 void ComponentSet::load(GameData *gameData, const QVariantMap &dataMap)
 {
-    m_components.clear();
+    clear();
     for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
         Item *item = gameData->findObject<Item *>(i.key());
         if (item)
-            m_components.insert(item, i.value().toInt());
+            insert(item, i.value().toInt());
         else
             qDebug() << "Unknown item:" << i.key();
     }
@@ -288,10 +289,8 @@ void GameData::loadObjects(const QVariantMap &dataMap)
 QVariantMap GameData::loadVariantMap(QIODevice *io)
 {
     if (!io->isOpen()) {
-        if (!io->open(QIODevice::ReadOnly)) {
-            m_lastError = tr("Failed to open data file.");
+        if (!io->open(QIODevice::ReadOnly))
             return QVariantMap();
-        }
     }
 
     QVariant data;
@@ -308,10 +307,8 @@ bool GameData::load(QIODevice *io)
     QVariantMap dataMap = loadVariantMap(io);
 
     m_version = dataMap.value("version").toString();
-    if (m_version.isEmpty()) {
-        m_lastError = tr("Invalid data file.");
+    if (m_version.isEmpty())
         return false;
-    }
 
     loadObjects<Extension>(dataMap.value("extensions").toMap());
     loadObjects<Parameter>(dataMap.value("parameters").toMap());
@@ -323,14 +320,6 @@ bool GameData::load(QIODevice *io)
     m_parametersGroup = findObject<ObjectGroup *>("parameter_groups");
     m_componentsGroup = findObject<ObjectGroup *>("component_groups");
     m_bonusesGroup = findObject<ObjectGroup *>("bonus_groups");
-
-    int order = 0;
-    foreach (GameObject *object, m_extensionsGroup->allObjects())
-        object->setOrder(order++);
-    foreach (GameObject *object, m_parametersGroup->allObjects())
-        object->setOrder(order++);
-    foreach (GameObject *object, m_itemsGroup->allObjects())
-        object->setOrder(order++);
 
     QVariantMap starterAttributes = dataMap.value("starter_attributes").toMap();
     for (QVariantMap::const_iterator i = starterAttributes.constBegin(); i != starterAttributes.constEnd(); ++i)

@@ -33,14 +33,9 @@ class ExtensionSet;
 class ParameterSet;
 class ObjectGroup;
 class ExtensionLevels;
-class Agent;
-class QUndoCommand;
 
 
-typedef QHash<Extension *, int> LevelMap;
-
-
-enum Attribute { Tactics, Mechatronics, Industry, Research, Politics, Economics, NumAttributes, UnknownAttribute=-1 };
+enum Attribute { Tactics, Mechatronics, Industry, Research, Politics, Economics, NumAttributes };
 
 class AttributeSet {
 public:
@@ -68,7 +63,6 @@ public:
 
     bool load(QIODevice *io);
     bool loadTranslation(QIODevice *io);
-    QString lastError() { return m_lastError; }
 
     GameObject *findObject(const QString& id);
     template<class T>
@@ -88,7 +82,6 @@ public:
     QString storedNameFromId(const QString &key) const { return m_storedNameFromId.value(key, key); }
 
 private:
-    QString m_lastError;
     QString m_version;
 
     QHash<QString, QString> m_translation;
@@ -114,65 +107,34 @@ private:
 };
 
 
-class ExtensionSet {
+class ExtensionSet : public QHash<Extension *, int> {
 public:
-    typedef LevelMap::const_iterator const_iterator;
-
-    ExtensionSet() {}
-    ExtensionSet(const ExtensionSet &other) : m_levels(other.m_levels) {}
-    const ExtensionSet &operator=(const ExtensionSet &other) { m_levels = other.m_levels; return *this; }
-
     void load(GameData *gameData, const QVariantMap &dataMap);
 
-    bool isEmpty() const { return m_levels.isEmpty(); }
-    int level(Extension *extension) const { return m_levels.value(extension); }
-    QList<Extension *> extensions() const { return m_levels.keys(); }
-
-    const_iterator constBegin() const { return m_levels.constBegin(); }
-    const_iterator constEnd() const { return m_levels.constEnd(); }
+    int level(Extension *extension) const { return value(extension); }
+    QList<Extension *> extensions() const { return keys(); }
 
     ExtensionSet &operator+=(const ExtensionSet &other);
 
 private:
-    typedef LevelMap::iterator iterator;
-
-    LevelMap m_levels;
-
     friend class ExtensionLevels; // for fast copying of starter attributes
 };
 
 
-class ParameterSet {
+class ParameterSet : public QHash<Parameter *, QVariant> {
 public:
-    ParameterSet() {}
-    ParameterSet(const ParameterSet &other) : m_values(other.m_values) {}
-    const ParameterSet &operator=(const ParameterSet &other) { m_values = other.m_values; return *this; }
-
     void load(GameData *gameData, const QVariantMap &dataMap);
 
-    bool isEmpty() const { return m_values.isEmpty(); }
-    QVariant value(Parameter *parameter) const { return m_values.value(parameter); }
-    QList<Parameter *> parameters() const { return m_values.keys(); }
-
-private:
-    QHash<Parameter *, QVariant> m_values;
+    QList<Parameter *> parameters() const { return keys(); }
 };
 
 
-class ComponentSet {
+class ComponentSet : public QHash<Item *, int> {
 public:
-    ComponentSet() {}
-    ComponentSet(const ComponentSet& other) : m_components(other.m_components) {}
-    const ComponentSet& operator=(const ComponentSet& other) { m_components = other.m_components; return *this; }
-
     void load(GameData *gameData, const QVariantMap &dataMap);
 
-    bool isEmpty() const { return m_components.isEmpty(); }
-    int amount(Item *item) const { return m_components.value(item); }
-    QList<Item *> components() const { return m_components.keys(); }
-
-private:
-    QHash<Item *, int> m_components;
+    int amount(Item *item) const { return value(item); }
+    QList<Item *> components() const { return keys(); }
 };
 
 
@@ -191,9 +153,6 @@ public:
     QString storedName() const { return gameData()->storedNameFromId(objectName()); }
     QString description() const { return gameData()->translate(m_descToken); }
 
-    int order() const { return m_order; }
-    void setOrder(int order) { m_order = order; }
-
     ObjectGroup *parentGroup() const { return m_parentGroup; }
     void setParentGroup(ObjectGroup *group) { m_parentGroup = group; }
 
@@ -202,7 +161,6 @@ public:
 private:
     QString m_descToken;
     ObjectGroup *m_parentGroup;
-    int m_order;
 };
 
 
@@ -232,6 +190,7 @@ private:
     mutable ExtensionSet m_transitiveReqs;
 };
 
+
 class Parameter : public GameObject {
     Q_OBJECT
 
@@ -250,8 +209,8 @@ public:
 private:
     QString m_unitToken;
     int m_precision;
-    bool m_lessIsBetter : 1;
-    bool m_isMeta : 1;
+    bool m_lessIsBetter;
+    bool m_isMeta;
 };
 
 
