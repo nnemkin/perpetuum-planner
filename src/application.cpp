@@ -33,6 +33,7 @@
 #include <QStringBuilder>
 #include <QDateTime>
 #include <QProgressDialog>
+#include <QDesktopServices>
 
 #include "mainwindow.h"
 #include "optionsdialog.h"
@@ -339,14 +340,7 @@ void Application::showOptions()
 
 void Application::showHelp()
 {
-    if (m_helpWindow.isNull()) {
-        //: menu_help
-        m_helpWindow = TextWindow::show(activeWindow(), tr("Help"), resourceString(":/help.html"), TextWindow::Medium, "HelpWindow");
-    }
-    else {
-        m_helpWindow.data()->activateWindow();
-        m_helpWindow.data()->raise();
-    }
+    QDesktopServices::openUrl(QUrl(VER_HELP_URL));
 }
 
 void Application::showAbout()

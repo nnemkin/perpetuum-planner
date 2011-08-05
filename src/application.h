@@ -84,7 +84,7 @@ private:
     bool m_settingsChangedPosted;
 
     QWeakPointer<OptionsDialog> m_optionsDialog;
-    QWeakPointer<TextWindow> m_aboutWindow, m_helpWindow;
+    QWeakPointer<TextWindow> m_aboutWindow;
 
     QString resourceString(const QString &fileName);
 };

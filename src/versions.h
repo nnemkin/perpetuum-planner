@@ -36,5 +36,6 @@
 
 #define VER_CHECK_URL "http://www.perpetuum-planner.com/releases/latest/version.txt"
 #define VER_DOWNLOAD_URL "http://www.perpetuum-planner.com/releases/latest/PerpetuumPlanner.zip"
+#define VER_HELP_URL "http://www.perpetuum-planner.com/"
 
 #endif // VERSIONS_H

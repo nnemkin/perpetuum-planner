@@ -111,7 +111,6 @@ FORMS += src/mainwindow.ui \
 
 OTHER_FILES += \
     res/winres.rc \
-    res/help.html \
     res/about.html \
     res/3rdparty.html \
     res/lgpl-2.1-standalone.html \
