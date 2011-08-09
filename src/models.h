@@ -33,11 +33,16 @@ class Parameter;
 class ParameterSet;
 
 
+#include <QSortFilterProxyModel>
+
 class SimpleTreeModel : public QAbstractItemModel {
     Q_OBJECT
 
 public:
-    SimpleTreeModel(QObject *parent) : QAbstractItemModel(parent), m_root(new Node(0)) {}
+    enum { SortKeyRole = Qt::UserRole + 100 };
+
+    SimpleTreeModel(QObject *parent) : QAbstractItemModel(parent), m_root(new Node(0)),
+        m_sortColumn(-1), m_rowSortOrder(Qt::AscendingOrder), m_sortRole(Qt::DisplayRole) {}
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return 1; }
@@ -47,106 +52,91 @@ public:
     template<typename T>
     inline T fromIndex(const QModelIndex &index) const;
 
+    void sort(int column, Qt::SortOrder order);
+
+    int sortColumn() { return m_sortColumn; }
+    int sortRole() { return m_sortRole; }
+    int rowSortOrder() { return m_rowSortOrder; }
+
+    QModelIndex objectIndex(QObject *object) const;
+
+    bool event(QEvent *event);
+
 protected:
     struct Node {
         Node *parent;
         QObject *object;
         QVector<Node *> children;
+        QVector<Node *> displayChildren;
         QVariantList data;
 
         Node(Node *aParent, QObject *aObject = 0) : parent(aParent), object(aObject) {}
         ~Node() { qDeleteAll(children); }
 
-        inline int row() { return parent->children.indexOf(this); }
+        inline int row() { return parent->displayChildren.indexOf(this); }
         inline Node *addChild(QObject *object) { Node *node = new Node(this, object); children << node; return node; }
     };
 
     Node *rootNode() const { return m_root; }
-    Node *createRootNode(QObject *object = 0) { delete m_root; return m_root = new Node(0, object); }
     inline Node *nodeFromIndex(const QModelIndex &index) const;
+    void beginResetModel();
+    void endResetModel();
 
+    void setRowSort(int column, int role, Qt::SortOrder order = Qt::AscendingOrder);
+    void invalidateSortFilter();
+    virtual bool filterAcceptRow(Node *node) { Q_UNUSED(node) return true; }
 
-    template<typename Pred>
-    class NodeObjectBinaryPredicate : public std::binary_function<Node *, Node *, typename Pred::result_type> {
-    public:
-        NodeObjectBinaryPredicate(Pred pred) : m_pred(pred) {}
-
-        inline typename Pred::result_type operator()(Node *n1, Node *n2) const {
-            return m_pred(static_cast<typename Pred::first_argument_type>(n1->object),
-                          static_cast<typename Pred::second_argument_type>(n2->object));
-        }
-    private:
-        Pred m_pred;
-    };
-
-    template<typename Less> inline NodeObjectBinaryPredicate<Less> sortAdapter(Less less);
+    Node *findNode(QObject *object, Node *parent) const;
 
 private:
     Node *m_root;
+    int m_sortRole, m_sortColumn;
+    Qt::SortOrder m_rowSortOrder;
+
+    void applySortFilter(Node *node);
 };
 
 
-class ItemGroupsModel : public QAbstractItemModel {
+class ItemGroupsModel : public SimpleTreeModel {
     Q_OBJECT
 
 public:
     ItemGroupsModel(ObjectGroup *rootGroup, QObject *parent);
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &child) const;
-
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const;
-
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    inline ObjectGroup *groupFromIndex(const QModelIndex &index) const {
-        return static_cast<ObjectGroup *>(index.internalPointer());
-    }
-
-    QModelIndex groupIndex(ObjectGroup *group) const;
-
 private:
-    ObjectGroup *m_rootGroup;
+    void fillNode(Node *node, ObjectGroup *group);
 };
 
 
-class ItemsListModel : public QAbstractListModel {
+class ItemsListModel : public SimpleTreeModel {
     Q_OBJECT
 
 public:
-    ItemsListModel(QObject *parent)
-        : QAbstractListModel(parent), m_group(0), m_hidePrototypes(false), m_logicalOrder(false) {}
+    ItemsListModel(QObject *parent);
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
     ObjectGroup *group() const { return m_group; }
-    void setGroup(ObjectGroup *group) { m_group = group; updateObjects(true); }
-
-    GameObject *objectFromIndex(const QModelIndex &index) const;
+    void setGroup(ObjectGroup *group);
 
     bool hidePrototypes() const { return m_hidePrototypes; }
     QString nameFilter() const { return m_nameFilter; }
 
-    QModelIndex objectIndex(GameObject *object) const;
-
-    bool event(QEvent *event);
-
 public slots:
-    void setHidePrototypes(bool hide) { m_hidePrototypes = hide; updateObjects(false); }
-    void setLogicalOrder(bool logical) { m_logicalOrder = logical; updateObjects(false); }
-    void setNameFilter(const QString& filter) { m_nameFilter = filter; updateObjects(false); }
+    void setHidePrototypes(bool hide) { m_hidePrototypes = hide; invalidateSortFilter(); }
+    void setLogicalOrder(bool logical) { setRowSort(logical ? -1 : 0, Qt::DisplayRole); invalidateSortFilter(); }
+    void setNameFilter(const QString& filter) { m_nameFilter = filter; invalidateSortFilter(); }
+
+protected:
+    bool filterAcceptRow(Node *node);
 
 private:
     ObjectGroup *m_group;
-    QList<GameObject *> m_gameObjects;
 
     bool m_hidePrototypes;
-    bool m_logicalOrder;
     QString m_nameFilter;
-
-    void updateObjects(bool reset);
 };
 
 
@@ -160,24 +150,32 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
-    const QList<Item *> &items() const{ return m_items; }
-    virtual void setItems(const QList<Item *> &items) = 0;
+    const QList<Item *> &items() const{ return m_displayItems; }
+    virtual void setItems(const QList<Item *> &items);
 
-    virtual bool canSetReference(const QModelIndex &index) { return index.column() > 0 && m_items.size() > 1; }
+    virtual bool canSetReference(const QModelIndex &index) { return index.column() > 0 && m_displayItems.size() > 1; }
     virtual void setReference(const QModelIndex &index);
 
-    virtual bool canSortRow(const QModelIndex &index) const { Q_UNUSED(index); return m_items.size() > 1; }
-    virtual void toggleRowSort(const QModelIndex &index) = 0;
+    virtual bool canSortRow(const QModelIndex &index) const { Q_UNUSED(index); return m_displayItems.size() > 1; }
+    virtual void toggleRowSort(const QModelIndex &index);
 
-    bool isEmpty() const { return m_items.isEmpty() || rootNode()->children.isEmpty(); }
+    bool isEmpty() const { return m_displayItems.isEmpty() || rootNode()->children.isEmpty(); }
 
 protected:
-    Qt::SortOrder m_sortOrder;
     QList<Item *> m_items;
-    QList<Item *> m_originalRowOrder;
     Item *m_reference;
 
+    Qt::SortOrder m_columnSortOrder;
+    QPersistentModelIndex m_columnSortBase;
+
+    inline Item *fromColumn(const QModelIndex &index) const;
+
+    void invalidateColumnSort();
+
     virtual QString columnName(int index) const { Q_UNUSED(index); return QString(); }
+
+private:
+    QList<Item *> m_displayItems;
 };
 
 
@@ -185,20 +183,15 @@ class ParametersModel : public ItemComparisonModel {
     Q_OBJECT
 
 public:
-    ParametersModel(QObject *parent) : ItemComparisonModel(parent), m_sortParameter(0) {}
+    ParametersModel(QObject *parent) : ItemComparisonModel(parent) { setRowSort(0, SortKeyRole); }
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
     void setItems(const QList<Item *> &items);
-
-    bool canSortRow(const QModelIndex &index) const { return m_items.size() > 1 && fromIndex<Parameter *>(index); }
-    void toggleRowSort(const QModelIndex &index);
+    bool canSortRow(const QModelIndex &index) const;
 
 protected:
     QString columnName(int index) const;
-
-private:
-    Parameter *m_sortParameter;
 };
 
 
@@ -206,26 +199,18 @@ class ComponentsModel : public ItemComparisonModel {
     Q_OBJECT
 
 public:
-    ComponentsModel(QObject *parent) : ItemComparisonModel(parent), m_sortComponent(0), m_smallComponentIcons(false) {}
-
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    ComponentsModel(QObject *parent) : ItemComparisonModel(parent), m_smallComponentIcons(false) {}
 
     void setItems(const QList<Item *> &items);
-
-    void sort(int column, Qt::SortOrder order);
-    void toggleRowSort(const QModelIndex &index);
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
     bool smallComponentIcons() const { return m_smallComponentIcons; }
     void setSmallComponentIcons(bool small);
 
 protected:
-    QString columnName(int index) const;
-
-private:
-    Item *m_sortComponent;
-    QVector<Node *> m_originalOrder;
-
     bool m_smallComponentIcons;
+
+    QString columnName(int index) const;
 };
 
 
@@ -233,18 +218,12 @@ class BonusesModel : public ParametersModel {
     Q_OBJECT
 
 public:
-    BonusesModel(QObject *parent)
-        : ParametersModel(parent) {}
+    BonusesModel(QObject *parent) : ParametersModel(parent) {}
 
     void setItems(const QList<Item *> &items);
 
-    void sort(int column, Qt::SortOrder order);
-
 protected:
     QString columnName(int index) const;
-
-private:
-    QVector<Node *> m_originalOrder;
 };
 
 
@@ -253,9 +232,6 @@ class RequirementsModel : public SimpleTreeModel {
 
 public:
     RequirementsModel(QObject *parent) : SimpleTreeModel(parent) {}
-    RequirementsModel(const ExtensionSet *requirements, QObject *parent=0): SimpleTreeModel(parent) {
-        setRequirements(requirements);
-    }
 
     void setRequirements(const ExtensionSet *requirements);
 
@@ -269,30 +245,28 @@ private:
 };
 
 
-class ComponentUseModel : public QAbstractTableModel {
+class ComponentUseModel : public SimpleTreeModel {
     Q_OBJECT
 
 public:
-    ComponentUseModel(QObject *parent) : QAbstractTableModel(parent), m_component(0) {}
+    ComponentUseModel(QObject *parent) : SimpleTreeModel(parent), m_component(0) {}
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    void sort(int column, Qt::SortOrder order);
-
     void setComponent(Item *component);
 
-    bool isEmpty() const { return m_usedIn.isEmpty(); }
+    bool isEmpty() const { return rootNode()->children.isEmpty(); }
 
 public slots:
-    void setHidePrototypes(bool hide) { m_hidePrototypes = hide; setComponent(m_component); }
+    void setHidePrototypes(bool hide) { m_hidePrototypes = hide; invalidateSortFilter(); }
+
+protected:
+    bool filterAcceptRow(Node *node);
 
 private:
     Item *m_component;
-    QList<Item *> m_usedIn;
-    QList<Item *> m_originalOrder;
     bool m_hidePrototypes;
 };
 

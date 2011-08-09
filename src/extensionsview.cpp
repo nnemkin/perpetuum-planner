@@ -36,48 +36,24 @@
 #include "messagebox.h"
 #include "agent.h"
 #include "util.h"
-#include "modeltest.h"
-
-
-// Predicates
-
-class ObjectNameLessThan : public std::binary_function<GameObject *, GameObject *, bool> {
-public:
-    inline bool operator()(GameObject *object1, GameObject *object2) const {
-        return object1->name() < object2->name();
-    }
-};
 
 
 // ExtensionsModel
 
 ExtensionsModel::ExtensionsModel(Agent *agent, QObject *parent) : SimpleTreeModel(parent), m_agent(agent)
 {
-    connect(agent, SIGNAL(extensionsChanged()), this, SLOT(agentExtensionsChanged()));
+    setRowSort(0, SortKeyRole);
 
-    Node *root = createRootNode();
+    beginResetModel();
     foreach (ObjectGroup *group, m_agent->gameData()->extensions()->groups()) {
-        Node *groupNode = root->addChild(group);
+        Node *groupNode = rootNode()->addChild(group);
 
-        foreach (GameObject *object, group->objects()) {
+        foreach (GameObject *object, group->objects())
             groupNode->addChild(object);
-            qStableSort(groupNode->children.begin(), groupNode->children.end(), sortAdapter(ObjectNameLessThan()));
-        }
     }
+    endResetModel();
 
-    Q_ASSERT_MODEL(this);
-}
-
-void ExtensionsModel::updateObjects()
-{
-    emit layoutAboutToBeChanged();
-    // sort each group alphabetically
-    foreach (Node *groupNode, rootNode()->children)
-        qStableSort(groupNode->children.begin(), groupNode->children.end(), sortAdapter(ObjectNameLessThan()));
-
-    emit layoutChanged();
-
-    Q_ASSERT_MODEL(this);
+    connect(agent, SIGNAL(extensionsChanged()), this, SLOT(agentExtensionsChanged()));
 }
 
 QVariant ExtensionsModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -112,7 +88,7 @@ void ExtensionsModel::agentExtensionsChanged()
 QVariant ExtensionsModel::data(const QModelIndex &index, int role) const
 {
     if (Extension *extension = fromIndex<Extension *>(index)) {
-        if (role == Qt::DisplayRole) {
+        if (role == Qt::DisplayRole || role == SortKeyRole) {
             int points;
             switch (index.column()) {
             case 0:
@@ -240,13 +216,6 @@ QPixmap ExtensionsModel::createAttributesMarker(Extension *extension) const
     return pm;
 }
 
-bool ExtensionsModel::event(QEvent *event)
-{
-    if (event->type() == QEvent::LanguageChange)
-        updateObjects();
-
-    return SimpleTreeModel::event(event);
-}
 
 // ExtensionsView
 

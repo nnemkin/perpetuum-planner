@@ -144,7 +144,7 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
     ObjectGroup *selectedGroup = gameData->findObject<ObjectGroup *>(settings.value(QLatin1String("ItemsView/SelectedGroup")).toString());
     if (selectedGroup) {
         m_itemsModel->setGroup(selectedGroup);
-        QModelIndex groupIndex = m_groupsModel->groupIndex(selectedGroup);
+        QModelIndex groupIndex = m_groupsModel->objectIndex(selectedGroup);
         if (groupIndex.isValid()) {
             treeGroups->selectionModel()->select(groupIndex, QItemSelectionModel::Select);
 
@@ -205,7 +205,7 @@ void ItemsView::finalize(QSettings &settings)
     settings.setValue(QLatin1String("ItemsView/SelectedItems"), itemIds);
     if (treeGroups->selectionModel()->hasSelection()) {
         QModelIndex groupIndex = treeGroups->selectionModel()->selectedIndexes().at(0);
-        ObjectGroup *group = m_groupsModel->groupFromIndex(groupIndex);
+        ObjectGroup *group = m_groupsModel->fromIndex<ObjectGroup *>(groupIndex);
         settings.setValue(QLatin1String("ItemsView/SelectedGroup"), group ? group->id() : QString());
     }
 }
@@ -272,7 +272,7 @@ void ItemsView::on_splitterItems_splitterMoved(int, int index)
 void ItemsView::groupSelectionChanged(const QItemSelection &selected)
 {
     if (!selected.isEmpty()) {
-        ObjectGroup *group = m_groupsModel->groupFromIndex(selected.indexes().at(0));
+        ObjectGroup *group = m_groupsModel->fromIndex<ObjectGroup *>(selected.indexes().at(0));
         m_itemsModel->setGroup(group);
 
         QModelIndex firstIndex = m_itemsModel->index(0, 0);
@@ -287,7 +287,7 @@ void ItemsView::itemSelectionChanged()
     QList<Item *> newItems;
 
     foreach (const QModelIndex &index, listItems->selectionModel()->selectedIndexes()) {
-        Item *item = static_cast<Item *>(m_itemsModel->objectFromIndex(index));
+        Item *item = m_itemsModel->fromIndex<Item *>(index);
         int pos = m_items.indexOf(item);
         if (pos != -1)
             oldItems.insert(pos, item);

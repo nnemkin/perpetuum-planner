@@ -32,7 +32,9 @@ ExtensionWindow::ExtensionWindow(Extension *extension, QWidget *parent)
     setupUi(this);
 
     if (extension->requirements()) {
-        treeRequirements->setModel(new RequirementsModel(extension->requirements(), this));
+        RequirementsModel *model = new RequirementsModel(this);
+        model->setRequirements(extension->requirements());
+        treeRequirements->setModel(model);
         treeRequirements->expandAll();
     }
     else {

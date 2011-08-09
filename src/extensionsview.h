@@ -54,15 +54,12 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
-    bool event(QEvent *event);
-
 private slots:
     void agentExtensionsChanged();
 
 private:
     Agent *m_agent;
 
-    void updateObjects();
     QPixmap createAttributesMarker(Extension *extension) const;
 };
 

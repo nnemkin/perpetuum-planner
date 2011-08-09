@@ -20,6 +20,7 @@
 #include <QDebug>
 #include <QFont>
 #include <QEvent>
+#include <QDateTime>
 
 #include "models.h"
 #include "gamedata.h"
@@ -27,6 +28,55 @@
 #include "modeltest.h"
 
 using namespace std;
+
+
+// IndexCompare
+
+class IndexCompare
+{
+public:
+    IndexCompare(int role, Qt::SortOrder order) : m_role(role), m_order(order) {}
+
+    inline bool operator()(const QModelIndex &left, const QModelIndex &right) const
+    {
+        return variantCompare(left.data(m_role), right.data(m_role)) ^ (m_order == Qt::DescendingOrder);
+    }
+
+private:
+    inline bool variantCompare(const QVariant &l, const QVariant &r) const
+    {
+        switch (l.userType()) {
+        case QVariant::Invalid:
+            return (r.type() != QVariant::Invalid);
+        case QVariant::Int:
+            return l.toInt() < r.toInt();
+        case QVariant::UInt:
+            return l.toUInt() < r.toUInt();
+        case QVariant::LongLong:
+            return l.toLongLong() < r.toLongLong();
+        case QVariant::ULongLong:
+            return l.toULongLong() < r.toULongLong();
+        case QMetaType::Float:
+            return l.toFloat() < r.toFloat();
+        case QVariant::Double:
+            return l.toDouble() < r.toDouble();
+        case QVariant::Char:
+            return l.toChar() < r.toChar();
+        case QVariant::Date:
+            return l.toDate() < r.toDate();
+        case QVariant::Time:
+            return l.toTime() < r.toTime();
+        case QVariant::DateTime:
+            return l.toDateTime() < r.toDateTime();
+        case QVariant::String:
+        default:
+            return l.toString().compare(r.toString(), Qt::CaseInsensitive) < 0;
+        }
+    }
+
+    int m_role;
+    Qt::SortOrder m_order;
+};
 
 
 // SimpleTreeModel
@@ -43,6 +93,28 @@ T SimpleTreeModel::fromIndex(const QModelIndex &index) const
     return node ? qobject_cast<T>(node->object) : 0;
 }
 
+QModelIndex SimpleTreeModel::objectIndex(QObject *object) const
+{
+    if (object)
+        if (Node *node = findNode(object, rootNode()))
+            return createIndex(node->row(), 0, node);
+    return QModelIndex();
+}
+
+SimpleTreeModel::Node *SimpleTreeModel::findNode(QObject *object, Node *parent) const
+{
+    Q_ASSERT(object);
+
+    foreach (Node *node, parent->displayChildren) {
+        if (node->object == object)
+            return node;
+        node = findNode(object, node);
+        if (node)
+            return node;
+    }
+    return 0;
+}
+
 int SimpleTreeModel::rowCount(const QModelIndex &parent) const
 {
     Node *node = 0;
@@ -50,14 +122,14 @@ int SimpleTreeModel::rowCount(const QModelIndex &parent) const
         node = m_root;
     else if (parent.column() == 0)
         node = nodeFromIndex(parent);
-    return node ? node->children.size() : 0;
+    return node ? node->displayChildren.size() : 0;
 }
 
 QModelIndex SimpleTreeModel::index(int row, int column, const QModelIndex &parent) const
 {
     Node *parentNode = parent.isValid() ? nodeFromIndex(parent) : m_root;
-    if (parentNode && row >= 0 && column >= 0 && row < parentNode->children.size() && column < columnCount(parent))
-        return createIndex(row, column, parentNode->children.at(row));
+    if (parentNode && row >= 0 && column >= 0 && row < parentNode->displayChildren.size() && column < columnCount(parent))
+        return createIndex(row, column, parentNode->displayChildren.at(row));
     return QModelIndex();
 }
 
@@ -69,189 +141,138 @@ QModelIndex SimpleTreeModel::parent(const QModelIndex &child) const
     return QModelIndex();
 }
 
-
-// Predicate adapters
-
-template<typename Pred>
-class OrderAdapter : public binary_function<typename Pred::first_argument_type, typename Pred::second_argument_type, bool> {
-public:
-    OrderAdapter(Pred pred, bool invert) : m_pred(pred), m_invert(invert) {}
-
-    inline bool operator()(typename Pred::first_argument_type a1, typename Pred::second_argument_type a2) {
-        return m_pred(a1, a2) ^ m_invert;
-    }
-
-private:
-    Pred m_pred;
-    bool m_invert;
-};
-
-template<typename Pred>
-inline OrderAdapter<Pred> orderAdapter(Pred pred, Qt::SortOrder order) {
-    return OrderAdapter<Pred>(pred, order == Qt::DescendingOrder);
+void SimpleTreeModel::beginResetModel()
+{
+    QAbstractItemModel::beginResetModel();
+    delete m_root;
+    m_root = new Node(0);
 }
 
-template<typename Less>
-SimpleTreeModel::NodeObjectBinaryPredicate<Less> SimpleTreeModel::sortAdapter(Less less) {
-    return NodeObjectBinaryPredicate<Less>(less);
+void SimpleTreeModel::endResetModel()
+{
+    applySortFilter(m_root);
+    Q_ASSERT_MODEL(this);
+    QAbstractItemModel::endResetModel();
 }
 
-
-// Predicates
-
-static bool variantLessThan(const QVariant &v1, const QVariant &v2) {
-    if (v1 == v2)
-        return 0;
-    if (!v1.isValid())
-        return true;
-    if (!v2.isValid())
-        return false;
-
-    bool ok = true;
-    float f1 = v1.toFloat(&ok);
-    if (ok) {
-        float f2 = v2.toFloat(&ok);
-        if (ok)
-            return f1 < f2;
+void SimpleTreeModel::sort(int column, Qt::SortOrder order)
+{
+    if (m_sortColumn != column || m_rowSortOrder != order) {
+        m_sortColumn = column;
+        m_rowSortOrder = order;
+        invalidateSortFilter();
     }
-    return v1.toString().compare(v2.toString(), Qt::CaseInsensitive) < 0;
 }
 
-class ObjectNameLessThan : public std::binary_function<GameObject *, GameObject *, bool> {
-public:
-    inline bool operator()(GameObject *object1, GameObject *object2) const {
-        return object1->name() < object2->name();
+void SimpleTreeModel::invalidateSortFilter()
+{
+    emit layoutAboutToBeChanged();
+
+    applySortFilter(m_root);
+
+    QModelIndexList oldIndexes = persistentIndexList();
+    QModelIndexList newIndexes;
+    newIndexes.reserve(oldIndexes.size());
+
+    int row = -1;
+    Node *prevNode = 0;
+    foreach (const QModelIndex &index, oldIndexes) {
+        Node *node = nodeFromIndex(index);
+        if (node != prevNode)
+            row = node->row();
+        if (row != -1)
+            newIndexes << createIndex(row, index.column(), node);
+        else
+            newIndexes << QModelIndex();
     }
-};
+    changePersistentIndexList(oldIndexes, newIndexes);
 
-class ComponentAmountLessThan : public binary_function<Item *, Item *, bool> {
-public:
-    ComponentAmountLessThan(const ComponentSet *components) : m_components(components) {}
+    emit layoutChanged();
+}
 
-    inline bool operator()(Item *component1, Item *component2) const {
-        return m_components->amount(component1) < m_components->amount(component2);
+void SimpleTreeModel::setRowSort(int column, int role, Qt::SortOrder order)
+{
+    m_sortColumn = column;
+    m_sortRole = role;
+    m_rowSortOrder = order;
+}
+
+void SimpleTreeModel::applySortFilter(Node *node)
+{
+    if (!node->children.isEmpty()) {
+        int numChildren = node->children.size();
+
+        QVector<QModelIndex> indexes;
+        indexes.reserve(numChildren);
+
+        for (int i = 0; i < numChildren; ++i) {
+            Node *child = node->children.at(i);
+
+            if (filterAcceptRow(child)) {
+                applySortFilter(child);
+                indexes << createIndex(i, m_sortColumn, child);
+            }
+        }
+
+        if (m_sortColumn != -1)
+            qStableSort(indexes.begin(), indexes.end(), IndexCompare(m_sortRole, m_rowSortOrder));
+
+        if (m_sortColumn == -1 && indexes.size() == numChildren) {
+            node->displayChildren = node->children;
+        }
+        else {
+            numChildren = indexes.size();
+            node->displayChildren.resize(numChildren);
+            for (int i = 0; i < numChildren; ++i)
+                node->displayChildren[i]  = nodeFromIndex(indexes.at(i));
+        }
     }
+}
 
-private:
-    const ComponentSet *m_components;
-};
+bool SimpleTreeModel::event(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange)
+        invalidateSortFilter();
 
-class ItemsParameterLessThan : public binary_function<Item *, Item *, bool> {
-public:
-    ItemsParameterLessThan(Parameter *parameter) : m_parameter(parameter) {}
-
-    inline bool operator()(Item *item1, Item *item2) const {
-        QVariant p1 = item1->parameters()->value(m_parameter);
-        QVariant p2 = item2->parameters()->value(m_parameter);
-        return variantLessThan(p1, p2);
-    }
-
-private:
-    Parameter *m_parameter;
-};
-
-class ItemParametersLessThan : public binary_function<Parameter *, Parameter *, bool> {
-public:
-    ItemParametersLessThan(Item *item) : m_item(item) {}
-
-    inline bool operator()(Parameter *p1, Parameter *p2) const {
-        return variantLessThan(m_item->parameters()->value(p1), m_item->parameters()->value(p2));
-    }
-
-private:
-    Item *m_item;
-};
-
-class ItemsComponentLessThan : public binary_function<Item *, Item *, bool> {
-public:
-    ItemsComponentLessThan(Item *component) : m_component(component) {}
-
-    inline bool operator()(Item *item1, Item *item2) const {
-        int a1 = (item1->components()) ? item1->components()->amount(m_component) : 0;
-        int a2 = (item2->components()) ? item2->components()->amount(m_component) : 0;
-        return a1 < a2;
-    }
-
-private:
-    Item *m_component;
-};
+    return QAbstractItemModel::event(event);
+}
 
 
 // ItemGroupsModel
 
-ItemGroupsModel::ItemGroupsModel(ObjectGroup *rootGroup, QObject *parent)
-    : QAbstractItemModel(parent), m_rootGroup(rootGroup)
+ItemGroupsModel::ItemGroupsModel(ObjectGroup *rootGroup, QObject *parent) : SimpleTreeModel(parent)
 {
-    Q_ASSERT_MODEL(this);
+    beginResetModel();
+    fillNode(rootNode(), rootGroup);
+    endResetModel();
 }
 
-QModelIndex ItemGroupsModel::index(int row, int column, const QModelIndex &parent) const
+void ItemGroupsModel::fillNode(Node *node, ObjectGroup *group)
 {
-    if (column == 0 && row >= 0) {
-        ObjectGroup *parentGroup = parent.isValid() ? groupFromIndex(parent) : m_rootGroup;
-        if (parentGroup && row < parentGroup->groups().size())
-            return createIndex(row, column, parentGroup->groups().at(row));
-    }
-    return QModelIndex();
-}
-
-QModelIndex ItemGroupsModel::parent(const QModelIndex &child) const
-{
-    ObjectGroup *group = groupFromIndex(child);
-    if (group && group->parentGroup() != m_rootGroup) {
-        group = group->parentGroup();
-        return createIndex(group->parentGroup()->groups().indexOf(group), 0, group);
-    }
-    return QModelIndex();
-}
-
-int ItemGroupsModel::columnCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent)
-    return 1;
-}
-
-int ItemGroupsModel::rowCount(const QModelIndex &parent) const
-{
-    ObjectGroup *group = groupFromIndex(parent);
-    if (group || !parent.isValid())
-        return (group ? group : m_rootGroup)->groups().size();
-    return 0;
+    foreach (ObjectGroup *childGroup, group->groups())
+        fillNode(node->addChild(childGroup), childGroup);
 }
 
 QVariant ItemGroupsModel::data(const QModelIndex &index, int role) const
 {
-    ObjectGroup *group = groupFromIndex(index);
-    if (group && role == Qt::DisplayRole)
-        return QString("%1 (%2)").arg(group->name()).arg(group->allObjects().size());
+    if (ObjectGroup *group = fromIndex<ObjectGroup *>(index))
+        if (role == Qt::DisplayRole)
+            return QString("%1 (%2)").arg(group->name()).arg(group->allObjects().size());
     return QVariant();
-}
-
-QModelIndex ItemGroupsModel::groupIndex(ObjectGroup *group) const
-{
-    if (group->parentGroup()) {
-        int row = group->parentGroup()->groups().indexOf(group);
-        if (row != -1)
-            return createIndex(row, 0, group);
-    }
-    return QModelIndex();
 }
 
 
 // ItemsListModel
 
-int ItemsListModel::rowCount(const QModelIndex &parent) const
+ItemsListModel::ItemsListModel(QObject *parent) : SimpleTreeModel(parent), m_group(0), m_hidePrototypes(false)
 {
-    if (!parent.isValid())
-        return m_gameObjects.size();
-    return 0;
+    setRowSort(0, Qt::DisplayRole);
 }
 
 QVariant ItemsListModel::data(const QModelIndex &index, int role) const
 {
-    if (role == Qt::DisplayRole) {
-        GameObject *object = objectFromIndex(index);
-        if (object) {
+    if (GameObject *object = fromIndex<GameObject *>(index)) {
+        if (role == Qt::DisplayRole) {
             int prodLevel = static_cast<Item *>(object)->parameter("Production Level").toInt();
             if (prodLevel)
                 return QString("%1 [%2]").arg(object->name()).arg(prodLevel);
@@ -261,68 +282,24 @@ QVariant ItemsListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-GameObject *ItemsListModel::objectFromIndex(const QModelIndex &index) const
+bool ItemsListModel::filterAcceptRow(Node *node)
 {
-    if (index.column() == 0 && index.row() >= 0 && index.row() < m_gameObjects.size())
-        return m_gameObjects.at(index.row());
-    return 0;
+    GameObject *object = static_cast<GameObject *>(node->object);
+    if (!object->name().contains(m_nameFilter, Qt::CaseInsensitive))
+        return false;
+    if (m_hidePrototypes && object->objectName().endsWith(QLatin1String("_pr")))
+        return false;
+    return true;
 }
 
-void ItemsListModel::updateObjects(bool reset)
+void ItemsListModel::setGroup(ObjectGroup *group)
 {
-    QList<GameObject *> newGameObjects;
-    if (m_group) {
-        if (!m_hidePrototypes && m_nameFilter.isEmpty()) {
-            newGameObjects = m_group->allObjects();
-        }
-        else {
-            foreach (GameObject *object, m_group->allObjects()) {
-                if (!object->name().contains(m_nameFilter, Qt::CaseInsensitive))
-                    continue;
-                if (m_hidePrototypes && object->objectName().endsWith(QLatin1String("_pr")))
-                    continue;
-                newGameObjects << object;
-            }
-        }
-        if (!m_logicalOrder)
-            qStableSort(newGameObjects.begin(), newGameObjects.end(), ObjectNameLessThan());
-    }
-
-    if (reset) {
-        beginResetModel();
-        m_gameObjects = newGameObjects;
-        endResetModel();
-    }
-    else {
-        emit layoutAboutToBeChanged();
-
-        QModelIndexList oldIndexes = persistentIndexList();
-        QModelIndexList newIndexes;
-        newIndexes.reserve(oldIndexes.size());
-        foreach (const QModelIndex &index, oldIndexes) {
-            int newRow = newGameObjects.indexOf(objectFromIndex(index));
-            newIndexes << ((newRow == -1) ? QModelIndex() : createIndex(newRow, 0));
-        }
-        changePersistentIndexList(oldIndexes, newIndexes);
-
-        m_gameObjects = newGameObjects;
-        emit layoutChanged();
-    }
-
-    Q_ASSERT_MODEL(this);
-}
-
-QModelIndex ItemsListModel::objectIndex(GameObject *object) const
-{
-    return index(m_gameObjects.indexOf(object), 0);
-}
-
-bool ItemsListModel::event(QEvent *event)
-{
-    if (event->type() == QEvent::LanguageChange)
-        updateObjects(false);
-
-    return QAbstractListModel::event(event);
+    beginResetModel();
+    m_group = group;
+    if (group)
+        foreach (GameObject *object, group->allObjects())
+            rootNode()->addChild(object);
+    endResetModel();
 }
 
 
@@ -334,10 +311,10 @@ QVariant ItemComparisonModel::headerData(int section, Qt::Orientation orientatio
         if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
             if (section == 0)
                 return columnName(0);
-            if (section == 1 && m_items.size() == 1)
+            if (section == 1 && m_displayItems.size() == 1)
                 return columnName(1);
-            if (section > 0 && section <= m_items.size())
-                return m_items.at(section - 1)->name();
+            if (section > 0 && section <= m_displayItems.size())
+                return m_displayItems.at(section - 1)->name();
         }
         else if (role == Qt::TextAlignmentRole) {
             return (int) (Qt::AlignLeft | Qt::AlignVCenter);
@@ -349,7 +326,7 @@ QVariant ItemComparisonModel::headerData(int section, Qt::Orientation orientatio
 int ItemComparisonModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return 2 + m_items.size();
+    return 2 + m_displayItems.size();
 }
 
 Qt::ItemFlags ItemComparisonModel::flags(const QModelIndex &index) const
@@ -359,16 +336,72 @@ Qt::ItemFlags ItemComparisonModel::flags(const QModelIndex &index) const
 
 void ItemComparisonModel::setReference(const QModelIndex &idx)
 {
-    if (idx.column() > 0 && idx.column() <= m_items.size())
-        m_reference = m_items.at(idx.column() - 1);
+    if (idx.column() > 0 && idx.column() <= m_displayItems.size())
+        m_reference = m_displayItems.at(idx.column() - 1);
     else if (!idx.isValid())
         m_reference = 0;
 
     emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1));
 }
 
+void ItemComparisonModel::setItems(const QList<Item *> &items)
+{
+    m_items = m_displayItems = items;
+}
+
+Item *ItemComparisonModel::fromColumn(const QModelIndex &index) const
+{
+    if (index.column() > 0 && index.column() <= m_displayItems.size())
+        return m_displayItems.at(index.column() - 1);
+    return 0;
+}
+
+void ItemComparisonModel::invalidateColumnSort()
+{
+    emit layoutAboutToBeChanged();
+    m_displayItems = m_items;
+    if (m_columnSortBase.isValid()) {
+        int numItems = m_items.size();
+
+        QModelIndexList indexes;
+        for (int i = 0; i < numItems; ++i)
+            indexes << m_columnSortBase.sibling(m_columnSortBase.row(), i + 1);
+
+        // NB: displayItems are used for data()
+        qStableSort(indexes.begin(), indexes.end(), IndexCompare(sortRole(), m_columnSortOrder));
+
+        m_displayItems.clear();
+        m_displayItems.reserve(numItems);
+        for (int i = 0; i < numItems; ++i)
+            m_displayItems << m_items.at(indexes.at(i).column() - 1);
+    }
+    emit layoutChanged();
+}
+
+void ItemComparisonModel::toggleRowSort(const QModelIndex &index)
+{
+    if (canSortRow(index)) {
+        if (m_columnSortBase == index) {
+            if (m_columnSortOrder == Qt::AscendingOrder)
+                m_columnSortOrder = Qt::DescendingOrder;
+            else
+                m_columnSortBase = QPersistentModelIndex();
+        }
+        else {
+            m_columnSortBase = index;
+            m_columnSortOrder = Qt::AscendingOrder;
+        }
+        invalidateColumnSort();
+    }
+}
+
 
 // ParametersModel
+
+bool ParametersModel::canSortRow(const QModelIndex &index) const
+{
+    return ItemComparisonModel::canSortRow(index) && fromIndex<Parameter *>(index);
+}
 
 QString ParametersModel::columnName(int index) const
 {
@@ -383,10 +416,8 @@ QString ParametersModel::columnName(int index) const
 void ParametersModel::setItems(const QList<Item *> &items)
 {
     beginResetModel();
-    m_items = m_originalRowOrder = items;
-    m_sortParameter = 0;
+    ItemComparisonModel::setItems(items);
 
-    Node *root = createRootNode();
     if (!m_items.isEmpty()) {
         GameData *gameData = items.at(0)->gameData();
         ObjectGroup *parameters = gameData->parameters();
@@ -402,7 +433,7 @@ void ParametersModel::setItems(const QList<Item *> &items)
                     QVariant value = item->parameters()->value(parameter);
                     if (value.isValid() && !(item->bonusExtension() && gameData->bonuses()->objects().contains(parameter))) {
                         if (!groupNode)
-                            groupNode = root->addChild(group);
+                            groupNode = rootNode()->addChild(group);
 
                         if (!parameterNode) {
                             parameterNode = groupNode->addChild(parameter);
@@ -429,8 +460,6 @@ void ParametersModel::setItems(const QList<Item *> &items)
         }
     }
     endResetModel();
-
-    Q_ASSERT_MODEL(this);
 }
 
 QVariant ParametersModel::data(const QModelIndex &index, int role) const
@@ -439,14 +468,14 @@ QVariant ParametersModel::data(const QModelIndex &index, int role) const
 
     if (index.column() == 0) {
         if (Parameter *parameter = fromIndex<Parameter *>(index)) {
-            if (role == Qt::DisplayRole) {
+            if (role == Qt::DisplayRole || role == SortKeyRole) {
                 //if (m_items.size() == 1 || parameter->unit().isEmpty())
                     return parameter->name();
                 //return QString("%1 (%2)").arg(parameter->name(), parameter->unit());
             }
             else if (role == SortableRowDelegate::SortOrderRole) {
-                if (parameter == m_sortParameter)
-                    return m_sortOrder;
+                if (index == m_columnSortBase)
+                    return m_columnSortOrder;
             }
         }
         else if (ObjectGroup *group = fromIndex<ObjectGroup *>(index)) {
@@ -460,16 +489,18 @@ QVariant ParametersModel::data(const QModelIndex &index, int role) const
             }
         }
     }
-    else if (index.column() > 0 && index.column() <= m_items.size()) {
-        if (role == Qt::DisplayRole || role == Qt::ForegroundRole) {
+    else if (Item *item = fromColumn(index)) {
+        if (role == Qt::DisplayRole || role == SortKeyRole || role == Qt::ForegroundRole) {
             if (Parameter *parameter = fromIndex<Parameter *>(index)) {
-                Item *item = m_items.at(index.column() - 1);
                 QVariant value = item->parameters()->value(parameter);
                 if (value.isValid()) {
                     if (role == Qt::DisplayRole) {
                         //if (m_items.size() == 1)
                             return parameter->format(value);
                         //return value.toString();
+                    }
+                    else if (role == SortKeyRole) {
+                        return value;
                     }
                     else {
                         const QVariantList &data = nodeFromIndex(index)->data;
@@ -485,29 +516,6 @@ QVariant ParametersModel::data(const QModelIndex &index, int role) const
         }
     }
     return QVariant();
-}
-
-void ParametersModel::toggleRowSort(const QModelIndex &index)
-{
-    if (m_items.size() > 1) {
-        if (Parameter *parameter = fromIndex<Parameter *>(index)) {
-            Qt::SortOrder order = Qt::AscendingOrder;
-            if (parameter == m_sortParameter) {
-                if (m_sortOrder == Qt::DescendingOrder)
-                    parameter = 0;
-                else order = Qt::DescendingOrder;
-            }
-
-            emit layoutAboutToBeChanged();
-            m_sortParameter = parameter;
-            m_sortOrder = order;
-            if (parameter)
-                qStableSort(m_items.begin(), m_items.end(), orderAdapter(ItemsParameterLessThan(parameter), order));
-            else
-                m_items = m_originalRowOrder;
-            emit layoutChanged();
-        }
-    }
 }
 
 
@@ -526,8 +534,7 @@ QString BonusesModel::columnName(int index) const
 void BonusesModel::setItems(const QList<Item *> &items)
 {
     beginResetModel();
-    m_items = m_originalRowOrder = items;
-    Node *root = createRootNode();
+    ItemComparisonModel::setItems(items);
     if (!m_items.isEmpty()) {
         GameData *gameData = m_items.at(0)->gameData();
 
@@ -536,41 +543,13 @@ void BonusesModel::setItems(const QList<Item *> &items)
 
             foreach (Item *item, items) {
                 if (item->bonusExtension() && item->parameters()->value(parameter).isValid()) {
-                    root->addChild(parameter);
+                    rootNode()->addChild(parameter);
                     break;
                 }
             }
         }
     }
-    m_originalOrder = rootNode()->children;
     endResetModel();
-
-    Q_ASSERT_MODEL(this);
-}
-
-void BonusesModel::sort(int column, Qt::SortOrder order)
-{
-    if (column == -1) {
-        emit layoutAboutToBeChanged();
-        rootNode()->children = m_originalOrder;
-        emit layoutChanged();
-    }
-    if (column == 0) {
-        emit layoutAboutToBeChanged();
-        qStableSort(rootNode()->children.begin(), rootNode()->children.end(), orderAdapter(sortAdapter(ObjectNameLessThan()), order));
-        emit layoutChanged();
-    }
-    else if (column > 0 && column <= m_items.size()) {
-        Item *item = m_items.at(column - 1);
-        if (item->bonusExtension()) {
-            emit layoutAboutToBeChanged();
-            qStableSort(rootNode()->children.begin(), rootNode()->children.end(),
-                        orderAdapter(sortAdapter(ItemParametersLessThan(item)), order));
-            emit layoutChanged();
-        }
-    }
-
-    Q_ASSERT_MODEL(this);
 }
 
 
@@ -589,10 +568,8 @@ QString ComponentsModel::columnName(int index) const
 void ComponentsModel::setItems(const QList<Item *> &items)
 {
     beginResetModel();
-    m_items = m_originalRowOrder = items;
-    m_sortComponent = 0;
+    ItemComparisonModel::setItems(items);
 
-    Node *root = createRootNode();
     if (!items.isEmpty()) {
         QList<GameObject *> commonComponents = items.at(0)->gameData()->components()->allObjects();
 
@@ -600,7 +577,7 @@ void ComponentsModel::setItems(const QList<Item *> &items)
             foreach (Item *item, items) {
                 if (item->components()) {
                     if (item->components()->amount(static_cast<Item *>(component)) > 0) {
-                        root->addChild(component);
+                        rootNode()->addChild(component);
                         break;
                     }
                 }
@@ -611,16 +588,13 @@ void ComponentsModel::setItems(const QList<Item *> &items)
                 foreach (Item *component, item->components()->components()) {
                     if (!commonComponents.contains(component)) {
                         commonComponents << component;
-                        root->addChild(component);
+                        rootNode()->addChild(component);
                     }
                 }
             }
         }
     }
-    m_originalOrder = rootNode()->children;
     endResetModel();
-
-    Q_ASSERT_MODEL(this);
 }
 
 QVariant ComponentsModel::data(const QModelIndex &index, int role) const
@@ -641,67 +615,19 @@ QVariant ComponentsModel::data(const QModelIndex &index, int role) const
                     return QSize(0, 32);
             }
             else if (role == SortableRowDelegate::SortOrderRole) {
-                if (component == m_sortComponent)
-                    return m_sortOrder;
+                if (m_columnSortBase == index)
+                    return m_columnSortOrder;
             }
         }
-        else if (index.column() > 0 && index.column() <= m_items.size()) {
+        else if (Item *item = fromColumn(index)) {
             if (role == Qt::DisplayRole) {
-                const ComponentSet *components = m_items.at(index.column() - 1)->components();
-                int amount = components ? components->amount(component) : 0;
+                int amount = item->components() ? item->components()->amount(component) : 0;
                 if (amount)
                     return amount;
             }
         }
     }
     return QVariant();
-}
-
-void ComponentsModel::sort(int column, Qt::SortOrder order)
-{
-    if (column == -1) {
-        emit layoutAboutToBeChanged();
-        rootNode()->children = m_originalOrder;
-        emit layoutChanged();
-    }
-    if (column == 0) {
-        emit layoutAboutToBeChanged();
-        qStableSort(rootNode()->children.begin(), rootNode()->children.end(), orderAdapter(sortAdapter(ObjectNameLessThan()), order));
-        emit layoutChanged();
-    }
-    else if (column > 0 && column <= m_items.size()) {
-        Item *item = m_items.at(column - 1);
-        if (item->components()) {
-            emit layoutAboutToBeChanged();
-            qStableSort(rootNode()->children.begin(), rootNode()->children.end(),
-                        orderAdapter(sortAdapter(ComponentAmountLessThan(item->components())), order));
-            emit layoutChanged();
-        }
-    }
-}
-
-void ComponentsModel::toggleRowSort(const QModelIndex &index)
-{
-    if (m_items.size() > 1) {
-        if (Item *component = fromIndex<Item *>(index)) {
-            Qt::SortOrder order = Qt::AscendingOrder;
-            if (component == m_sortComponent) {
-                if (m_sortOrder == Qt::DescendingOrder)
-                    component = 0;
-                else
-                    order = Qt::DescendingOrder;
-            }
-
-            emit layoutAboutToBeChanged();
-            m_sortComponent = component;
-            m_sortOrder = order;
-            if (component)
-                qStableSort(m_items.begin(), m_items.end(), orderAdapter(ItemsComponentLessThan(m_sortComponent), order));
-            else
-                m_items = m_originalRowOrder;
-            emit layoutChanged();
-        }
-    }
 }
 
 void ComponentsModel::setSmallComponentIcons(bool small)
@@ -718,10 +644,8 @@ void RequirementsModel::setRequirements(const ExtensionSet *requirements)
 {
     beginResetModel();
     m_requirements = requirements;
-    fillNode(createRootNode(), requirements);
+    fillNode(rootNode(), requirements);
     endResetModel();
-
-    Q_ASSERT_MODEL(this);
 }
 
 void RequirementsModel::fillNode(Node *parentNode, const ExtensionSet *requirements)
@@ -759,26 +683,20 @@ void ComponentUseModel::setComponent(Item *component)
 {
     beginResetModel();
     m_component = component;
-    m_usedIn.clear();
-
     if (component) {
         foreach (GameObject *object, component->gameData()->items()->allObjects()) {
             Item *item = static_cast<Item *>(object);
-            if (item->components()
-                    && item->components()->amount(m_component)
-                    && (!m_hidePrototypes || !item->objectName().endsWith(QLatin1String("_pr"))))
-                m_usedIn << item;
+            if (item->components() && item->components()->amount(m_component))
+                rootNode()->addChild(item);
         }
     }
-    m_originalOrder = m_usedIn;
     endResetModel();
-
-    Q_ASSERT_MODEL(this);
 }
 
-int ComponentUseModel::rowCount(const QModelIndex &parent) const
+bool ComponentUseModel::filterAcceptRow(Node *node)
 {
-    return parent.isValid() ? 0 : m_usedIn.size();
+    Item *item = static_cast<Item *>(node->object);
+    return !m_hidePrototypes || !item->objectName().endsWith(QLatin1String("_pr"));
 }
 
 int ComponentUseModel::columnCount(const QModelIndex &parent) const
@@ -808,8 +726,7 @@ QVariant ComponentUseModel::headerData(int section, Qt::Orientation orientation,
 
 QVariant ComponentUseModel::data(const QModelIndex &index, int role) const
 {
-    if (index.isValid() && index.row() < m_usedIn.size()) {
-        Item *item = m_usedIn.at(index.row());
+    if (Item *item = fromIndex<Item *>(index)) {
         if (role == Qt::DisplayRole) {
             switch (index.column()) {
             case 0:
@@ -820,21 +737,4 @@ QVariant ComponentUseModel::data(const QModelIndex &index, int role) const
         }
     }
     return QVariant();
-}
-
-void ComponentUseModel::sort(int column, Qt::SortOrder order)
-{
-    emit layoutAboutToBeChanged();
-    switch (column) {
-    case -1:
-        m_usedIn = m_originalOrder;
-        break;
-    case 0:
-        qStableSort(m_usedIn.begin(), m_usedIn.end(), orderAdapter(ObjectNameLessThan(), order));
-        break;
-    case 1:
-        qStableSort(m_usedIn.begin(), m_usedIn.end(), orderAdapter(ItemsComponentLessThan(m_component), order));
-        break;
-    }
-    emit layoutChanged();
 }
