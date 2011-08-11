@@ -110,9 +110,8 @@ int Application::exec()
 
 void Application::checkForUpdates(QSettings &settings)
 {
-    if (!settings.contains("CheckForUpdates")) {
+    if (!settings.contains("CheckForUpdates"))
         settings.setValue("CheckForUpdates", true);
-    }
 
     if (settings.value("CheckForUpdates").toBool()) {
         QDateTime lastCheckTime = settings.value("LastUpdateCheck").toDateTime();
@@ -121,13 +120,11 @@ void Application::checkForUpdates(QSettings &settings)
             QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 
             QUrl verCheckUrl;
-            if (settings.value("Debug").toBool()) {
+            if (settings.value("Debug").toBool())
                 verCheckUrl = settings.value("DebugVersionCheckUrl").toUrl();
-            }
-            else {
+            else
                 verCheckUrl.setUrl(QLatin1String(VER_CHECK_URL));
-            }
-            verCheckUrl.setQueryItems(QList<QPair<QString, QString> >() << QPair<QString, QString>("v", VER_PRODUCTVERSION_STR));
+
             QNetworkRequest request(verCheckUrl);
             request.setRawHeader("User-Agent", VER_PRODUCTNAME_STR "/" VER_PRODUCTVERSION_STR);
 
