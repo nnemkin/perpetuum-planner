@@ -1,0 +1,48 @@
+/* Perpetuum Planner homepage */
+
+html { background-color: #000; color: #ccc; font: 14px 'Franklin Gothic Medium','Trebuchet MS',sans-serif; margin: 0; padding: 0; }
+body { margin: 30px auto; padding: 8px 0 6px 8px; width: 700px; border: 1px solid #444; background-color: #082024; border-radius: 2px; }
+table { border-collapse: collapse; }
+
+h1 { font: bold 20pt 'Myriad Pro Cond','Qlassik Bold','Arial Narrow' sans-serif; margin: 0 0 0.5em 0; color: #fff; }
+h2 { font: bold 14pt 'Franklin Gothic Medium','Trebuchet MS',sans-serif; margin: 0.5em 0; color: #fff; }
+h3 { font: bold 13pt 'Franklin Gothic Medium','Trebuchet MS',sans-serif; margin: 0.5em 0; color: #fff; }
+
+strong { color: #fff; }
+a { color: #ffd000; text-decoration: none; }
+a:hover { background-color: #484e19; }
+p { margin: 0 0 0.5em 1em; }
+
+pre, code { font-family: monospace; font-size: 90%; }
+pre p { margin-left: 3em; }
+
+img { border-style: none; }
+
+.languages { float: right; margin: 8px; }
+.languages a { background: transparent url(flags.png) no-repeat left 5px; padding-left: 20px; }
+.languages a.ru { background-position: left -11px; }
+
+.sidebar { float: right; text-align: center; border-left: 1px solid #555; margin-left: 8px; padding: 0 8px; }
+.sidebar h3 { margin-top: 0; }
+.screenshots { margin-bottom: 1em; }
+.screenshots img { display: block; margin: 1em auto 0.2em; }
+.screenshots a { font-size: 12px; }
+
+.changelog { width: 98%; }
+.changelog td, .changelog th { padding: 4px 8px; vertical-align: top; }
+.changelog .col-version { width: 5%; white-space: nowrap; }
+
+.backlink { margin-top: 1em; }
+
+.footer { margin: 20px 8px 0 0; font-size: 10px; color: #999; text-align: right; }
+
+.button {
+	display: inline-block;
+	outline: none;
+	text-decoration: none;
+	padding: .5em 1.5em .55em;
+	/* text-shadow: 0 1px 1px rgba(0,0,0,.3); */
+	color: #ffd000;
+	background: transparent url(button.png) no-repeat center;
+}
+.button:hover { background: transparent url(button-hover.png) no-repeat center; }

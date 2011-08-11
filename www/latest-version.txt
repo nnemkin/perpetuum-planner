@@ -1,0 +1,9 @@
+1.2.1
+
+<p><b>What's new:</b> multi-language support and auto-updater. (No fit calculator yet, sorry.)<p>
+
+<p>Download it <a href="http://www.perpetuum-planner.com/releases/latest/PerpetuumPlanner.zip">directly</a> or visit the <a href="http://www.perpetuum-planner.com/">home page</a>.</p>
+
+<p>To upgrade, download, unzip and replace the <code>PerpetuumPlanner.exe</code> with the new version.</p>
+
+<p>See <a href="http://www.perpetuum-planner.com/changelog.html">changelog</a> for a list of changes and known bugs.</p>
