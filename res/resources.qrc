@@ -64,5 +64,6 @@
         <file>flag-hu.png</file>
         <file>flag-it.png</file>
         <file>flag-ru.png</file>
+        <file>defaultSettings.ini</file>
     </qresource>
 </RCC>

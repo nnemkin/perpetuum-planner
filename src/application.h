@@ -79,7 +79,10 @@ private:
 
     void handleArguments(const QStringList &args);
     void checkForUpdates(QSettings &settings);
+
     void applySettings();
+    void ensureDefaultSettings(QSettings &settings);
+    void setFileAssociations(QSettings &settings);
 
     bool m_settingsChangedPosted;
 

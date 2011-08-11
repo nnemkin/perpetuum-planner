@@ -118,7 +118,8 @@ OTHER_FILES += \
     res/stylesheet.css \
     res/stylesheet-big.css \
     res/doc-stylesheet.css \
-    res/doc-stylesheet-big.css
+    res/doc-stylesheet-big.css \
+    res/defaultSettings.ini
 
 RESOURCES += \
     res/resources.qrc \

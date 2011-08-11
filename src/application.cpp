@@ -110,9 +110,6 @@ int Application::exec()
 
 void Application::checkForUpdates(QSettings &settings)
 {
-    if (!settings.contains("CheckForUpdates"))
-        settings.setValue("CheckForUpdates", true);
-
     if (settings.value("CheckForUpdates").toBool()) {
         QDateTime lastCheckTime = settings.value("LastUpdateCheck").toDateTime();
 
@@ -228,20 +225,27 @@ QString Application::resourceString(const QString &fileName)
     return data;
 }
 
+void Application::ensureDefaultSettings(QSettings &settings)
+{
+    // Make sure some principal settigns have sane default value.
+
+    QSettings defaultSettings(":/defaultSettings.ini", QSettings::IniFormat);
+    foreach (const QString &key, defaultSettings.allKeys())
+        if (!settings.contains(key))
+            settings.setValue(key, defaultSettings.value(key));
+}
+
 void Application::applySettings()
 {
     QSettings settings;
+
+    ensureDefaultSettings(settings);
 
     bool bigFonts = settings.value("BigFonts").toBool();
     bool updateStyleSheet = styleSheet().isEmpty() || m_oldBigFonts != bigFonts;
     m_oldBigFonts = bigFonts;
 
     QString langCode = settings.value(QLatin1String("Language")).toString();
-    if (langCode.isEmpty()) {
-        langCode = QLatin1String("en");
-        settings.setValue(QLatin1String("Language"), langCode);
-    }
-
     if (m_currentLanguage != langCode) {
         m_currentLanguage = langCode;
 
@@ -292,34 +296,38 @@ void Application::applySettings()
     QNetworkProxy::setApplicationProxy(proxy);
 
     if (!m_updateMode) {
-        QSettings hkcr(m_winVista ? "HKEY_CURRENT_USER\\Software\\Classes" : "HKEY_CLASSES_ROOT", QSettings::NativeFormat);
-        if (settings.value("AssociateFiles").toBool()) {
-            if (hkcr.value(VER_PROGID "/.") != QLatin1String(VER_PRODUCTNAME_STR " " VER_PRODUCTVERSION_STR)) {
-                hkcr.setValue(VER_PROGID "/.", VER_PRODUCTNAME_STR " " VER_PRODUCTVERSION_STR);
-                hkcr.setValue(VER_PROGID "/FriendlyTypeName/.", tr("Perpetuum Agent"));
-
-                QString binaryPath = QDir::toNativeSeparators(QApplication::applicationFilePath());
-                hkcr.setValue(VER_PROGID "/DefaultIcon/.", binaryPath + ",0");
-                hkcr.setValue(VER_PROGID "/shell/open/command/.", QVariant(QLatin1Literal("\"") % binaryPath % QLatin1Literal("\" \"%1\"")));
-            }
-            if (!hkcr.value(".agent/.").isValid()) {
-                hkcr.setValue(".agent/.", VER_PROGID);
-
-                if (hkcr.status() == QSettings::NoError)
-                    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0);
-            }
-        }
-        else {
-            if (hkcr.value(".agent/.") == QLatin1String(VER_PROGID)) {
-                hkcr.remove(".agent/.");
-                if (hkcr.status() == QSettings::NoError) {
-                    hkcr.remove(VER_PROGID);
-                    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0);
-                }
-            }
-        }
-
+        setFileAssociations(settings);
         checkForUpdates(settings);
+    }
+}
+
+void Application::setFileAssociations(QSettings &settings)
+{
+    QSettings hkcr(m_winVista ? "HKEY_CURRENT_USER\\Software\\Classes" : "HKEY_CLASSES_ROOT", QSettings::NativeFormat);
+    if (settings.value("AssociateFiles").toBool()) {
+        if (hkcr.value(VER_PROGID "/.") != QLatin1String(VER_PRODUCTNAME_STR " " VER_PRODUCTVERSION_STR)) {
+            hkcr.setValue(VER_PROGID "/.", VER_PRODUCTNAME_STR " " VER_PRODUCTVERSION_STR);
+            hkcr.setValue(VER_PROGID "/FriendlyTypeName/.", tr("Perpetuum Agent"));
+
+            QString binaryPath = QDir::toNativeSeparators(QApplication::applicationFilePath());
+            hkcr.setValue(VER_PROGID "/DefaultIcon/.", binaryPath + ",0");
+            hkcr.setValue(VER_PROGID "/shell/open/command/.", QVariant(QLatin1Literal("\"") % binaryPath % QLatin1Literal("\" \"%1\"")));
+        }
+        if (!hkcr.value(".agent/.").isValid()) {
+            hkcr.setValue(".agent/.", VER_PROGID);
+
+            if (hkcr.status() == QSettings::NoError)
+                SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0);
+        }
+    }
+    else {
+        if (hkcr.value(".agent/.") == QLatin1String(VER_PROGID)) {
+            hkcr.remove(".agent/.");
+            if (hkcr.status() == QSettings::NoError) {
+                hkcr.remove(VER_PROGID);
+                SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0);
+            }
+        }
     }
 }
 
