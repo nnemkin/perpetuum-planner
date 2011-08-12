@@ -115,6 +115,10 @@ void QHeaderViewPrivate::flipSortIndicator(int section)
     Q_Q(QHeaderView);
     SortSequence sortSequence = static_cast<SortSequence>(q->parentWidget()->property("sortSequence").toInt());
 
+    // last column is stretching placeholder and is not sortable
+    if (section >= model->columnCount() - 1)
+        return;
+
     if (section == 0 && sortSequence == TriStateDesc)
         sortSequence = TriStateAsc;
 
