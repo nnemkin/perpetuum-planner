@@ -1,169 +1,161 @@
-# coding: utf-8
+"""Convert a bunch of perpetuum data files to serialized QVariant for PP consumption."""
 
-import sys
-import os
 import re
-import yaml
-import yaml_use_ordered_dict
-from collections import defaultdict, OrderedDict, Mapping
-import perpetuum
-import qvariant
+from PyQt4 import QtCore, QtGui
+from perpetuum import *
+
+EXCLUDE_CATEGORIES = [
+    'cf_npc', 'cf_documents', 'cf_decor', 'cf_station_services', 'cf_structures',
+    'cf_groups', 'cf_mission_items', 'cf_items', 'cf_dynamic_cprg'] # 'cf_dogtags'
 
 
-class Translation(dict):
-
-	def __init__(self, filename='re/dictionary.txt'):
-		with open(filename, 'rb') as f:
-			data = f.read()
-		data = data.replace('module_module', 'module')
-		data = data.replace('longrange_standard', 'standard_longrange')
-		data = data.replace('_armor_repair_unit=', '_armor_repair_modifier_unit=')
-		data = data.replace('electornics', 'electronics')
-		data = data.replace('–', '-')
-		self.update(perpetuum.genxy_parse(data))
-
-		self['energy_vampired_amount_modifier_unit'] = '%'
-		if '_ru' in filename:
-			self['entityinfo_header_meta'] = 'Мета'
-			self['entityinfo_metalevel'] = 'Мета-уровень'
-		else:
-			self['entityinfo_header_meta'] = 'Meta'
-			self['entityinfo_metalevel'] = 'Production level'
-
-		inv_data = defaultdict(list)
-		for key, value in self.iteritems():
-			inv_data[value].append(key)
-
-		self._inv_data = dict(inv_data)
-
-	def keys(self, value):
-		return self._inv_data[value]
+def translation_tokens(data):
+    """Collect all strings recursively from a given QVatiantMap. (Map keys are not included.)"""
+    keys = []
+    def _collect(data):
+        if data.type() == QtCore.QVariant.Map:
+            for value in data.toMap().values():
+                _collect(value)
+        elif data.type() == QtCore.QVariant.List:
+            for value in data.toList():
+                _collect(value)
+        elif data.type() == QtCore.QVariant.String:
+            keys.append(data.toString())
+    _collect(data)
+    return set(keys)
 
 
-TRANS = Translation()
-TRANS_LANGS = ('ru', 'hu', 'de', 'it')
+def find_definitions(data, cat_names):
+    """Convert a list of category names to a list of definiton IDs"""
+
+    cat_flags = []
+    for category in data['categoryFlags'].itervalues():
+        if category['name'] in cat_names:
+            cat_flags.append(category['value'])
+
+    result = []
+    for definition in data['getEntityDefaults'].itervalues():
+        for flag in cat_flags:
+            if (definition['categoryflags'] & flag) == flag:
+                result.append(definition['definition'])
+                break
+
+    return result
 
 
-def uncomment(text):
-	return re.sub(r'(?m)\s*#.*$', '', text)
+def build_variant(exclude_definitions=[]):
+    """Builder for genxy_parse that produces QVariants."""
+
+    exclude_definitions = set(exclude_definitions)
+
+    def _build(events, top_level=True):
+        d = OrderedDict()
+        prefix = None
+        for type, value in events:
+            if type == '[':
+                value = _build(events, False)
+                if value is not None:
+                    d[key] = value
+            elif type == ']':
+                break
+            elif type in '#|':
+                key = value
+                if prefix is None and key.endswith('0'):
+                    prefix = key[:-1]
+            else:
+                if type == '$':
+                    if key == 'options' and value.strip().startswith('#'):
+                        value = genxy_parse(value, _build)
+                    else:
+                        value = value.decode('utf-8')
+                elif type == '2':
+                    value = QtCore.QByteArray(value)
+                elif type in ('p', '3', 'r'):
+                    continue
+                elif type == 'c':
+                    # BGRA to RGBA
+                    value = value & 0xff000000 | (value << 16) & 0xff0000 | value & 0xff00 | (value >> 16) & 0xff
+                    value = QtGui.QColor.fromRgba(value)
+                elif type == 'd':
+                    value = QtCore.QDateTime(QtCore.QDate(*value[:3]), QtCore.QTime(*value[3:]), QtCore.Qt.UTC)
+                elif type in ('4', '6', 'N'):
+                    value = QtCore.QVariant.fromList(value)
+                elif type == '5':
+                    value = QtCore.QVariant.fromList(item.decode('utf-8') for item in value)
+                d[key] = value
+
+        if d.get('definition') in exclude_definitions:
+            return None
+
+        if top_level and len(d) == 1: # flatten single-element root
+            d = d.values()[0]
+
+        if isinstance(d, OrderedDict):
+            #if all(key.isdigit() for key in d) or prefix and all(key.startswith(prefix) for key in d):
+            #    d = QtCore.QVariant.fromList(d.values())
+            #else:
+            d = QtCore.QVariant.fromMap(d)
+        return d
+
+    return _build
 
 
-def compile_game_data(dir='yaml', out_dir='compiled'):
+def qvariant_dump(filename, variant):
+    """Serialize QVariant structure to a file."""
 
-	try:
-		os.makedirs(out_dir)
-	except OSError:
-		pass
+    file = QtCore.QFile(filename)
+    if file.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.Truncate):
+        stream = QtCore.QDataStream(file)
+        stream.setVersion(QtCore.QDataStream.Qt_4_7)
+        stream.setFloatingPointPrecision(QtCore.QDataStream.SinglePrecision)
+        stream.setByteOrder(QtCore.QDataStream.LittleEndian)
+        stream << variant
+        file.close()
+    else:
+        raise Exception('Failed to open ' + filename)
 
-	def parse_tree(tree, root_name):
-		level_names = {-1: root_name}
-		groups = defaultdict(lambda: defaultdict(list))
 
-		for line in tree.splitlines():
-			level, name = re.match(r'^(\t*)(.+)$', line).groups()
-			level = len(level)
+def main(dest_dir='compiled'):
+    try:
+        os.makedirs(dest_dir)
+    except OSError:
+        pass
 
-			level_names[level] = name
-			group = groups[level_names[level - 1]]
+    print 'Parsing ...',
+    data = genxy_consolidate('fragments')
+    translations = genxy_consolidate('translations')
+    excluded_defs = find_definitions(data, EXCLUDE_CATEGORIES)
+    print 'OK'
 
-			if name.startswith('extcat_') or name.startswith('cf_') or name.startswith('entityinfo_header'):
-				groups[name] # force creation for empty groups
-				group['groups'].append(name)
-			else:
-				group['objects'].append(name)
+    print 'Game data ...',
+    variant_data = genxy_consolidate('fragments', build_variant(excluded_defs))
+    variant_data = QtCore.QVariant.fromMap(variant_data)
+    qvariant_dump(os.path.join(dest_dir, 'game.dat'), variant_data)
+    print 'OK'
 
-		return dict((k, dict(v)) for k, v in groups.iteritems())
+    translation_keys = translation_tokens(variant_data)
 
-	def collect_keys(data):
-		keys = []
-		def _collect(data):
-			if isinstance(data, Mapping):
-				keys.extend(data.keys())
-				for value in data.values():
-					_collect(value)
-			elif isinstance(data, list):
-				for value in data:
-					_collect(value)
-			elif isinstance(data, basestring):
-				keys.append(data)
-		_collect(data)
+    for lang, translation in translations.items():
+        print 'Translation', lang, '...',
+        translation_keys = translation_keys.intersection(translation.iterkeys())
+        translation = dict((key, translation[key].decode('utf-8')) for key in translation_keys)
 
-		return frozenset(keys + [k + '_desc' for k in keys] + [k + '_unit' for k in keys])
+        qvariant_dump(os.path.join(dest_dir, 'lang_%s.dat' % lang),
+                      QtCore.QVariant.fromMap(translation))
+        print 'OK'
 
-	def translation_split_data(data):
-		split_data = defaultdict(dict)
-
-		for ext_id, extension in data['extensions'].iteritems():
-			ext_desc_id = ext_id + '_desc'
-			split_data[ext_desc_id] = {ext_desc_id: {'BONUS': extension['modifier_value']}}
-
-		for item_id, item in data['items'].iteritems():
-			if not 'desc' in item:
-				continue
-
-			item_desc_id = item['desc']
-			item_desc = TRANS[item_desc_id]
-
-			item_splits = {}
-			for param_id in re.findall(r'\{%([\w\.]+)%\}', item_desc):
-				item_splits[param_id] = item['parameters'][param_id]
-			if item_splits:
-				split_data[item['desc']][item_id + '_desc'] = item_splits
-
-		return dict(split_data)
-
-	def prepare_trans(d, data, split_data, data_keys):
-		trans = dict(TRANS)
-		trans.update(d)
-		trans = dict((k, perpetuum.wiki_to_html(v).decode('utf-8')) for k, v in trans.iteritems() if k in data_keys)
-
-		for src_id, splits in split_data.iteritems():
-			for dest_id, values in splits.iteritems():
-				def sub_param_value(m):
-					param_id = m.group(1)
-					if param_id.startswith('BONUS'):
-						param_id = 'BONUS'
-					else:
-						unit = trans.get(param_id + '_unit')
-						if unit:
-							return '%s %s' % (str(values[param_id]), unit)
-					return str(values[param_id])
-				trans[dest_id] = re.sub(r'\{%([\w\.]+)%\}', sub_param_value, trans[src_id])
-
-		for attr_id in data['parameters']:
-			if attr_id.endswith('_modifier') and not (attr_id + '_unit') in trans:
-				trans[attr_id + '_unit'] = u'%'
-
-		return trans
-
-	def write_datafile(name, data):
-		with open(os.path.join(out_dir, name + '.yaml'), 'wb') as f:
-			f.write(yaml.dump(data, indent=4, default_flow_style=False))
-
-		with open(os.path.join(out_dir, name + '.dat'), 'wb') as f:
-			f.write(qvariant.dumps(data))
-
-	data = {'groups': OrderedDict()}
-	for filename in os.listdir(dir):
-		key = os.path.splitext(filename)[0]
-		with open(os.path.join(dir, filename)) as f:
-			value = f.read()
-
-		if filename.endswith('.yaml'):
-			data[key] = yaml.load(value)
-		elif filename.endswith('.tree'):
-			data['groups'].update(parse_tree(uncomment(value), key))
-
-	split_data = translation_split_data(data)
-	data_keys = collect_keys(data)
-
-	write_datafile('game', data)
-
-	write_datafile('lang_en', prepare_trans(TRANS, data, split_data, data_keys))
-	for lang in TRANS_LANGS:
-		write_datafile('lang_' + lang, prepare_trans(Translation('re/dictionary_%s.txt' % lang), data, split_data, data_keys))
+    try:
+        import yaml1
+        import yaml_use_ordered_dict
+    except ImportError:
+        pass
+    else:
+        print 'YAML dump ...',
+        with open(os.path.join(dest_dir, 'game.yaml'), 'wb') as f:
+            yaml.dump(data, f)
+        print 'OK'
 
 
 if __name__ == '__main__':
-	import sys
-	compile_game_data(*sys.argv[1:])
+    import sys
+    main(*sys.argv[1:])

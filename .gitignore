@@ -1,9 +1,11 @@
+.idea
 build
 doc
 data/compiled
-data/yaml
-data/re
+data/fragments
 data/icons
+data/translations
+data/misc
 releases
 *.pro.user
 *.pyc
