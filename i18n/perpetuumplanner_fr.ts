@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="hu_HU">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>Agent</name>
     <message>
         <source>New Agent</source>
-        <translation>Új ügynök</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to load agent data.
@@ -22,19 +22,19 @@ Error on line %1: %2</source>
     <message>
         <source>Value</source>
         <extracomment>entityinfo_value</extracomment>
-        <translation>Érték</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Parameters</source>
         <extracomment>entityinfo_parameters</extracomment>
-        <translation>Tulajdonságok</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Application</name>
     <message>
         <source>New Version Available</source>
-        <translation>Új verzió érhető el</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;h3&gt;New version available: %1 (%2)&lt;/h3&gt;&lt;p&gt;Press &lt;b&gt;Update&lt;/b&gt; button to download and update automatically.&lt;/p&gt;&lt;p&gt;Visit the &lt;a href=&quot;http://www.perpetuum-planner.com/&quot;&gt;home page&lt;/a&gt; to read about the latest changes.&lt;p&gt;Note: you can disable automatic update checks in the options.&lt;/p&gt;</source>
@@ -42,7 +42,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Update</source>
-        <translation>Frissítés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Perpetuum Agent</source>
@@ -50,11 +50,11 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>About</source>
-        <translation>Névjegy</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Hiba</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to launch automatic updater.</source>
@@ -64,18 +64,13 @@ Error on line %1: %2</source>
 <context>
     <name>AttributeEditor</name>
     <message>
-        <source>Attributes</source>
-        <extracomment>extension_attributes</extracomment>
-        <translation>Alapkészségek</translation>
-    </message>
-    <message>
         <source>School:</source>
         <extracomment>characterinfo_cw_school</extracomment>
-        <translation>Képzés helye:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Military</source>
-        <translation>Katonai</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>buttonGroupSchool</source>
@@ -83,16 +78,16 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Industrial</source>
-        <translation>Ipari</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Logistic</source>
-        <translation>Logisztikai</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Speciality:</source>
         <extracomment>characterinfo_cw_major</extracomment>
-        <translation>Végzettség:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>buttonGroupSpeciality</source>
@@ -101,7 +96,7 @@ Error on line %1: %2</source>
     <message>
         <source>Corporation:</source>
         <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation>Jelenlegi vállalat:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>buttonGroupCorporation</source>
@@ -110,19 +105,14 @@ Error on line %1: %2</source>
     <message>
         <source>Spark:</source>
         <extracomment>characterinfo_cw_spark</extracomment>
-        <translation>Szikra:</translation>
-    </message>
-    <message>
-        <source>Research and development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Kutatás és Fejlesztés</translation>
-    </message>
-    <message>
-        <source>buttonGroupSpark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ubenor (Military)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>buttonGroupSpark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -159,7 +149,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Truhold-Markson</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>buttonGroupMegacorp</source>
@@ -167,58 +157,68 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>ICS</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Asintec</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Megacorporation:</source>
         <extracomment>characterinfo_cw_race</extracomment>
-        <translation>Megavállalat:</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attributes</source>
+        <extracomment>extension_attributes</extracomment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Tactics</source>
         <extracomment>attributeA</extracomment>
-        <translation>Harcászat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mechatronics</source>
         <extracomment>attributeB</extracomment>
-        <translation>Mechatronika</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Heavy Industry</source>
         <extracomment>attributeC</extracomment>
-        <translation>Nehézipar</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Research and development</source>
+        <extracomment>attributeD</extracomment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Politics</source>
         <extracomment>attributeE</extracomment>
-        <translation>Politika</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Economics</source>
         <extracomment>attributeF</extracomment>
-        <translation>Közgazdaságtan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>Alapállapot</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Optimize</source>
-        <translation>Optimalizálás</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Bezárás</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1 - Attributes</source>
         <extracomment>extension_attributes</extracomment>
-        <translation>%1 - Alapkészségek</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>(Depends on previous choice)</source>
@@ -230,17 +230,17 @@ Error on line %1: %2</source>
     <message>
         <source>Bonus</source>
         <extracomment>entityinfo_bonus_extensionbonus</extracomment>
-        <translation>Javulás</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Relevant extension</source>
         <extracomment>entityinfo_bonus_extensionname</extracomment>
-        <translation>Kapcsolódó fejlesztés</translation>
+        <translation>Extension concernée</translation>
     </message>
     <message>
         <source>Effect</source>
         <extracomment>entityinfo_bonus_aggregate</extracomment>
-        <translation>Hatás</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -248,12 +248,12 @@ Error on line %1: %2</source>
     <message>
         <source>Amount</source>
         <extracomment>entityinfo_amount</extracomment>
-        <translation>Mennyiség</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Components</source>
         <extracomment>entityinfo_components</extracomment>
-        <translation>Komponensek</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -265,7 +265,7 @@ Error on line %1: %2</source>
     <message>
         <source>Amount</source>
         <extracomment>entityinfo_amount</extracomment>
-        <translation type="unfinished">Mennyiség</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -273,57 +273,57 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;DESCRIPTION</source>
         <extracomment>extensioninfo_description</extracomment>
-        <translation>&amp;LEÍRÁS</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;PREREQUISITES</source>
         <extracomment>extensioninfo_requiredextensions</extracomment>
-        <translation>&amp;ELŐFELTÉTELEK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Tactics</source>
         <extracomment>attributeA</extracomment>
-        <translation>Harcászat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mechatronics</source>
         <extracomment>attributeB</extracomment>
-        <translation>Mechatronika</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Heavy Industry</source>
         <extracomment>attributeC</extracomment>
-        <translation>Nehézipar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Research and development</source>
         <extracomment>attributeD</extracomment>
-        <translation>Kutatás és Fejlesztés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Politics</source>
         <extracomment>attributeE</extracomment>
-        <translation>Politika</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Economics</source>
         <extracomment>attributeF</extracomment>
-        <translation>Közgazdaságtan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Extension: %1</source>
         <extracomment>window_extensioninfo</extracomment>
-        <translation>Fejlesztés: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Primary attribute</source>
         <extracomment>extensioninfo_learningAttributePrimary</extracomment>
-        <translation>Elsődleges alapkészség</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Secondary attribute</source>
         <extracomment>extensioninfo_learningAttributeSecondary</extracomment>
-        <translation>Másodlagos alapkészség</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -331,109 +331,109 @@ Error on line %1: %2</source>
     <message>
         <source>Extension</source>
         <extracomment>entityinfo_bonus_extensionname</extracomment>
-        <translation>Fejlesztés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Info</source>
         <extracomment>contextmenu_definition_info</extracomment>
-        <translation>Információ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Current</source>
-        <translation>Jelenlegi</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Progress</source>
         <extracomment>knowledgebaseupdate_progress</extracomment>
-        <translation>Állapot</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Planned</source>
-        <translation>Tervezett</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Next Lvl</source>
         <extracomment>extension_nextlevelcost</extracomment>
-        <translation>Következő szint</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Prerequisites: %L1 EP</source>
         <extracomment>extensioninfo_requiredextensions</extracomment>
-        <translation>Előfeltételek: %L1 EP</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ExtensionsView</name>
     <message>
         <source>Current EP</source>
-        <translation>Jelenlegi EP</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Planned EP</source>
-        <translation>Tervezett EP</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Click to edit</source>
-        <translation>Kattintás a szerkesztéshez</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Politics</source>
         <extracomment>attributeE</extracomment>
-        <translation>Politika</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Research and Development</source>
         <extracomment>attributeD</extracomment>
-        <translation>Kutatás és Fejlesztés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Heavy Industry</source>
         <extracomment>attributeC</extracomment>
-        <translation>Nehézipar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mechatronics</source>
         <extracomment>attributeB</extracomment>
-        <translation>Mechatronika</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Tactics</source>
         <extracomment>attributeA</extracomment>
-        <translation>Harcászat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Economics</source>
         <extracomment>attributeF</extracomment>
-        <translation>Közgazdaságtan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Attributes</source>
         <extracomment>extension_attributes</extracomment>
-        <translation>Alapkészségek</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation>&amp;Új</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Load...</source>
-        <translation>&amp;Megnyitás...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Mentés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Sa&amp;ve As...</source>
-        <translation>Me&amp;ntés másként...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation>&amp;Kilépés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Expand All</source>
-        <translation>Teljes kibontás</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>X</source>
@@ -441,7 +441,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Collapse All</source>
-        <translation>Teljes összecsukás</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ctrl+X</source>
@@ -457,7 +457,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>&amp;Information</source>
-        <translation>&amp;Információ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>I</source>
@@ -490,11 +490,11 @@ Error on line %1: %2</source>
     <message>
         <source>Upgrade</source>
         <extracomment>extension_upgrade</extracomment>
-        <translation>Fejlesztés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Degrade</source>
-        <translation>Csökkentés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Set %1</source>
@@ -503,7 +503,7 @@ Error on line %1: %2</source>
     <message>
         <source>Error</source>
         <extracomment>combatlog_error</extracomment>
-        <translation>Hiba</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unable to load
@@ -513,15 +513,15 @@ Error on line %1: %2</source>
     <message>
         <source>Confirmation</source>
         <extracomment>window_confirm</extracomment>
-        <translation>Megerősítés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save changes to &apos;%1&apos;?</source>
-        <translation>El szeretné menteni &apos;%1&apos; változásait?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source> [Modified]</source>
-        <translation> [Módosítva]</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unable to save
@@ -545,38 +545,44 @@ Error on line %1: %2</source>
     <name>Formatter</name>
     <message numerus="yes">
         <source>%n day(s)</source>
-        <translation>
-            <numerusform>%n nap</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
-        <translation>
-            <numerusform>%n óra</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n perc</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nd</source>
-        <translation>
-            <numerusform>%nd</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nh</source>
-        <translation>
-            <numerusform>%nh</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nm</source>
-        <translation>
-            <numerusform>%nm</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
 </context>
@@ -584,11 +590,11 @@ Error on line %1: %2</source>
     <name>HeaderActions</name>
     <message>
         <source>Columns</source>
-        <translation>Oszlopok</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>Alapállapot</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -596,11 +602,11 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;Filter:</source>
         <extracomment>market_searchfield</extracomment>
-        <translation>&amp;Szűrés:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation>&amp;Törlés</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Hide prototypes</source>
@@ -613,21 +619,21 @@ Error on line %1: %2</source>
     <message>
         <source>No items found</source>
         <extracomment>market_itemnotfound</extracomment>
-        <translation>Nincs találat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;PARAMETERS</source>
         <extracomment>entityinfo_parameters</extracomment>
-        <translation>&amp;TULAJDONSÁGOK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;COMPONENTS</source>
         <extracomment>entityinfo_components</extracomment>
-        <translation>&amp;KOMPONENSEK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Decoding level</source>
-        <translation>Dekódolási szint</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>COMPONENT &amp;IN</source>
@@ -636,16 +642,16 @@ Error on line %1: %2</source>
     <message>
         <source>E&amp;XTENSIONS</source>
         <extracomment>entityinfo_extensions</extracomment>
-        <translation>&amp;FEJLESZTÉSEK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;BONUSES</source>
         <extracomment>entityinfo_bonuses</extracomment>
-        <translation>&amp;BÓNUSZOK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Expand All</source>
-        <translation>Teljes kibontás</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>X</source>
@@ -653,7 +659,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Collapse All</source>
-        <translation>Teljes összecsukás</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ctrl+X</source>
@@ -669,7 +675,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Copy To Clipboard</source>
-        <translation>Másolás a vágólapra</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ctrl+C</source>
@@ -681,7 +687,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>&amp;Information</source>
-        <translation>&amp;Információ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>I</source>
@@ -690,12 +696,13 @@ Error on line %1: %2</source>
     <message>
         <source>Level %1 decoder</source>
         <extracomment>def_research_kit_1</extracomment>
-        <translation>%1. szintű dekóder</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
         <source>%n items</source>
-        <translation>
-            <numerusform>%n elemek</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
 </context>
@@ -714,49 +721,49 @@ Error on line %1: %2</source>
     <name>Main</name>
     <message>
         <source>Error</source>
-        <translation>Hiba</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Perpetuum Planner</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Help</source>
         <extracomment>menu_help</extracomment>
-        <translation>&amp;Segítség</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Options</source>
         <extracomment>menu_options</extracomment>
-        <translation>&amp;Beállítások</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>A&amp;bout</source>
-        <translation>&amp;Névjegy</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;EXTENSIONS</source>
         <extracomment>characterprofile_progress</extracomment>
-        <translation>&amp;FEJLESZTÉSEK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;ITEM DATABASE</source>
-        <translation>&amp;ADATBÁZIS</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Segítség</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>F1</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Beállítások</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ctrl+P</source>
@@ -764,21 +771,21 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>About</source>
-        <translation>Névjegy</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MessageBox</name>
     <message>
         <source>Message</source>
-        <translation>Üzenet</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OptionsDialog</name>
     <message>
         <source>Options</source>
-        <translation>Beállítások</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>User Interface</source>
@@ -802,7 +809,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Other</source>
-        <translation>Egyéb beállítások</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Associate .agent files with Perpetuum Planner</source>
@@ -814,11 +821,11 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Use &amp;proxy to access network</source>
-        <translation>&amp;Proxy kiszolgáló használata</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Address:</source>
-        <translation>&amp;Kiszolgálócím:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>username:password@host:port</source>
@@ -826,35 +833,35 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Type:</source>
-        <translation>Proxytípus:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;HTTP</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;SOCKS5</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;OK</source>
         <extracomment>ok</extracomment>
-        <translation>&amp;OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Apply</source>
         <extracomment>apply</extracomment>
-        <translation>&amp;Alkalmaz</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
         <extracomment>cancel</extracomment>
-        <translation>&amp;Mégse</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
         <extracomment>combatlog_error</extracomment>
-        <translation>Hiba</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Invalid proxy address.</source>
@@ -885,38 +892,37 @@ Error on line %1: %2</source>
 <context>
     <name>Updater</name>
     <message>
+        <source>Perpetuum Planner - Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Waiting for application to close...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Downloading %1 MB...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Error</source>
-        <translation>Hiba</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download failed:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unable to replace program file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Download failed:
-%1</source>
-        <translation>A letöltés meghiúsult:
-%1</translation>
-    </message>
-    <message>
-        <source>Updating...</source>
-        <translation>Frissítés...</translation>
-    </message>
-    <message>
         <source>Downloading %1 MB of %2 MB...</source>
-        <translation>%1 MB / %2 MB letöltve...</translation>
-    </message>
-    <message>
-        <source>Downloading %1 MB...</source>
-        <translation>%1 MB letöltve...</translation>
-    </message>
-    <message>
-        <source>Perpetuum Planner - Update</source>
-        <translation>Perpetuum Planner - Frissítés</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -25,121 +25,139 @@
      <number>0</number>
     </property>
     <item>
-       <widget class="QWidget" name="windowHeader" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0,0,0">
-         <property name="spacing">
-          <number>10</number>
+     <widget class="QWidget" name="windowHeader" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0,0,0">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>8</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="windowHeaderLabel">
+         <property name="text">
+          <string>Perpetuum Planner</string>
          </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>8</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="listLanguage">
          <item>
-          <widget class="QLabel" name="windowHeaderLabel">
-           <property name="text">
-            <string>Perpetuum Planner</string>
-           </property>
-          </widget>
+          <property name="text">
+           <string notr="true" extracomment="language_english">English</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/flag-en.png</normaloff>:/flag-en.png</iconset>
+          </property>
          </item>
          <item>
-          <widget class="QComboBox" name="listLanguage">
-           <item>
-            <property name="text">
-             <string notr="true" extracomment="language_english">English</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../res/resources.qrc">
-              <normaloff>:/flag-en.png</normaloff>:/flag-en.png</iconset>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string notr="true" extracomment="language_hungarian">Hungarian (Magyar)</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../res/resources.qrc">
-              <normaloff>:/flag-hu.png</normaloff>:/flag-hu.png</iconset>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string notr="true" extracomment="language_german">German (Deutsch)</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../res/resources.qrc">
-              <normaloff>:/flag-de.png</normaloff>:/flag-de.png</iconset>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string notr="true" extracomment="language_russian">Russian (Русский)</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../res/resources.qrc">
-              <normaloff>:/flag-ru.png</normaloff>:/flag-ru.png</iconset>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string notr="true" extracomment="language_italian">Italian (Italiano)</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../res/resources.qrc">
-              <normaloff>:/flag-it.png</normaloff>:/flag-it.png</iconset>
-            </property>
-           </item>
-          </widget>
+          <property name="text">
+           <string notr="true" extracomment="language_hungarian">Hungarian (Magyar)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/flag-hu.png</normaloff>:/flag-hu.png</iconset>
+          </property>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonHelp">
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string extracomment="menu_help">&amp;Help</string>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">dialog-button</string>
-           </property>
-          </widget>
+          <property name="text">
+           <string notr="true" extracomment="language_german">German (Deutsch)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/flag-de.png</normaloff>:/flag-de.png</iconset>
+          </property>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonOptions">
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string extracomment="menu_options">&amp;Options</string>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">dialog-button</string>
-           </property>
-          </widget>
+          <property name="text">
+           <string notr="true" extracomment="language_russian">Russian (Русский)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/flag-ru.png</normaloff>:/flag-ru.png</iconset>
+          </property>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonAbout">
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string>A&amp;bout</string>
-           </property>
-           <property name="role" stdset="0">
-            <string notr="true">dialog-button</string>
-           </property>
-          </widget>
+          <property name="text">
+           <string notr="true" extracomment="language_italian">Italian (Italiano)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/flag-it.png</normaloff>:/flag-it.png</iconset>
+          </property>
          </item>
-        </layout>
-       </widget>
-      </item>
+         <item>
+          <property name="text">
+           <string notr="true">French (Français)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/flag-fr.png</normaloff>:/flag-fr.png</iconset>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">Slovene (Slovenščina)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/flag-sk.png</normaloff>:/flag-sk.png</iconset>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonHelp">
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string extracomment="menu_help">&amp;Help</string>
+         </property>
+         <property name="role" stdset="0">
+          <string notr="true">dialog-button</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonOptions">
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string extracomment="menu_options">&amp;Options</string>
+         </property>
+         <property name="role" stdset="0">
+          <string notr="true">dialog-button</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonAbout">
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>A&amp;bout</string>
+         </property>
+         <property name="role" stdset="0">
+          <string notr="true">dialog-button</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
     <item>
      <widget class="QWidget" name="windowFrame" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_3">
