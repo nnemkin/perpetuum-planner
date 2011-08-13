@@ -11,6 +11,7 @@ EXCLUDE_CATEGORIES = [
 
 def translation_tokens(data):
     """Collect all strings recursively from a given QVatiantMap. (Map keys are not included.)"""
+
     keys = []
     def _collect(data):
         if data.type() == QtCore.QVariant.Map:
@@ -20,7 +21,7 @@ def translation_tokens(data):
             for value in data.toList():
                 _collect(value)
         elif data.type() == QtCore.QVariant.String:
-            keys.append(data.toString())
+            keys.append(str(data.toString()))
     _collect(data)
     return set(keys)
 
@@ -145,7 +146,7 @@ def main(dest_dir='compiled'):
         print 'OK'
 
     try:
-        import yaml1
+        import yaml
         import yaml_use_ordered_dict
     except ImportError:
         pass

@@ -23,14 +23,14 @@ def genxy_parse(data, builder=None):
             [\|#][^=]+=|     # key
             \$[^\r\n\|\]#]*| # string
             2[\da-fA-F]+|    # hex blob
-            f-?\d*(\.\d+)?| # float
+            f-?\d*(\.\d+)?|  # float
             N-?\d+(\s*,\s*-?\d+)*| # int array
-            n-?\d+|                  # int
+            n-?\d+|                # int
             [dpr3]-?[\da-fA-F]+(?:\.-?[\da-fA-F]+)*|  # hex int tuple
             [64]-?[\da-fA-F]+(?:\s*,\s*-?[\da-fA-F]+)*|     # hex int list
             [Lic]-?[\da-fA-F]+|  # hex int
             t[\da-fA-F]{8}|      # float in hex int
-            (?P<WS>)[\s\r\n]+   # whitespace''')
+            (?P<WS>)[\s\r\n]+    # whitespace''')
 
         while pos < len(data):
             m = token_re.match(data, pos)
