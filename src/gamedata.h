@@ -98,7 +98,7 @@ public:
     template <class T>
     T findByName(const QString &name) { return qobject_cast<T>(m_objectsByName.value(name)); }
 
-    QList<Definition *> definitionsInCategory(quint64 categoryFlags) const;
+    QList<Definition *> definitionsInCategory(const Category *category) const;
 
     ExtensionLevelMap starterExtensions(QString steps) const;
     AttributeSet starterAttributes(QString steps) const;
@@ -281,14 +281,17 @@ public:
 
     quint64 id() const { return m_id; }
     quint64 order() const { return m_order; }
+    quint64 orderHigh() const;
     bool inMarket() const { return m_inMarket; }
     Category *parent() const { return m_parent; }
 
     const QList<Category *> &categories() const { return m_categories; }
-    QList<Definition *> definitions() const { return gameData()->definitionsInCategory(m_id); }
+    QList<Definition *> definitions() const { return gameData()->definitionsInCategory(this); }
 
     void setInMarket(bool inMarket);
     int marketCount() const;
+
+    bool hasCategory(const Category *other); // aka selfOrDescendant
 
 private:
     quint64 m_id, m_order;
@@ -358,7 +361,7 @@ public:
     int researchLevel() const { return m_researchLevel; }
 
     Category *category() const { return m_category; }
-    bool hasCategory(const QString &categoryName) const;
+    bool hasCategory(const QString &name) const;
 
     QPixmap icon(int size = -1, bool decorated = false) const;
     Tier *tier() const { return m_tier; }

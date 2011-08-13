@@ -267,20 +267,12 @@ AttributeSet GameData::starterAttributes(QString choices) const
     return attributes;
 }
 
-QList<Definition *> GameData::definitionsInCategory(quint64 categoryFlags) const
+QList<Definition *> GameData::definitionsInCategory(const Category *category) const
 {
-    quint64 startFlags = _byteswap_uint64(categoryFlags);
-    quint64 endFlags = startFlags;
-    quint64 mask = 0xff;
-    while (!(mask & endFlags)) {
-        endFlags |= mask;
-        mask <<= 8;
-    }
-
     QList<Definition *> result;
     QMap<quint64, Definition *>::const_iterator
-            i = m_definitionsByCategory.lowerBound(startFlags),
-            iEnd = m_definitionsByCategory.upperBound(endFlags);
+            i = m_definitionsByCategory.lowerBound(category->order()),
+            iEnd = m_definitionsByCategory.upperBound(category->orderHigh());
     for (; i != iEnd; ++i)
         result << *i;
     return result;
@@ -414,6 +406,22 @@ int Category::marketCount() const
             m_marketCount += subcat->marketCount();
     }
     return m_marketCount;
+}
+
+quint64 Category::orderHigh() const
+{
+    quint64 endFlags = m_order;
+    quint64 mask = 0xff;
+    while (!(mask & endFlags)) {
+        endFlags |= mask;
+        mask <<= 8;
+    }
+    return endFlags;
+}
+
+bool Category::hasCategory(const Category *other)
+{
+    return m_order >= other->m_order && m_order <= other->orderHigh();
 }
 
 
@@ -683,12 +691,10 @@ QPixmap Definition::icon(int size, bool decorated) const
     return pixmap;
 }
 
-bool Definition::hasCategory(const QString &categoryName) const
+bool Definition::hasCategory(const QString &name) const
 {
-    Category *category = m_gameData->findByName<Category *>(categoryName);
-    if (category)
-        return (m_categoryFlags & category->id()) == category->id();
-    return false;
+    Category *other = m_gameData->findByName<Category *>(name);
+    return other && category()->hasCategory(other);
 }
 
 
