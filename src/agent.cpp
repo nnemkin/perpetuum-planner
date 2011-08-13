@@ -69,9 +69,9 @@ void ExtensionLevels::setLevel(Extension *extension, int lvl)
 {
     lvl = qBound(0, lvl, 10);
     // add required extensions
-    if (lvl > 0 && extension->requirements()) {
-        foreach (Extension *req, extension->requirements()->extensions()) {
-            int reqLevel = extension->requirements()->level(req);
+    if (lvl > 0) {
+        foreach (Extension *req, extension->requirements().extensions()) {
+            int reqLevel = extension->requirements().value(req);
             if (reqLevel > level(req))
                 setLevel(req, reqLevel);
         }
@@ -79,7 +79,7 @@ void ExtensionLevels::setLevel(Extension *extension, int lvl)
     // drop extensions with broken requirements
     if (lvl < 10) {
         foreach (Extension *ext, m_levels.keys())
-            if (ext->requirements() && ext->requirements()->level(extension) > lvl)
+            if (ext->requirements().value(extension) > lvl)
                 setLevel(ext, 0);
     }
     if (lvl > baseLevel(extension))
@@ -90,11 +90,11 @@ void ExtensionLevels::setLevel(Extension *extension, int lvl)
     emit levelChanged(extension, lvl);
 }
 
-ExtensionSet ExtensionLevels::requirements(Extension *extension) const
+ExtensionLevelMap ExtensionLevels::requirements(Extension *extension) const
 {
     Q_UNUSED(extension)
 
-    ExtensionSet reqs;
+    ExtensionLevelMap reqs;
     /*
     foreach (Extension *reqExtension, extension->requirements()->extensions()) {
         int reqLevel = extension->requirements()->level(extension);
@@ -111,7 +111,7 @@ bool ExtensionLevels::load(GameData *gameData, const QVariantMap &dataMap)
 {
     m_levels.clear();
     for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
-        Extension *extension = gameData->findObject<Extension *>(i.key());
+        Extension *extension = gameData->findByName<Extension *>(i.key());
         if (extension)
             m_levels.insert(extension, i.value().toInt());
         else
@@ -123,9 +123,9 @@ bool ExtensionLevels::load(GameData *gameData, const QVariantMap &dataMap)
 QVariantMap ExtensionLevels::save() const
 {
     QVariantMap dataMap;
-    for (ExtensionSet::const_iterator i = m_levels.constBegin(); i != m_levels.constEnd(); ++i)
+    for (ExtensionLevelMap::const_iterator i = m_levels.constBegin(); i != m_levels.constEnd(); ++i)
         if (i.value() > baseLevel(i.key()))
-            dataMap.insert(i.key()->storedName(), i.value());
+            dataMap.insert(i.key()->persistentName(), i.value());
 
     return dataMap;
 }
@@ -133,7 +133,7 @@ QVariantMap ExtensionLevels::save() const
 int ExtensionLevels::points() const
 {
     int total = m_base ? m_base->points() : 0;
-    for (ExtensionSet::const_iterator i = m_levels.constBegin(); i != m_levels.constEnd(); ++i) {
+    for (ExtensionLevelMap::const_iterator i = m_levels.constBegin(); i != m_levels.constEnd(); ++i) {
         total += points(i.key(), i.value());
         if (m_base)
             total -= m_base->points(i.key());
@@ -141,13 +141,11 @@ int ExtensionLevels::points() const
     return total;
 }
 
-int ExtensionLevels::points(ObjectGroup *group) const
+int ExtensionLevels::points(ExtensionCategory *category) const
 {
     int total = 0;
-    foreach (GameObject *object, group->objects()) {
-        Extension *extension = static_cast<Extension *>(object);
+    foreach (Extension *extension, category->extensions())
         total += points(extension);
-    }
     return total;
 }
 
@@ -164,9 +162,9 @@ int ExtensionLevels::nextLevelPoints(Extension *extension, int lvl) const
 int ExtensionLevels::reqPoints(Extension *extension) const
 {
     int total = 0;
-    if (level(extension) == 0 && extension->transitiveReqs()) {
-        foreach (Extension *req, extension->transitiveReqs()->extensions()) {
-            int reqLevel = extension->transitiveReqs()->level(req);
+    if (level(extension) == 0 && !extension->transitiveReqs().isEmpty()) {
+        foreach (Extension *req, extension->transitiveReqs().extensions()) {
+            int reqLevel = extension->transitiveReqs().value(req);
             int hasLevel = level(req);
             if (reqLevel > hasLevel)
                 total += points(req, reqLevel) - points(req, hasLevel);
@@ -319,7 +317,7 @@ QUndoCommand *Agent::setStarterChoicesCommand(const QString &choices)
     return 0;
 }
 
-QUndoCommand *Agent::setLevelsCommand(const ExtensionSet &levels)
+QUndoCommand *Agent::setLevelsCommand(const ExtensionLevelMap &levels)
 {
     Q_UNUSED(levels)
     return 0;
@@ -396,10 +394,10 @@ class LevelChangeCommand : public QUndoCommand {
 public:
     enum { ID = 1002 };
 
-    LevelChangeCommand(ExtensionLevels *extensionLevels, const ExtensionSet &levels)
+    LevelChangeCommand(ExtensionLevels *extensionLevels, const ExtensionLevelMap &levels)
         : m_extensionLevels(extensionLevels), m_time(QTime::currentTime()), m_levels(levels)
     {
-        for (ExtensionSet::const_iterator i = levels.constBegin(); i != levels.constEnd(); ++i)
+        for (ExtensionLevelMap::const_iterator i = levels.constBegin(); i != levels.constEnd(); ++i)
             m_prevLevels.insert(i.key(), extensionLevels->level(i.key()));
     }
 
@@ -424,10 +422,10 @@ public:
                 return true;
 
             if (m_time.msecsTo(otherCommand->m_time) < 1000) {
-                for (ExtensionSet::const_iterator i = otherCommand->m_levels.constBegin(); i != otherCommand->m_levels.constEnd(); ++i)
+                for (ExtensionLevelMap::const_iterator i = otherCommand->m_levels.constBegin(); i != otherCommand->m_levels.constEnd(); ++i)
                     m_levels.insert(i.key(), i.value());
 
-                for (ExtensionSet::const_iterator i = otherCommand->m_prevLevels.constBegin(); i != otherCommand->m_prevLevels.constEnd(); ++i)
+                for (ExtensionLevelMap::const_iterator i = otherCommand->m_prevLevels.constBegin(); i != otherCommand->m_prevLevels.constEnd(); ++i)
                     if (!m_prevLevels.contains(i.key()))
                         m_prevLevels.insert(i.key(), i.value());
 
@@ -439,6 +437,6 @@ public:
 
 private:
     QTime m_time;
-    ExtensionSet m_levels, m_prevLevels;
+    ExtensionLevelMap m_levels, m_prevLevels;
     ExtensionLevels *m_extensionLevels;
 };

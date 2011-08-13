@@ -38,7 +38,8 @@ OptionsDialog::OptionsDialog(QWidget *parent)
     restoreGeometry(settings.value(QLatin1String("Geometry/OptionsDialog")).toByteArray());
 }
 
-OptionsDialog::~OptionsDialog() {
+OptionsDialog::~OptionsDialog()
+{
     QSettings().setValue(QLatin1String("Geometry/OptionsDialog"), saveGeometry());
 }
 
@@ -90,6 +91,5 @@ bool OptionsDialog::apply()
     settings.setValue(QLatin1String("ProxyAddress"), textProxy->text());
 
     qApp->settingsChanged();
-
     return true;
 }

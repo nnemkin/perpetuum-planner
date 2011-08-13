@@ -97,8 +97,8 @@ int Application::exec()
         m_updater->show();
     }
     else {
-        QFile gameDataFile(":/compiled/game.dat");
-        if (!m_gameData->load(&gameDataFile)) {
+        QFile gameDataFile(":/compiled/game.dat"), translationFile(":/compiled/lang_en.dat");
+        if (!m_gameData->load(&gameDataFile, &translationFile)) {
             MessageBox::exec(0, QApplication::translate("Main", "Error"), tr("Invalid data file."));
             return -1;
         }
@@ -257,7 +257,7 @@ void Application::applySettings()
             installTranslator(&m_translator);
 
         QFile transFile(QString(":/compiled/lang_%1.dat").arg(langCode));
-        m_gameData->loadTranslation(&transFile);
+        m_gameData->loadTranslation(langCode, &transFile);
 
         QPixmapCache::clear();
     }

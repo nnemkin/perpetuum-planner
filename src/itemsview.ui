@@ -340,9 +340,6 @@
            </property>
            <item>
             <widget class="QTabWidget" name="tabWidget">
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
              <property name="role" stdset="0">
               <string notr="true">tree</string>
              </property>
@@ -649,16 +646,6 @@
                <property name="bottomMargin">
                 <number>4</number>
                </property>
-               <item>
-                <widget class="QLabel" name="labelBonusExtension">
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                 <property name="role" stdset="0">
-                  <string notr="true">header</string>
-                 </property>
-                </widget>
-               </item>
                <item>
                 <widget class="GridTreeView" name="treeBonuses">
                  <property name="contextMenuPolicy">

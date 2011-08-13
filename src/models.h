@@ -22,18 +22,9 @@
 
 #include <QAbstractItemModel>
 #include <QVector>
-#include <functional>
 
-class GameData;
-class GameObject;
-class ObjectGroup;
-class ExtensionSet;
-class Item;
-class Parameter;
-class ParameterSet;
+#include "gamedata.h"
 
-
-#include <QSortFilterProxyModel>
 
 class SimpleTreeModel : public QAbstractItemModel {
     Q_OBJECT
@@ -50,7 +41,11 @@ public:
     QModelIndex parent(const QModelIndex &child) const;
 
     template<typename T>
-    inline T fromIndex(const QModelIndex &index) const;
+    inline T fromIndex(const QModelIndex &index) const
+    {
+        Node *node = nodeFromIndex(index);
+        return node ? qobject_cast<T>(node->object) : 0;
+    }
 
     void sort(int column, Qt::SortOrder order);
 
@@ -59,6 +54,8 @@ public:
     int rowSortOrder() { return m_rowSortOrder; }
 
     QModelIndex objectIndex(QObject *object) const;
+
+    bool isEmpty() const { return rootNode()->displayChildren.isEmpty(); }
 
     bool event(QEvent *event);
 
@@ -97,97 +94,101 @@ private:
 };
 
 
-class ItemGroupsModel : public SimpleTreeModel {
+class MarketTreeModel : public SimpleTreeModel {
     Q_OBJECT
 
 public:
-    ItemGroupsModel(ObjectGroup *rootGroup, QObject *parent);
+    MarketTreeModel(Category *category, QObject *parent);
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 private:
-    void fillNode(Node *node, ObjectGroup *group);
+    void fillNode(Node *node, Category *category);
 };
 
 
-class ItemsListModel : public SimpleTreeModel {
+class DefinitionListModel : public SimpleTreeModel {
     Q_OBJECT
 
 public:
-    ItemsListModel(QObject *parent);
+    DefinitionListModel(QObject *parent);
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    ObjectGroup *group() const { return m_group; }
-    void setGroup(ObjectGroup *group);
+    void setCategory(Category *category);
 
     bool hidePrototypes() const { return m_hidePrototypes; }
     QString nameFilter() const { return m_nameFilter; }
+    bool showTierIcons() const { return m_showTierIcons; }
+
+    void setShowTierIcons(bool show);
 
 public slots:
     void setHidePrototypes(bool hide) { m_hidePrototypes = hide; invalidateSortFilter(); }
-    void setLogicalOrder(bool logical) { setRowSort(logical ? -1 : 0, Qt::DisplayRole); invalidateSortFilter(); }
+    void setLogicalOrder(bool logical);
     void setNameFilter(const QString& filter) { m_nameFilter = filter; invalidateSortFilter(); }
 
 protected:
     bool filterAcceptRow(Node *node);
 
 private:
-    ObjectGroup *m_group;
+    Category *m_category;
 
     bool m_hidePrototypes;
     QString m_nameFilter;
+    bool m_showTierIcons;
 };
 
 
-class ItemComparisonModel : public SimpleTreeModel {
+class ComparisonModel : public SimpleTreeModel {
     Q_OBJECT
 
 public:
-    ItemComparisonModel(QObject *parent) : SimpleTreeModel(parent), m_reference(0) {}
+    ComparisonModel(QObject *parent) : SimpleTreeModel(parent), m_reference(0) {}
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
-    const QList<Item *> &items() const{ return m_displayItems; }
-    virtual void setItems(const QList<Item *> &items);
+    const QList<Definition *> &definitions() const{ return m_displayDefs; }
+    virtual void setDefinitions(const QList<Definition *> &definitions);
 
-    virtual bool canSetReference(const QModelIndex &index) { return index.column() > 0 && m_displayItems.size() > 1; }
+    virtual bool canSetReference(const QModelIndex &index) { return index.column() > 0 && m_displayDefs.size() > 1; }
     virtual void setReference(const QModelIndex &index);
 
-    virtual bool canSortRow(const QModelIndex &index) const { Q_UNUSED(index); return m_displayItems.size() > 1; }
+    virtual bool canSortRow(const QModelIndex &index) const { Q_UNUSED(index); return m_displayDefs.size() > 1; }
     virtual void toggleRowSort(const QModelIndex &index);
 
-    bool isEmpty() const { return m_displayItems.isEmpty() || rootNode()->children.isEmpty(); }
+    bool isEmpty() const { return SimpleTreeModel::isEmpty() || m_displayDefs.isEmpty(); }
 
 protected:
-    QList<Item *> m_items;
-    Item *m_reference;
+    QList<Definition *> m_definitions;
+    Definition *m_reference;
 
     Qt::SortOrder m_columnSortOrder;
     QPersistentModelIndex m_columnSortBase;
 
-    inline Item *fromColumn(const QModelIndex &index) const;
+    inline Definition *fromColumn(const QModelIndex &index) const;
 
     void invalidateColumnSort();
 
     virtual QString columnName(int index) const { Q_UNUSED(index); return QString(); }
 
 private:
-    QList<Item *> m_displayItems;
+    QList<Definition *> m_displayDefs;
 };
 
 
-class ParametersModel : public ItemComparisonModel {
+class AggregatesModel : public ComparisonModel {
     Q_OBJECT
 
 public:
-    ParametersModel(QObject *parent) : ItemComparisonModel(parent) { setRowSort(0, SortKeyRole); }
+    AggregatesModel(QObject *parent) : ComparisonModel(parent) { setRowSort(0, SortKeyRole); }
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    void setItems(const QList<Item *> &items);
+    void setDefinitions(const QList<Definition *> &definitions);
     bool canSortRow(const QModelIndex &index) const;
 
 protected:
@@ -195,14 +196,15 @@ protected:
 };
 
 
-class ComponentsModel : public ItemComparisonModel {
+class ComponentsModel : public ComparisonModel {
     Q_OBJECT
 
 public:
-    ComponentsModel(QObject *parent) : ItemComparisonModel(parent), m_smallComponentIcons(false) {}
+    ComponentsModel(QObject *parent) : ComparisonModel(parent), m_smallComponentIcons(false) {}
 
-    void setItems(const QList<Item *> &items);
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
+    void setDefinitions(const QList<Definition *> &definitions);
 
     bool smallComponentIcons() const { return m_smallComponentIcons; }
     void setSmallComponentIcons(bool small);
@@ -214,16 +216,17 @@ protected:
 };
 
 
-class BonusesModel : public ParametersModel {
+class BonusesModel : public ComparisonModel {
     Q_OBJECT
 
 public:
-    BonusesModel(QObject *parent) : ParametersModel(parent) {}
+    BonusesModel(QObject *parent) : ComparisonModel(parent) { setRowSort(0, SortKeyRole); }
 
-    void setItems(const QList<Item *> &items);
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-protected:
-    QString columnName(int index) const;
+    void setDefinitions(const QList<Definition *> &definitions);
 };
 
 
@@ -233,31 +236,29 @@ class RequirementsModel : public SimpleTreeModel {
 public:
     RequirementsModel(QObject *parent) : SimpleTreeModel(parent) {}
 
-    void setRequirements(const ExtensionSet *requirements);
+    void setRequirements(const ExtensionLevelMap &requirements);
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
 private:
-    void fillNode(Node *parentNode, const ExtensionSet *requirements);
+    void fillNode(Node *parentNode, const ExtensionLevelMap &requirements);
 
-    const ExtensionSet *m_requirements;
+    ExtensionLevelMap m_requirements;
 };
 
 
-class ComponentUseModel : public SimpleTreeModel {
+class DefinitionUseModel : public SimpleTreeModel {
     Q_OBJECT
 
 public:
-    ComponentUseModel(QObject *parent) : SimpleTreeModel(parent), m_component(0) {}
+    DefinitionUseModel(QObject *parent) : SimpleTreeModel(parent), m_component(0) {}
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    void setComponent(Item *component);
-
-    bool isEmpty() const { return rootNode()->children.isEmpty(); }
+    void setComponent(Definition *component);
 
 public slots:
     void setHidePrototypes(bool hide) { m_hidePrototypes = hide; invalidateSortFilter(); }
@@ -266,7 +267,7 @@ protected:
     bool filterAcceptRow(Node *node);
 
 private:
-    Item *m_component;
+    Definition *m_component;
     bool m_hidePrototypes;
 };
 

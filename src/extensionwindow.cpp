@@ -31,7 +31,7 @@ ExtensionWindow::ExtensionWindow(Extension *extension, QWidget *parent)
     setAttribute(Qt::WA_DeleteOnClose);
     setupUi(this);
 
-    if (extension->requirements()) {
+    if (!extension->requirements().isEmpty()) {
         RequirementsModel *model = new RequirementsModel(this);
         model->setRequirements(extension->requirements());
         treeRequirements->setModel(model);

@@ -25,14 +25,14 @@
 class QSettings;
 class QMenu;
 class GameData;
-class Item;
-class ItemsListModel;
-class ItemGroupsModel;
-class ParametersModel;
+class Definition;
+class DefinitionListModel;
+class MarketTreeModel;
+class AggregatesModel;
 class ComponentsModel;
 class BonusesModel;
 class RequirementsModel;
-class ComponentUseModel;
+class DefinitionUseModel;
 
 
 class ItemsView : public QWidget, private Ui::ItemsView
@@ -66,19 +66,19 @@ private slots:
 private:
     GameData *m_gameData;
 
-    ItemGroupsModel *m_groupsModel;
-    ItemsListModel *m_itemsModel;
+    MarketTreeModel *m_groupsModel;
+    DefinitionListModel *m_itemsModel;
 
-    ParametersModel *m_parameters;
+    AggregatesModel *m_parameters;
     ComponentsModel *m_components;
     RequirementsModel *m_requirements;
     BonusesModel *m_bonuses;
-    ComponentUseModel *m_componentUse;
+    DefinitionUseModel *m_componentUse;
 
     QList<QWidget *> m_tabs;
-    QList<Item *> m_items;
+    QList<Definition *> m_definitions;
 
-    void setItems(QList<Item *> items);
+    void setDefinitions(QList<Definition *> items, bool retranslate = false);
 
     void setTabVisible(QWidget *tab, bool visible = true);
 };

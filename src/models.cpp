@@ -17,10 +17,11 @@
     along with PerpetuumPlanner. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include <QFont>
 #include <QEvent>
 #include <QDateTime>
+#include <QSet>
+#include <QDebug>
 
 #include "models.h"
 #include "gamedata.h"
@@ -70,7 +71,8 @@ private:
             return l.toDateTime() < r.toDateTime();
         case QVariant::String:
         default:
-            return l.toString().compare(r.toString(), Qt::CaseInsensitive) < 0;
+            //return l.toString().compare(r.toString(), Qt::CaseInsensitive) < 0;
+            return l.toString().localeAwareCompare(r.toString()) < 0;
         }
     }
 
@@ -84,13 +86,6 @@ private:
 SimpleTreeModel::Node *SimpleTreeModel::nodeFromIndex(const QModelIndex &index) const
 {
     return static_cast<Node *>(index.internalPointer());
-}
-
-template<typename T>
-T SimpleTreeModel::fromIndex(const QModelIndex &index) const
-{
-    Node *node = nodeFromIndex(index);
-    return node ? qobject_cast<T>(node->object) : 0;
 }
 
 QModelIndex SimpleTreeModel::objectIndex(QObject *object) const
@@ -157,6 +152,8 @@ void SimpleTreeModel::endResetModel()
 
 void SimpleTreeModel::sort(int column, Qt::SortOrder order)
 {
+    qDebug() << "sort" << this << column << order;
+
     if (m_sortColumn != column || m_rowSortOrder != order) {
         m_sortColumn = column;
         m_rowSortOrder = order;
@@ -218,6 +215,7 @@ void SimpleTreeModel::applySortFilter(Node *node)
             qStableSort(indexes.begin(), indexes.end(), IndexCompare(m_sortRole, m_rowSortOrder));
 
         if (m_sortColumn == -1 && indexes.size() == numChildren) {
+            // no sort, and nothing is filtered out
             node->displayChildren = node->children;
         }
         else {
@@ -240,81 +238,105 @@ bool SimpleTreeModel::event(QEvent *event)
 
 // ItemGroupsModel
 
-ItemGroupsModel::ItemGroupsModel(ObjectGroup *rootGroup, QObject *parent) : SimpleTreeModel(parent)
+MarketTreeModel::MarketTreeModel(Category *category, QObject *parent) : SimpleTreeModel(parent)
 {
     beginResetModel();
-    fillNode(rootNode(), rootGroup);
+    setRowSort(0, SortKeyRole);
+    fillNode(rootNode(), category);
     endResetModel();
 }
 
-void ItemGroupsModel::fillNode(Node *node, ObjectGroup *group)
+void MarketTreeModel::fillNode(Node *node, Category *category)
 {
-    foreach (ObjectGroup *childGroup, group->groups())
-        fillNode(node->addChild(childGroup), childGroup);
+    foreach (Category *subcat, category->categories())
+        if (subcat->inMarket())
+            fillNode(node->addChild(subcat), subcat);
 }
 
-QVariant ItemGroupsModel::data(const QModelIndex &index, int role) const
+QVariant MarketTreeModel::data(const QModelIndex &index, int role) const
 {
-    if (ObjectGroup *group = fromIndex<ObjectGroup *>(index))
+    if (Category *category = fromIndex<Category *>(index)) {
         if (role == Qt::DisplayRole)
-            return QString("%1 (%2)").arg(group->name()).arg(group->allObjects().size());
+            return QString("%1 (%2)").arg(category->name()).arg(category->marketCount());
+        else if (role == SortKeyRole)
+            return category->id();
+    }
     return QVariant();
 }
 
 
 // ItemsListModel
 
-ItemsListModel::ItemsListModel(QObject *parent) : SimpleTreeModel(parent), m_group(0), m_hidePrototypes(false)
+DefinitionListModel::DefinitionListModel(QObject *parent)
+    : SimpleTreeModel(parent), m_category(0), m_hidePrototypes(false), m_showTierIcons(true)
 {
-    setRowSort(0, Qt::DisplayRole);
+    setLogicalOrder(false);
 }
 
-QVariant ItemsListModel::data(const QModelIndex &index, int role) const
+void DefinitionListModel::setLogicalOrder(bool logical)
 {
-    if (GameObject *object = fromIndex<GameObject *>(index)) {
+    setRowSort(0, logical ? SortKeyRole : Qt::DisplayRole);
+    invalidateSortFilter();
+}
+
+QVariant DefinitionListModel::data(const QModelIndex &index, int role) const
+{
+    if (Definition *definition = fromIndex<Definition *>(index)) {
+        Tier *tier = definition->isRobot() ? 0 : definition->tier();
+
         if (role == Qt::DisplayRole) {
-            int prodLevel = static_cast<Item *>(object)->parameter("Production Level").toInt();
-            if (prodLevel)
-                return QString("%1 [%2]").arg(object->name()).arg(prodLevel);
-            return object->name();
+            if (tier && !m_showTierIcons)
+                return QString("%1 [%2]").arg(definition->name()).arg(tier->name());
+            return definition->name();
+        }
+        else if (role == Qt::DecorationRole) {
+            if (tier && m_showTierIcons)
+                return tier->icon();
+        }
+        else if (role == SortKeyRole) {
+            return definition->category()->order() + (tier ? tier->id() : definition->id());
         }
     }
     return QVariant();
 }
 
-bool ItemsListModel::filterAcceptRow(Node *node)
+bool DefinitionListModel::filterAcceptRow(Node *node)
 {
-    GameObject *object = static_cast<GameObject *>(node->object);
-    if (!object->name().contains(m_nameFilter, Qt::CaseInsensitive))
+    Definition *definition = static_cast<Definition *>(node->object);
+    if (!definition->name().contains(m_nameFilter, Qt::CaseInsensitive))
         return false;
-    if (m_hidePrototypes && object->objectName().endsWith(QLatin1String("_pr")))
+    if (m_hidePrototypes && definition->isPrototype())
         return false;
     return true;
 }
 
-void ItemsListModel::setGroup(ObjectGroup *group)
+void DefinitionListModel::setCategory(Category *category)
 {
     beginResetModel();
-    m_group = group;
-    if (group)
-        foreach (GameObject *object, group->allObjects())
-            rootNode()->addChild(object);
+    if (category)
+        foreach (Definition *definition, category->definitions())
+            if (definition->inMarket())
+                rootNode()->addChild(definition);
     endResetModel();
+}
+
+void DefinitionListModel::setShowTierIcons(bool show)
+{
+    m_showTierIcons = show;
+    emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
 
 
 // ItemComparisonModel
 
-QVariant ItemComparisonModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant ComparisonModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
-            if (section == 0)
-                return columnName(0);
-            if (section == 1 && m_displayItems.size() == 1)
-                return columnName(1);
-            if (section > 0 && section <= m_displayItems.size())
-                return m_displayItems.at(section - 1)->name();
+            if (section == 0 || m_definitions.size() == 1 && section < columnCount() - 1)
+                return columnName(section);
+            if (section > 0 && section <= m_displayDefs.size())
+                return m_displayDefs.at(section - 1)->name();
         }
         else if (role == Qt::TextAlignmentRole) {
             return (int) (Qt::AlignLeft | Qt::AlignVCenter);
@@ -323,45 +345,55 @@ QVariant ItemComparisonModel::headerData(int section, Qt::Orientation orientatio
     return QVariant();
 }
 
-int ItemComparisonModel::columnCount(const QModelIndex &parent) const
+QVariant ComparisonModel::data(const QModelIndex &index, int role) const
 {
-    Q_UNUSED(parent)
-    return 2 + m_displayItems.size();
+    // provide row sort order information for delegate to draw an arrow
+    if (index.column() == 0 && role == SortableRowDelegate::SortOrderRole) {
+        if (index == m_columnSortBase)
+            return m_columnSortOrder;
+    }
+    return QVariant();
 }
 
-Qt::ItemFlags ItemComparisonModel::flags(const QModelIndex &index) const
+int ComparisonModel::columnCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+    return 2 + m_displayDefs.size();
+}
+
+Qt::ItemFlags ComparisonModel::flags(const QModelIndex &index) const
 {
     return index.isValid() ? (Qt::ItemIsEnabled | Qt::ItemIsSelectable) : 0;
 }
 
-void ItemComparisonModel::setReference(const QModelIndex &idx)
+void ComparisonModel::setReference(const QModelIndex &idx)
 {
-    if (idx.column() > 0 && idx.column() <= m_displayItems.size())
-        m_reference = m_displayItems.at(idx.column() - 1);
+    if (idx.column() > 0 && idx.column() <= m_displayDefs.size())
+        m_reference = m_displayDefs.at(idx.column() - 1);
     else if (!idx.isValid())
         m_reference = 0;
 
     emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1));
 }
 
-void ItemComparisonModel::setItems(const QList<Item *> &items)
+void ComparisonModel::setDefinitions(const QList<Definition *> &items)
 {
-    m_items = m_displayItems = items;
+    m_definitions = m_displayDefs = items;
 }
 
-Item *ItemComparisonModel::fromColumn(const QModelIndex &index) const
+Definition *ComparisonModel::fromColumn(const QModelIndex &index) const
 {
-    if (index.column() > 0 && index.column() <= m_displayItems.size())
-        return m_displayItems.at(index.column() - 1);
+    if (index.column() > 0 && index.column() <= m_displayDefs.size())
+        return m_displayDefs.at(index.column() - 1);
     return 0;
 }
 
-void ItemComparisonModel::invalidateColumnSort()
+void ComparisonModel::invalidateColumnSort()
 {
     emit layoutAboutToBeChanged();
-    m_displayItems = m_items;
+    m_displayDefs = m_definitions;
     if (m_columnSortBase.isValid()) {
-        int numItems = m_items.size();
+        int numItems = m_definitions.size();
 
         QModelIndexList indexes;
         for (int i = 0; i < numItems; ++i)
@@ -370,15 +402,15 @@ void ItemComparisonModel::invalidateColumnSort()
         // NB: displayItems are used for data()
         qStableSort(indexes.begin(), indexes.end(), IndexCompare(sortRole(), m_columnSortOrder));
 
-        m_displayItems.clear();
-        m_displayItems.reserve(numItems);
+        m_displayDefs.clear();
+        m_displayDefs.reserve(numItems);
         for (int i = 0; i < numItems; ++i)
-            m_displayItems << m_items.at(indexes.at(i).column() - 1);
+            m_displayDefs << m_definitions.at(indexes.at(i).column() - 1);
     }
     emit layoutChanged();
 }
 
-void ItemComparisonModel::toggleRowSort(const QModelIndex &index)
+void ComparisonModel::toggleRowSort(const QModelIndex &index)
 {
     if (canSortRow(index)) {
         if (m_columnSortBase == index) {
@@ -396,14 +428,14 @@ void ItemComparisonModel::toggleRowSort(const QModelIndex &index)
 }
 
 
-// ParametersModel
+// AggregatesModel
 
-bool ParametersModel::canSortRow(const QModelIndex &index) const
+bool AggregatesModel::canSortRow(const QModelIndex &index) const
 {
-    return ItemComparisonModel::canSortRow(index) && fromIndex<Parameter *>(index);
+    return ComparisonModel::canSortRow(index) && fromIndex<AggregateField *>(index);
 }
 
-QString ParametersModel::columnName(int index) const
+QString AggregatesModel::columnName(int index) const
 {
     if (index) {
         //: entityinfo_value
@@ -413,74 +445,70 @@ QString ParametersModel::columnName(int index) const
     return tr("Parameters");
 }
 
-void ParametersModel::setItems(const QList<Item *> &items)
+void AggregatesModel::setDefinitions(const QList<Definition *> &definitions)
 {
     beginResetModel();
-    ItemComparisonModel::setItems(items);
+    ComparisonModel::setDefinitions(definitions);
 
-    if (!m_items.isEmpty()) {
-        GameData *gameData = items.at(0)->gameData();
-        ObjectGroup *parameters = gameData->parameters();
-        foreach (ObjectGroup *group, parameters->groups()) {
-            Node *groupNode = 0;
+    if (!definitions.isEmpty()) {
+        QHash<AggregateField *, Node *> aggregateNodes;
+        QHash<FieldCategory *, Node *> categoryNodes;
 
-            foreach (GameObject *object, group->objects()) {
-                Parameter *parameter = static_cast<Parameter *>(object);
-                Node *parameterNode = 0;
-                float minValue = 1e8, maxValue = -1e8;
+        foreach (Definition *definition, definitions) {
+            foreach (AggregateField *aggregate, definition->aggregates().keys()) {
+                if (aggregate->hidden())
+                    continue;
 
-                foreach (Item *item, items) {
-                    QVariant value = item->parameters()->value(parameter);
-                    if (value.isValid() && !(item->bonusExtension() && gameData->bonuses()->objects().contains(parameter))) {
-                        if (!groupNode)
-                            groupNode = rootNode()->addChild(group);
-
-                        if (!parameterNode) {
-                            parameterNode = groupNode->addChild(parameter);
-
-                            if (parameter->isMeta())
-                                break;
-                        }
-
-                        bool ok = true;
-                        float fValue = value.toFloat(&ok);
-                        if (ok) {
-                            if (fValue < minValue) minValue = fValue;
-                            if (fValue > maxValue) maxValue = fValue;
-                        }
+                Node *aggregateNode = aggregateNodes.value(aggregate);
+                if (!aggregateNode) {
+                    FieldCategory *category = aggregate->category();
+                    Node *categoryNode = categoryNodes.value(category);
+                    if (!categoryNode) {
+                        categoryNode = rootNode()->addChild(category);
+                        categoryNodes.insert(category, categoryNode);
                     }
+
+                    aggregateNode = categoryNode->addChild(aggregate);
+                    aggregateNode->data << QVariant(1e30f) << QVariant(1e-30f);
+                    aggregateNodes.insert(aggregate, aggregateNode);
                 }
 
-                if (parameterNode && minValue < maxValue) {
-                    if (parameter->lessIsBetter())
-                        qSwap(minValue, maxValue);
-                    parameterNode->data << minValue << maxValue;
+                bool ok;
+                float value = definition->aggregates().value(aggregate).toFloat(&ok);
+                if (ok) {
+                    if (value < aggregateNode->data.at(0).toFloat())
+                        aggregateNode->data[0] = value;
+                    if (value > aggregateNode->data.at(1).toFloat())
+                        aggregateNode->data[1] = value;
                 }
             }
         }
+
+        foreach (Node *aggregateNode, aggregateNodes)
+            if (aggregateNode->data.at(0) == aggregateNode->data.at(1))
+                aggregateNode->data.clear();
     }
     endResetModel();
 }
 
-QVariant ParametersModel::data(const QModelIndex &index, int role) const
+QVariant AggregatesModel::data(const QModelIndex &index, int role) const
 {
     static QColor winnerFg(0x7dc47f), loserFg(0xd16e6e);
 
     if (index.column() == 0) {
-        if (Parameter *parameter = fromIndex<Parameter *>(index)) {
+        if (AggregateField *aggregate = fromIndex<AggregateField *>(index)) {
             if (role == Qt::DisplayRole || role == SortKeyRole) {
                 //if (m_items.size() == 1 || parameter->unit().isEmpty())
-                    return parameter->name();
+                    return aggregate->name();
                 //return QString("%1 (%2)").arg(parameter->name(), parameter->unit());
             }
-            else if (role == SortableRowDelegate::SortOrderRole) {
-                if (index == m_columnSortBase)
-                    return m_columnSortOrder;
-            }
         }
-        else if (ObjectGroup *group = fromIndex<ObjectGroup *>(index)) {
+        else if (FieldCategory *category = fromIndex<FieldCategory *>(index)) {
             if (role == Qt::DisplayRole) {
-                return group->name();
+                return category->name();
+            }
+            else if (role == SortKeyRole) {
+                return category->id();
             }
             else if (role == Qt::FontRole) {
                 QFont font;
@@ -489,14 +517,14 @@ QVariant ParametersModel::data(const QModelIndex &index, int role) const
             }
         }
     }
-    else if (Item *item = fromColumn(index)) {
+    else if (Definition *definition = fromColumn(index)) {
         if (role == Qt::DisplayRole || role == SortKeyRole || role == Qt::ForegroundRole) {
-            if (Parameter *parameter = fromIndex<Parameter *>(index)) {
-                QVariant value = item->parameters()->value(parameter);
+            if (AggregateField *aggregate = fromIndex<AggregateField *>(index)) {
+                QVariant value = definition->aggregates().value(aggregate);
                 if (value.isValid()) {
                     if (role == Qt::DisplayRole) {
                         //if (m_items.size() == 1)
-                            return parameter->format(value);
+                            return aggregate->format(value);
                         //return value.toString();
                     }
                     else if (role == SortKeyRole) {
@@ -515,41 +543,92 @@ QVariant ParametersModel::data(const QModelIndex &index, int role) const
             }
         }
     }
-    return QVariant();
+    return ComparisonModel::data(index, role);
 }
 
 
 // BonusesModel
 
-QString BonusesModel::columnName(int index) const
-{
-    if (index) {
-        //: entityinfo_bonus_extensionbonus
-        return tr("Bonus");
-    }
-    //: entityinfo_bonus_aggregate
-    return tr("Effect");
-}
-
-void BonusesModel::setItems(const QList<Item *> &items)
+void BonusesModel::setDefinitions(const QList<Definition *> &definitions)
 {
     beginResetModel();
-    ItemComparisonModel::setItems(items);
-    if (!m_items.isEmpty()) {
-        GameData *gameData = m_items.at(0)->gameData();
+    ComparisonModel::setDefinitions(definitions);
 
-        foreach (GameObject *object, gameData->bonuses()->objects()) {
-            Parameter *parameter = static_cast<Parameter *>(object);
+    QHash<AggregateField *, Node *> m_bonusNodes;
 
-            foreach (Item *item, items) {
-                if (item->bonusExtension() && item->parameters()->value(parameter).isValid()) {
-                    rootNode()->addChild(parameter);
-                    break;
-                }
+    foreach (Definition *definition, definitions) {
+        foreach (Bonus *bonus, definition->bonuses()) {
+            Node *bonusNode = m_bonusNodes.value(bonus->aggregate());
+            if (!bonusNode) {
+                bonusNode = rootNode()->addChild(bonus->aggregate());
+                m_bonusNodes.insert(bonus->aggregate(), bonusNode);
             }
         }
     }
     endResetModel();
+}
+
+int BonusesModel::columnCount(const QModelIndex &parent) const
+{
+    if (m_definitions.size() == 1)
+        return 4; // adds "Relevant extension" column
+    return ComparisonModel::columnCount(parent);
+}
+
+QVariant BonusesModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (orientation == Qt::Horizontal) {
+        if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
+            if (section == 0)
+                //: entityinfo_bonus_aggregate
+                return tr("Effect");
+            else if (m_definitions.size() == 1)
+                switch (section) {
+                case 1:
+                    //: entityinfo_bonus_extensionbonus
+                    return tr("Bonus");
+                case 2:
+                    //: entityinfo_bonus_extensionname
+                    return tr("Relevant extension");
+                }
+        }
+        else if (role == Qt::SizeHintRole) {
+            if (section == 2 && m_definitions.size() == 1)
+                return QSize(200, 0);
+        }
+    }
+    return ComparisonModel::headerData(section, orientation, role);
+}
+
+QVariant BonusesModel::data(const QModelIndex &index, int role) const
+{
+    if (AggregateField *aggregate = fromIndex<AggregateField *>(index)) {
+        if (index.column() == 0) {
+            if (role == Qt::DisplayRole || role == SortKeyRole)
+                return aggregate->name();
+        }
+        else if (Definition *definition = fromColumn(index)) {
+            if (role == Qt::DisplayRole || role == SortKeyRole) {
+                Bonus *bonus = definition->bonuses().value(aggregate);
+                if (bonus) {
+                    if (role == Qt::DisplayRole)
+                        return bonus->format();
+                    else if (role == SortKeyRole)
+                        return bonus->bonus();
+                }
+            }
+        }
+        else if (m_definitions.size() == 1 && index.column() == 2) {
+            // 3rd column in single-item display is "Relevant extension"
+            Definition *definition = m_definitions.at(0);
+            Bonus *bonus = definition->bonuses().value(aggregate);
+            if (bonus) {
+                if (role == Qt::DisplayRole || role == SortKeyRole)
+                    return bonus->extension()->name();
+            }
+        }
+    }
+    return ComparisonModel::data(index, role);
 }
 
 
@@ -565,31 +644,19 @@ QString ComponentsModel::columnName(int index) const
     return tr("Components");
 }
 
-void ComponentsModel::setItems(const QList<Item *> &items)
+void ComponentsModel::setDefinitions(const QList<Definition *> &definitions)
 {
     beginResetModel();
-    ItemComparisonModel::setItems(items);
+    ComparisonModel::setDefinitions(definitions);
 
-    if (!items.isEmpty()) {
-        QList<GameObject *> commonComponents = items.at(0)->gameData()->components()->allObjects();
+    if (!definitions.isEmpty()) {
+        QSet<Definition *> components;
 
-        foreach (GameObject *component, commonComponents) {
-            foreach (Item *item, items) {
-                if (item->components()) {
-                    if (item->components()->amount(static_cast<Item *>(component)) > 0) {
-                        rootNode()->addChild(component);
-                        break;
-                    }
-                }
-            }
-        }
-        foreach (Item *item, items) {
-            if (item->components()) {
-                foreach (Item *component, item->components()->components()) {
-                    if (!commonComponents.contains(component)) {
-                        commonComponents << component;
-                        rootNode()->addChild(component);
-                    }
+        foreach (Definition *definition, definitions) {
+            foreach (Definition *component, definition->components().keys()) {
+                if (!components.contains(component)) {
+                    components.insert(component);
+                    rootNode()->addChild(component);
                 }
             }
         }
@@ -599,7 +666,7 @@ void ComponentsModel::setItems(const QList<Item *> &items)
 
 QVariant ComponentsModel::data(const QModelIndex &index, int role) const
 {
-    if (Item *component = fromIndex<Item *>(index)) {
+    if (Definition *component = fromIndex<Definition *>(index)) {
         if (index.column() == 0) {
             if (role == Qt::DisplayRole) {
                 return component->name();
@@ -614,20 +681,16 @@ QVariant ComponentsModel::data(const QModelIndex &index, int role) const
                 if (!m_smallComponentIcons)
                     return QSize(0, 32);
             }
-            else if (role == SortableRowDelegate::SortOrderRole) {
-                if (m_columnSortBase == index)
-                    return m_columnSortOrder;
-            }
         }
-        else if (Item *item = fromColumn(index)) {
+        else if (Definition *definition = fromColumn(index)) {
             if (role == Qt::DisplayRole) {
-                int amount = item->components() ? item->components()->amount(component) : 0;
+                int amount = definition->components().value(component);
                 if (amount)
                     return amount;
             }
         }
     }
-    return QVariant();
+    return ComparisonModel::data(index, role);
 }
 
 void ComponentsModel::setSmallComponentIcons(bool small)
@@ -640,7 +703,7 @@ void ComponentsModel::setSmallComponentIcons(bool small)
 
 // RequirementsModel
 
-void RequirementsModel::setRequirements(const ExtensionSet *requirements)
+void RequirementsModel::setRequirements(const ExtensionLevelMap &requirements)
 {
     beginResetModel();
     m_requirements = requirements;
@@ -648,12 +711,10 @@ void RequirementsModel::setRequirements(const ExtensionSet *requirements)
     endResetModel();
 }
 
-void RequirementsModel::fillNode(Node *parentNode, const ExtensionSet *requirements)
+void RequirementsModel::fillNode(Node *parentNode, const ExtensionLevelMap &requirements)
 {
-    if (requirements) {
-        foreach (Extension *extension, requirements->extensions())
-            fillNode(parentNode->addChild(extension), extension->requirements());
-    }
+    foreach (Extension *extension, requirements.extensions())
+        fillNode(parentNode->addChild(extension), extension->requirements());
 }
 
 QVariant RequirementsModel::data(const QModelIndex &index, int role) const
@@ -662,10 +723,10 @@ QVariant RequirementsModel::data(const QModelIndex &index, int role) const
         if (role == Qt::DisplayRole) {
             Extension *parent = static_cast<Extension *>(node->parent->object);
             Extension *extension = fromIndex<Extension *>(index);
-            int level = parent ? parent->requirements()->level(extension) : m_requirements->level(extension);
+            int level = parent ? parent->requirements().value(extension) : m_requirements.value(extension);
 
             return QString("%1 / %2 (%3)")
-                    .arg(extension->parentGroup()->name()).arg(extension->name()).arg(level);
+                    .arg(extension->category()->name()).arg(extension->name()).arg(level);
         }
     }
     return QVariant();
@@ -679,33 +740,33 @@ Qt::ItemFlags RequirementsModel::flags(const QModelIndex &index) const
 
 // ComponentUseModel
 
-void ComponentUseModel::setComponent(Item *component)
+void DefinitionUseModel::setComponent(Definition *component)
 {
     beginResetModel();
     m_component = component;
     if (component) {
-        foreach (GameObject *object, component->gameData()->items()->allObjects()) {
-            Item *item = static_cast<Item *>(object);
-            if (item->components() && item->components()->amount(m_component))
-                rootNode()->addChild(item);
+        foreach (Definition *definition, component->gameData()->definitions()) {
+            if (definition->inMarket())
+                if (definition->components().value(m_component))
+                    rootNode()->addChild(definition);
         }
     }
     endResetModel();
 }
 
-bool ComponentUseModel::filterAcceptRow(Node *node)
+bool DefinitionUseModel::filterAcceptRow(Node *node)
 {
-    Item *item = static_cast<Item *>(node->object);
+    Definition *item = static_cast<Definition *>(node->object);
     return !m_hidePrototypes || !item->objectName().endsWith(QLatin1String("_pr"));
 }
 
-int ComponentUseModel::columnCount(const QModelIndex &parent) const
+int DefinitionUseModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return 3;
 }
 
-QVariant ComponentUseModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant DefinitionUseModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DisplayRole) {
@@ -724,15 +785,15 @@ QVariant ComponentUseModel::headerData(int section, Qt::Orientation orientation,
     return QVariant();
 }
 
-QVariant ComponentUseModel::data(const QModelIndex &index, int role) const
+QVariant DefinitionUseModel::data(const QModelIndex &index, int role) const
 {
-    if (Item *item = fromIndex<Item *>(index)) {
+    if (Definition *definition = fromIndex<Definition *>(index)) {
         if (role == Qt::DisplayRole) {
             switch (index.column()) {
             case 0:
-                return item->name();
+                return definition->name();
             case 1:
-                return item->components()->amount(m_component);
+                return definition->components().value(m_component);
             }
         }
     }

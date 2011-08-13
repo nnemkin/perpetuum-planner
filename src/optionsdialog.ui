@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>299</width>
-    <height>328</height>
+    <height>339</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,6 +80,16 @@
         </property>
         <property name="option" stdset="0">
          <string notr="true">ItemsView/SmallComponentIcons</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkTierIcons">
+        <property name="text">
+         <string>Show tier icons</string>
+        </property>
+        <property name="option" stdset="0">
+         <string notr="true">ItemsView/TierIcons</string>
         </property>
        </widget>
       </item>

@@ -45,11 +45,13 @@ ExtensionsModel::ExtensionsModel(Agent *agent, QObject *parent) : SimpleTreeMode
     setRowSort(0, SortKeyRole);
 
     beginResetModel();
-    foreach (ObjectGroup *group, m_agent->gameData()->extensions()->groups()) {
-        Node *groupNode = rootNode()->addChild(group);
+    foreach (ExtensionCategory *category, m_agent->gameData()->extensionCategories()) {
+        if (category->extensions().isEmpty())
+            continue;
 
-        foreach (GameObject *object, group->objects())
-            groupNode->addChild(object);
+        Node *categoryNode = rootNode()->addChild(category);
+        foreach (Extension *extension, category->extensions())
+            categoryNode->addChild(extension);
     }
     endResetModel();
 
@@ -145,19 +147,19 @@ QVariant ExtensionsModel::data(const QModelIndex &index, int role) const
             return m_agent->plannedExtensions()->level(extension);
         }
     }
-    else if (ObjectGroup *group = fromIndex<ObjectGroup *>(index)) {
+    else if (ExtensionCategory *category = fromIndex<ExtensionCategory *>(index)) {
         if (role == Qt::DisplayRole) {
             int points;
             switch (index.column()) {
             case 0:
-                return QString("<div class=\"group\">%1</div>").arg(group->name());
+                return QString("<div class=\"group\">%1</div>").arg(category->name());
             case 2:
-                points = m_agent->currentExtensions()->points(group);
+                points = m_agent->currentExtensions()->points(category);
                 if (points)
                     return QString("<div class=\"group\"><span class=\"current\">%L1</span></div>").arg(points);
                 break;
             case 4:
-                points = m_agent->plannedExtensions()->points(group) - m_agent->currentExtensions()->points(group);
+                points = m_agent->plannedExtensions()->points(category) - m_agent->currentExtensions()->points(category);
                 if (points)
                     return QString("<div class=\"group\"><span class=\"planned\">%L1</span></div>").arg(points);
                 break;

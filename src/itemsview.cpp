@@ -22,6 +22,7 @@
 #include <QMenu>
 #include <QClipboard>
 #include <QPainter>
+#include <QDebug>
 
 #include "application.h"
 #include "itemsview.h"
@@ -100,22 +101,24 @@ ItemsView::ItemsView(QWidget *parent) : QWidget(parent), m_gameData(0), m_groups
 
 void ItemsView::initialize(QSettings &settings, GameData *gameData)
 {
-    m_groupsModel = new ItemGroupsModel(gameData->items(), this);
+    m_groupsModel = new MarketTreeModel(gameData->rootCategory(), this);
     treeGroups->setModel(m_groupsModel);
 
-    m_itemsModel = new ItemsListModel(this);
+    m_itemsModel = new DefinitionListModel(this);
     listItems->setModel(m_itemsModel);
 
     bool hidePrototypes = settings.value(QLatin1String("ItemsView/HidePrototypes")).toBool();
     bool logicalOrder = settings.value(QLatin1String("ItemsView/LogicalOrder")).toBool();
+    bool tierIcons = settings.value(QLatin1String("ItemsView/TierIcons")).toBool();
     m_itemsModel->setHidePrototypes(hidePrototypes);
     m_itemsModel->setLogicalOrder(logicalOrder);
+    m_itemsModel->setShowTierIcons(tierIcons);
     checkHidePrototypes->setChecked(hidePrototypes);
     checkLogicalOrder->setChecked(logicalOrder);
 
     ForegroundFixDelegate *fgFixDelefate = new ForegroundFixDelegate(this);
 
-    m_parameters = new ParametersModel(this);
+    m_parameters = new AggregatesModel(this);
     treeParameters->setModel(m_parameters);
     treeParameters->setHeader(new ItemTableHeader(220, 60, 200, treeParameters));
     treeParameters->setItemDelegateForColumn(0, new SortableRowDelegate(treeParameters));
@@ -136,29 +139,29 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
     treeBonuses->setItemDelegate(fgFixDelefate);
     treeBonuses->setItemDelegateForColumn(0, new SortableRowDelegate(treeBonuses));
 
-    m_componentUse = new ComponentUseModel(this);
+    m_componentUse = new DefinitionUseModel(this);
     m_componentUse->setHidePrototypes(hidePrototypes);
     treeComponentUse->setModel(m_componentUse);
     treeComponentUse->setHeader(new ItemTableHeader(220, 60, 140, treeComponentUse));
 
-    ObjectGroup *selectedGroup = gameData->findObject<ObjectGroup *>(settings.value(QLatin1String("ItemsView/SelectedGroup")).toString());
-    if (selectedGroup) {
-        m_itemsModel->setGroup(selectedGroup);
-        QModelIndex groupIndex = m_groupsModel->objectIndex(selectedGroup);
+    Category *selectedCat = gameData->findByName<Category *>(settings.value(QLatin1String("ItemsView/SelectedGroup")).toString());
+    if (selectedCat) {
+        m_itemsModel->setCategory(selectedCat);
+        QModelIndex groupIndex = m_groupsModel->objectIndex(selectedCat);
         if (groupIndex.isValid()) {
             treeGroups->selectionModel()->select(groupIndex, QItemSelectionModel::Select);
 
-            QStringList itemIds = settings.value(QLatin1String("ItemsView/SelectedItems")).toStringList();
-            QList<Item *> items;
-            foreach (const QString &itemId, itemIds) {
-                Item *item = gameData->findObject<Item *>(itemId);
-                if (item)
-                    items << item;
+            QStringList defNames = settings.value(QLatin1String("ItemsView/SelectedItems")).toStringList();
+            QList<Definition *> definitions;
+            foreach (const QString &defName, defNames) {
+                Definition *definition = gameData->findByName<Definition *>(defName);
+                if (definition)
+                    definitions << definition;
             }
-            if (!items.isEmpty()) {
-                foreach (Item *item, items)
+            if (!definitions.isEmpty()) {
+                foreach (Definition *item, definitions)
                     listItems->selectionModel()->select(m_itemsModel->objectIndex(item), QItemSelectionModel::Select);
-                setItems(items);
+                setDefinitions(definitions);
             }
         }
     }
@@ -167,7 +170,7 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
 
     splitterInfo->restoreState(settings.value(QLatin1String("ItemsView/Splitter1")).toByteArray());
     splitterItems->restoreState(settings.value(QLatin1String("ItemsView/Splitter2")).toByteArray());
-    stackInfo->setCurrentIndex(!m_items.isEmpty());
+    stackInfo->setCurrentIndex(!m_definitions.isEmpty());
 
     tabWidget->setCurrentIndex(settings.value(QLatin1String("ItemsView/ActiveTab")).toInt());
 
@@ -198,15 +201,15 @@ void ItemsView::finalize(QSettings &settings)
     settings.setValue(QLatin1String("ItemsView/ActiveTab"), tabWidget->currentIndex());
     settings.setValue(QLatin1String("ItemsView/ExpandedGroups"), saveTreeState(treeGroups));
 
-    QStringList itemIds;
-    foreach (Item *item, m_items)
-        itemIds << item->id();
+    QStringList defNames;
+    foreach (Definition *definition, m_definitions)
+        defNames << definition->systemName();
 
-    settings.setValue(QLatin1String("ItemsView/SelectedItems"), itemIds);
+    settings.setValue(QLatin1String("ItemsView/SelectedItems"), defNames);
     if (treeGroups->selectionModel()->hasSelection()) {
-        QModelIndex groupIndex = treeGroups->selectionModel()->selectedIndexes().at(0);
-        ObjectGroup *group = m_groupsModel->fromIndex<ObjectGroup *>(groupIndex);
-        settings.setValue(QLatin1String("ItemsView/SelectedGroup"), group ? group->id() : QString());
+        QModelIndex catIndex = treeGroups->selectionModel()->selectedIndexes().at(0);
+        Category *category = m_groupsModel->fromIndex<Category *>(catIndex);
+        settings.setValue(QLatin1String("ItemsView/SelectedGroup"), category ? category->systemName() : 0);
     }
 }
 
@@ -221,8 +224,8 @@ void ItemsView::changeEvent(QEvent *event)
 
         retranslateUi(this);
 
-        if (!m_items.isEmpty())
-            setItems(m_items);
+        if (!m_definitions.isEmpty())
+            setDefinitions(m_definitions, true);
     }
 }
 
@@ -230,6 +233,7 @@ void ItemsView::customEvent(QEvent *event)
 {
     if (event->type() == Application::SettingsChanged) {
         QSettings settings;
+        m_itemsModel->setShowTierIcons(settings.value(QLatin1String("ItemsView/TierIcons")).toBool());
         m_components->setSmallComponentIcons(settings.value(QLatin1String("ItemsView/SmallComponentIcons")).toBool());
 
         textDescription->document()->setDefaultStyleSheet(qApp->docStyleSheet());
@@ -272,8 +276,8 @@ void ItemsView::on_splitterItems_splitterMoved(int, int index)
 void ItemsView::groupSelectionChanged(const QItemSelection &selected)
 {
     if (!selected.isEmpty()) {
-        ObjectGroup *group = m_groupsModel->fromIndex<ObjectGroup *>(selected.indexes().at(0));
-        m_itemsModel->setGroup(group);
+        Category *category = m_groupsModel->fromIndex<Category *>(selected.indexes().at(0));
+        m_itemsModel->setCategory(category);
 
         QModelIndex firstIndex = m_itemsModel->index(0, 0);
         if (firstIndex.isValid())
@@ -283,18 +287,19 @@ void ItemsView::groupSelectionChanged(const QItemSelection &selected)
 
 void ItemsView::itemSelectionChanged()
 {
-    QMap<int, Item *> oldItems;
-    QList<Item *> newItems;
+    QMap<int, Definition *> oldDefs;
+    QList<Definition *> newDefs;
 
     foreach (const QModelIndex &index, listItems->selectionModel()->selectedIndexes()) {
-        Item *item = m_itemsModel->fromIndex<Item *>(index);
-        int pos = m_items.indexOf(item);
+        Definition *definition = m_itemsModel->fromIndex<Definition *>(index);
+        int pos = m_definitions.indexOf(definition);
         if (pos != -1)
-            oldItems.insert(pos, item);
+            oldDefs.insert(pos, definition);
         else
-            newItems << item;
+            newDefs << definition;
     }
-    setItems(oldItems.values() + newItems);
+
+    setDefinitions(oldDefs.values() + newDefs);
 }
 
 void ItemsView::setTabVisible(QWidget *tab, bool visible)
@@ -318,69 +323,68 @@ void ItemsView::setTabVisible(QWidget *tab, bool visible)
 
 }
 
-void ItemsView::setItems(QList<Item *> items)
+void ItemsView::setDefinitions(QList<Definition *> definitions, bool retranslate)
 {
-    m_items = items.mid(0, 30); // limit to 30 items
+    if (!retranslate && m_definitions == definitions)
+        return;
 
-    m_parameters->setItems(m_items);
-    m_components->setItems(m_items);
-    m_bonuses->setItems(m_items);
+    m_definitions = definitions.mid(0, 30); // limit to 30 items
 
-    if (!m_items.isEmpty()) {
-        Item *item = (m_items.size() == 1) ? m_items.at(0) : 0;
-        if (item) {
-            labelName->setText(item->name());
-            textDescription->setText(item->description());
+    if (!retranslate) {
+        m_parameters->setDefinitions(m_definitions);
+        m_components->setDefinitions(m_definitions);
+        m_bonuses->setDefinitions(m_definitions);
+    }
+
+    if (!m_definitions.isEmpty()) {
+        Definition *definition = (m_definitions.size() == 1) ? m_definitions.at(0) : 0;
+        if (definition) {
+            labelName->setText(definition->name());
+            textDescription->setText(definition->description());
             labelIcon->setVisible(true);
-            labelIcon->setPixmap(item->icon());
+            labelIcon->setPixmap(definition->icon());
 
-            if (item->bonusExtension()) {
-                //: entityinfo_bonus_extension
-                labelBonusExtension->setText(tr("Relevant extension: %1").arg(item->bonusExtension()->name()));
-            }
-
-            if (item->decoderLevel()) {
+            if (definition->researchLevel()) {
                 //: def_research_kit_1
-                labelDecoderLevel->setText(tr("Level %1 decoder").arg(item->decoderLevel()));
+                labelDecoderLevel->setText(tr("Level %1 decoder").arg(definition->researchLevel()));
             }
 
-            if (item->requirements()) {
-                m_requirements->setRequirements(item->requirements());
-                treeRequirements->expandAll();
+            if (!retranslate) {
+                if (!definition->requirements().isEmpty()) {
+                    m_requirements->setRequirements(definition->requirements());
+                    treeRequirements->expandAll();
+                }
+                m_componentUse->setComponent(definition);
             }
-
-            m_componentUse->setComponent(item);
         }
         else {
-            labelName->setText(tr("%n items", 0, m_items.size()));
+            labelName->setText(tr("%n items", 0, m_definitions.size()));
             QStringList names;
-            foreach (Item *item, m_items) {
+            foreach (Definition *item, m_definitions)
                 names << item->name();
-            }
             textDescription->setText(names.join(QLatin1String(", ")) + QLatin1Char('.'));
 
             labelIcon->setVisible(false);
         }
 
         setTabVisible(tabComponents, !m_components->isEmpty());
-        setTabVisible(tabComponentUse, item && !m_componentUse->isEmpty());
-        setTabVisible(tabRequirements, item && item->requirements());
+        setTabVisible(tabComponentUse, definition && definition->hasCategory("cf_material") && !m_componentUse->isEmpty());
+        setTabVisible(tabRequirements, definition && !definition->requirements().isEmpty());
         setTabVisible(tabBonuses, !m_bonuses->isEmpty());
 
-        widgetDecodingLevel->setVisible(item && item->decoderLevel());
-        labelBonusExtension->setVisible(item && item->bonusExtension());
+        widgetDecodingLevel->setVisible(definition && definition->researchLevel());
 
-        treeParameters->setHeaderHidden(item);
+        treeParameters->setHeaderHidden(definition);
         treeParameters->expandToDepth(0);
     }
 
-    stackInfo->setCurrentIndex(!m_items.isEmpty());
+    stackInfo->setCurrentIndex(!m_definitions.isEmpty());
 }
 
 void ItemsView::tableDoubleClicked(const QModelIndex &index)
 {
     QTreeView *treeView = static_cast<QTreeView *>(focusWidget());
-    ItemComparisonModel *model = static_cast<ItemComparisonModel *>(treeView->model());
+    ComparisonModel *model = static_cast<ComparisonModel *>(treeView->model());
     model->toggleRowSort(index);
 }
 
@@ -388,7 +392,7 @@ void ItemsView::tableContextMenuRequested(QPoint pos)
 {
     QTreeView *treeView = qobject_cast<QTreeView *>(focusWidget());
     QModelIndex index = treeView->currentIndex();
-    ItemComparisonModel *comparisonModel = qobject_cast<ItemComparisonModel *>(treeView->model());
+    ComparisonModel *comparisonModel = qobject_cast<ComparisonModel *>(treeView->model());
 
     QMenu menu;
     // if (comparisonModel && comparisonModel->canSetReference(index))
@@ -406,7 +410,7 @@ void ItemsView::on_actionSortRow_triggered()
 {
     QTreeView *treeView = qobject_cast<QTreeView *>(focusWidget());
 
-    ItemComparisonModel *model = static_cast<ItemComparisonModel *>(treeView->model());
+    ComparisonModel *model = static_cast<ComparisonModel *>(treeView->model());
     model->toggleRowSort(treeView->currentIndex());
 }
 
@@ -428,7 +432,7 @@ void ItemsView::on_actionCopyToClipboard_triggered()
 void ItemsView::on_actionSetReference_triggered()
 {
     QTreeView *treeView = qobject_cast<QTreeView *>(focusWidget());
-    ItemComparisonModel *comparisonModel = static_cast<ItemComparisonModel *>(treeView->model());
+    ComparisonModel *comparisonModel = static_cast<ComparisonModel *>(treeView->model());
     comparisonModel->setReference(treeView->currentIndex());
 }
 
@@ -446,20 +450,29 @@ void ItemTableHeader::updateGeometries()
 {
     QHeaderView::updateGeometries();
 
+    //qDebug() << model() << "updateGeometries";
+
     int colCount = count();
     if (colCount >= 2) {
         setResizeMode(Fixed);
         setResizeMode(0, Interactive);
-        setResizeMode(colCount - 1, Stretch);
-        resizeSection(0, m_firstColumnWidth);
-        resizeSection(colCount - 1, 0);
+        setResizeMode(colCount - 1, Stretch); // stretch placeholder
+        resizeSection(0, m_firstColumnWidth); // XXX remove
+        resizeSection(colCount - 1, 0);       // XXX remove
 
         int availWidth = viewport()->width() - sectionSize(0) - 3;
 
         for (int i = 1; i < colCount - 1; ++i) {
-            int colWidth = qMax(1, availWidth / (colCount - 2));
-            colWidth += (i-1 < availWidth % colWidth); // distribute remainder
-            colWidth = qBound(m_minColumnWidth, colWidth, defaultSectionSize());
+            int colWidth;
+            QVariant vSizeHint = model()->headerData(i, orientation(), Qt::SizeHintRole);
+            if (vSizeHint.isValid()) {
+                colWidth = vSizeHint.value<QSize>().width();
+            }
+            else {
+                colWidth = qMax(1, availWidth / (colCount - 2));
+                colWidth += (i-1 < availWidth % colWidth); // distribute remainder
+                colWidth = qBound(m_minColumnWidth, colWidth, defaultSectionSize());
+            }
             resizeSection(i, colWidth);
         }
     }

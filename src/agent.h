@@ -26,6 +26,7 @@
 
 class QIODevice;
 class QUndoCommand;
+class ExtensionLevels;
 
 
 class Agent : public QObject {
@@ -46,7 +47,7 @@ public:
     void setStarterChoices(const QString &choices);
 
     QUndoCommand *setStarterChoicesCommand(const QString &choices);
-    QUndoCommand *setLevelsCommand(const ExtensionSet &levels);
+    QUndoCommand *setLevelsCommand(const ExtensionLevelMap &levels);
 
     bool attributesComplete() { return !m_starterChoices.mid(1).contains(QLatin1Char(' ')); }
 
@@ -101,15 +102,15 @@ public:
 
     QList<Extension *> extensions() const;
 
-    void setFrom(const ExtensionSet &extensions) { m_levels = extensions; emit levelChanged(0, 0); }
+    void setFrom(const ExtensionLevelMap &extensions) { m_levels = extensions; emit levelChanged(0, 0); }
 
     int level(Extension *extension) const { return qMax(m_levels.value(extension), baseLevel(extension)); }
     void setLevel(Extension *extension, int level);
 
-    ExtensionSet requirements(Extension *extension) const;
+    ExtensionLevelMap requirements(Extension *extension) const;
 
     int points() const;
-    int points(ObjectGroup *group) const;
+    int points(ExtensionCategory *category) const;
     int points(Extension *extension, int lvl=-1) const;
     int nextLevelPoints(Extension *extension, int lvl=-1) const;
     int reqPoints(Extension *extension) const;
@@ -130,10 +131,9 @@ private slots:
 
 private:
     const ExtensionLevels *m_base;
-    ExtensionSet m_levels;
+    ExtensionLevelMap m_levels;
 
     int baseLevel(Extension *extension) const { return m_base ? m_base->level(extension) : 0; }
-
 };
 
 

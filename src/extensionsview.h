@@ -33,7 +33,7 @@ class Agent;
 class GameData;
 class Extension;
 class GameObject;
-class ObjectGroup;
+class Category;
 class ExtensionWindow;
 class AttributeEditor;
 class HeaderActions;
