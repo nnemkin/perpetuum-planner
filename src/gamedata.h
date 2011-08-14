@@ -76,8 +76,7 @@ public:
     };
     enum CharWizSteps { Race, School, Major, Corporation, Spark, NumCharWizSteps };
 
-    GameData(QObject *parent = 0);
-    ~GameData();
+    GameData(QObject *parent = 0) : QObject(parent) {}
 
     QString version() { return m_version; }
 
@@ -90,8 +89,10 @@ public:
     const QMap<int, AggregateField *> &aggregateFields() const { return m_aggregateFields; }
     const QMap<quint64, Category *> &categories() const { return m_categories; }
     const QMap<int, Definition *> &definitions() const { return m_definitions; }
-    const QHash<QString, Tier *> &tiers() const { return m_tiers; }
     const QMap<int, CharacterWizardStep *> &charWizSteps(CharWizSteps step) { return m_charWizSteps[step]; }
+
+    const QHash<QString, Tier *> &tiers() const { return m_tiers; }
+    const QMap<int, QString> &slotTypes() const { return m_slotTypes; }
 
     Category *rootCategory() const { return m_categories.value(0); }
 
@@ -126,16 +127,18 @@ private:
     QMap<int, AggregateField *> m_aggregateFields;
     QMap<quint64, Category *> m_categories;
     QMap<int, Definition *> m_definitions;
+
     QHash<QString, Tier *> m_tiers;
+    QMap<int, QString> m_slotTypes;
 
     QMap<quint64, Definition *> m_definitionsByCategory;
 
     QMap<int, CharacterWizardStep *> m_charWizSteps[NumCharWizSteps];
 
     template <class ObjectMap>
-    void loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, const QString &idKey);
+    bool loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, const QString &idKey, bool create = true);
 
-    QVector<CharacterWizardStep *> decodeCharWizSteps(const QString &steps) const;
+    QVector<CharacterWizardStep *> decodeCharWizSteps(const QString &choices) const;
 };
 
 
@@ -153,7 +156,7 @@ class GameObject : public QObject {
 public:
     GameObject(GameData *gameData) : m_gameData(gameData) {}
 
-    virtual void load(const QVariantMap &dataMap) = 0;
+    virtual bool load(const QVariantMap &dataMap) = 0;
 
     GameData *gameData() const { return m_gameData; }
 
@@ -173,7 +176,7 @@ class ExtensionCategory : public GameObject {
 public:
     ExtensionCategory(GameData *gameData) : GameObject(gameData), m_id(0) {}
 
-    void load(const QVariantMap &dataMap);
+    bool load(const QVariantMap &dataMap);
 
     int id() const { return m_id; }
     const QList<Extension *> &extensions() const { return m_extensions; }
@@ -193,7 +196,7 @@ public:
     Extension(GameData *gameData) : GameObject(gameData), m_id(0), m_rank(0), m_price(0),
         m_primaryAttribute(-1), m_secondaryAttribute(-1), m_category(0) {}
 
-    void load(const QVariantMap &dataMap);
+    bool load(const QVariantMap &dataMap);
 
     QString description() const;
     int complexity() const { return m_rank; }
@@ -224,7 +227,7 @@ class FieldCategory : public GameObject {
 public:
     FieldCategory(GameData *gameData) : GameObject(gameData) {}
 
-    void load(const QVariantMap &dataMap);
+    bool load(const QVariantMap &dataMap);
 
     int id() const { return m_id; }
     const QList<AggregateField *> &aggregates() const { return m_aggregates; }
@@ -241,14 +244,19 @@ class AggregateField : public GameObject {
     Q_OBJECT
 
 public:
+    enum {
+        // Some aggregate IDs
+        ShieldAbsorbtion = 318, Slope = 326,
+
+        // Artificial IDs generic entity info fields
+        EI_Mass = 9001, EI_Volume, EI_RepackedVolume, EI_Quantity, EI_Capacity, EI_Tier, EI_AmmoCapacity, EI_AmmoType,
+        EI_ActiveModule, EI_SlotType, EI_HeadSlots, EI_ChassisSlots, EI_LegSlots
+    };
+
     AggregateField(GameData *gameData)
         : GameObject(gameData), m_id(0), m_multiplier(1), m_offset(0), m_digits(0), m_category(0), m_hidden(false) {}
 
-    AggregateField(GameData *gameData, FieldCategory *category, const QString &unitName = QString(), int digits = 0)
-        : GameObject(gameData),
-          m_id(0), m_multiplier(1), m_offset(0), m_unitName(unitName), m_digits(digits), m_category(category), m_hidden(false) {}
-
-    void load(const QVariantMap &dataMap);
+    bool load(const QVariantMap &dataMap);
 
     QString unit() const { return m_unitName.isEmpty() ? QString() : gameData()->translate(m_unitName); }
     int digits() const { return m_digits; }
@@ -259,6 +267,8 @@ public:
 
     QString format(const QVariant &) const;
 
+    bool isAggregate() const { return m_id < EI_Mass; }
+
 private:
     bool m_lessIsBetter;
 
@@ -268,6 +278,8 @@ private:
     int m_digits;
     bool m_hidden;
     FieldCategory *m_category;
+
+    QString formatAuto(float value) const;
 };
 
 
@@ -277,7 +289,7 @@ class Category : public GameObject {
 public:
     Category(GameData *gameData) : GameObject(gameData), m_id(0), m_inMarket(false), m_marketCount(-1), m_parent(0) {}
 
-    void load(const QVariantMap &dataMap);
+    bool load(const QVariantMap &dataMap);
 
     quint64 id() const { return m_id; }
     quint64 order() const { return m_order; }
@@ -312,7 +324,7 @@ class Tier : public GameObject {
 public:
     Tier(GameData *gameData) : GameObject(gameData), m_id(0) {}
 
-    void load(const QVariantMap &dataMap);
+    bool load(const QVariantMap &dataMap);
 
     int id() const { return m_id; }
     QColor color() const { return m_color; }
@@ -326,15 +338,18 @@ private:
 
 class Bonus {
 public:
+    Bonus(GameData *gameData, const QVariantMap &dataMap);
+
     AggregateField *aggregate() const { return m_aggregate; }
     Extension *extension() const { return m_extension; }
     float bonus() const { return m_bonus; }
     bool effectEnhancer() const { return m_effectEnhancer; }
 
+    bool isValid() const { return m_aggregate != 0 && m_extension != 0; }
     QString format() const;
 
 private:
-    Bonus(GameData *gameData, const QVariantMap &dataMap);
+    bool load(GameData *gameData, const QVariantMap &dataMap);
 
     AggregateField * m_aggregate;
     Extension *m_extension;
@@ -349,12 +364,20 @@ class Definition : public GameObject {
     Q_OBJECT
 
 public:
+    enum AttributeFlags {
+        Active = 0x10, HasAmmo = 0x40000
+    };
+    enum ModuleFlags {
+        TurretSlot = 0x1, MissileSlot = 0x2, IndustrialSlot = 0x200, OtherSlot = 0x400, HeadSlot = 0x8, LegSlot = 0x20,
+        Small = 0x40, Medium = 0x80, Large = 0x100
+    };
+
     Definition(GameData *gameData) : GameObject(gameData), m_id(0), m_quantity(0),
         m_attributeFlags(0), m_category(0), m_categoryFlags(0), m_mass(0), m_volume(0), m_repackedVolume(0), m_inMarket(false),
-        m_researchLevel(0), m_calibrationProgram(0), m_tier(0) {}
+        m_researchLevel(0), m_calibrationProgram(0), m_tier(0), m_head(0), m_chassis(0), m_leg(0) {}
     ~Definition() { qDeleteAll(m_bonuses); }
 
-    void load(const QVariantMap &dataMap);
+    bool load(const QVariantMap &dataMap);
 
     int id() const { return m_id; }
     QString description() const { return m_gameData->wikiToHtml(m_gameData->translate(m_description)); }
@@ -370,7 +393,11 @@ public:
     void setInMarket(bool inMarket) { m_inMarket = inMarket; }
 
     bool isPrototype() const { return m_name.endsWith("_pr"); }
-    bool isRobot() const { return hasCategory("cf_robots"); } // XXX: local flag
+    bool isRobot() const { return m_head != 0; }
+
+    Definition *head() const { return m_head; }
+    Definition *chassis() const { return m_chassis; }
+    Definition *leg() const { return m_leg; }
 
     const ExtensionLevelMap &requirements() const { return m_enablerExtensions; }
     const QMap<AggregateField *, QVariant> &aggregates() const { return m_aggregates; }
@@ -383,8 +410,13 @@ private:
 
     int m_quantity;
     quint64 m_attributeFlags, m_categoryFlags;
-    // float m_health;
+    int m_moduleFlag;
+
     float m_mass, m_volume, m_repackedVolume;
+    float m_capacity;
+
+    Definition *m_head, *m_chassis, *m_leg;
+    Category *m_ammoType;
 
     bool m_inMarket;
 
@@ -403,7 +435,7 @@ private:
 
     Category *m_category;
 
-    int m_moduleFlag;
+    void addAggregate(int id, const QVariant &value);
 };
 
 
@@ -412,7 +444,7 @@ class CharacterWizardStep : public GameObject
 public:
     CharacterWizardStep(GameData *gameData) : GameObject(gameData), m_id(0), m_baseStep(0), m_baseEID(0) {}
 
-    void load(const QVariantMap &dataMap);
+    bool load(const QVariantMap &dataMap);
 
     int id() const { return m_id; }
     QString description() const { return m_gameData->translate(m_description); }
@@ -427,9 +459,6 @@ private:
 
     CharacterWizardStep *m_baseStep;
 };
-
-
-// Q_DECLARE_METATYPE(Extension *)
 
 
 #endif // GAMEDATA_H

@@ -484,7 +484,7 @@ void AggregatesModel::setDefinitions(const QList<Definition *> &definitions)
                     }
 
                     aggregateNode = categoryNode->addChild(aggregate);
-                    aggregateNode->data << QVariant(1e30f) << QVariant(1e-30f);
+                    aggregateNode->data << QVariant(1e30f) << QVariant(-1e30f);
                     aggregateNodes.insert(aggregate, aggregateNode);
                 }
 
@@ -499,11 +499,12 @@ void AggregatesModel::setDefinitions(const QList<Definition *> &definitions)
             }
         }
 
-        foreach (Node *aggregateNode, aggregateNodes)
+        foreach (Node *aggregateNode, aggregateNodes) {
             if (aggregateNode->data.at(0) == aggregateNode->data.at(1))
                 aggregateNode->data.clear();
             else if (static_cast<AggregateField *>(aggregateNode->object)->lessIsBetter())
                 qSwap(aggregateNode->data[0], aggregateNode->data[1]);
+        }
     }
     endResetModel();
 }
@@ -514,10 +515,13 @@ QVariant AggregatesModel::data(const QModelIndex &index, int role) const
 
     if (index.column() == 0) {
         if (AggregateField *aggregate = fromIndex<AggregateField *>(index)) {
-            if (role == Qt::DisplayRole || role == SortKeyRole) {
+            if (role == Qt::DisplayRole) {
                 //if (m_items.size() == 1 || parameter->unit().isEmpty())
                     return aggregate->name();
                 //return QString("%1 (%2)").arg(parameter->name(), parameter->unit());
+            }
+            else if (role == SortKeyRole) {
+                 return aggregate->isAggregate() ? aggregate->name() : aggregate->systemName();
             }
         }
         else if (FieldCategory *category = fromIndex<FieldCategory *>(index)) {
