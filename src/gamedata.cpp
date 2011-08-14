@@ -448,8 +448,7 @@ void AggregateField::load(const QVariantMap &dataMap)
         m_category = m_gameData->fieldCategories().value(dataMap.value("category").toInt());
         m_category->m_aggregates.append(this);
 
-        // XXXX
-        m_lessIsBetter = dataMap.value("less_is_better").toBool();
+        m_lessIsBetter = QRegExp("(blob_level)|(_time|_usage|_miss|signature_radius|blob_emission(_radius)?)$").indexIn(m_name) != -1;
     }
     else {
         m_hidden = dataMap.value("hidden").toBool();
