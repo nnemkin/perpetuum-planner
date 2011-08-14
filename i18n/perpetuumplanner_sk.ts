@@ -22,12 +22,12 @@ Error on line %1: %2</source>
     <message>
         <source>Value</source>
         <extracomment>entityinfo_value</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Value</translation>
     </message>
     <message>
         <source>Parameters</source>
         <extracomment>entityinfo_parameters</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Parametri</translation>
     </message>
 </context>
 <context>
@@ -50,11 +50,11 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>O programu</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Napaka</translation>
     </message>
     <message>
         <source>Failed to launch automatic updater.</source>
@@ -66,7 +66,7 @@ Error on line %1: %2</source>
     <message>
         <source>School:</source>
         <extracomment>characterinfo_cw_school</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Šola:</translation>
     </message>
     <message>
         <source>Military</source>
@@ -87,7 +87,7 @@ Error on line %1: %2</source>
     <message>
         <source>Speciality:</source>
         <extracomment>characterinfo_cw_major</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Specializacija:</translation>
     </message>
     <message>
         <source>buttonGroupSpeciality</source>
@@ -96,7 +96,7 @@ Error on line %1: %2</source>
     <message>
         <source>Corporation:</source>
         <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Trenutna korporacija:</translation>
     </message>
     <message>
         <source>buttonGroupCorporation</source>
@@ -105,7 +105,7 @@ Error on line %1: %2</source>
     <message>
         <source>Spark:</source>
         <extracomment>characterinfo_cw_spark</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Iskra:</translation>
     </message>
     <message>
         <source>Ubenor (Military)</source>
@@ -149,7 +149,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Truhold-Markson</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>buttonGroupMegacorp</source>
@@ -157,68 +157,68 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>ICS</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Asintec</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Megacorporation:</source>
         <extracomment>characterinfo_cw_race</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Megakorporacija:</translation>
     </message>
     <message>
         <source>Attributes</source>
         <extracomment>extension_attributes</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Lastnosti</translation>
     </message>
     <message>
         <source>Tactics</source>
         <extracomment>attributeA</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Taktika</translation>
     </message>
     <message>
         <source>Mechatronics</source>
         <extracomment>attributeB</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Mechatronika</translation>
     </message>
     <message>
         <source>Heavy Industry</source>
         <extracomment>attributeC</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Težka industrija</translation>
     </message>
     <message>
         <source>Research and development</source>
         <extracomment>attributeD</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Raziskovanje in razvoj</translation>
     </message>
     <message>
         <source>Politics</source>
         <extracomment>attributeE</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Politika</translation>
     </message>
     <message>
         <source>Economics</source>
         <extracomment>attributeF</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ekonomija</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Ponastavi</translation>
     </message>
     <message>
         <source>Optimize</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimiraj</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapri</translation>
     </message>
     <message>
         <source>%1 - Attributes</source>
         <extracomment>extension_attributes</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 - Lastnosti</translation>
     </message>
     <message>
         <source>(Depends on previous choice)</source>
@@ -230,7 +230,7 @@ Error on line %1: %2</source>
     <message>
         <source>Bonus</source>
         <extracomment>entityinfo_bonus_extensionbonus</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Bonus</translation>
     </message>
     <message>
         <source>Relevant extension</source>
@@ -240,7 +240,7 @@ Error on line %1: %2</source>
     <message>
         <source>Effect</source>
         <extracomment>entityinfo_bonus_aggregate</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Učinek</translation>
     </message>
 </context>
 <context>
@@ -248,12 +248,12 @@ Error on line %1: %2</source>
     <message>
         <source>Amount</source>
         <extracomment>entityinfo_amount</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Količina</translation>
     </message>
     <message>
         <source>Components</source>
         <extracomment>entityinfo_components</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Sestavine</translation>
     </message>
 </context>
 <context>
@@ -265,7 +265,7 @@ Error on line %1: %2</source>
     <message>
         <source>Amount</source>
         <extracomment>entityinfo_amount</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Količina</translation>
     </message>
 </context>
 <context>
@@ -273,57 +273,57 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;DESCRIPTION</source>
         <extracomment>extensioninfo_description</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;DESCRIPTION</translation>
     </message>
     <message>
         <source>&amp;PREREQUISITES</source>
         <extracomment>extensioninfo_requiredextensions</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;PREDPOGOJI</translation>
     </message>
     <message>
         <source>Tactics</source>
         <extracomment>attributeA</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Taktika</translation>
     </message>
     <message>
         <source>Mechatronics</source>
         <extracomment>attributeB</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Mechatronika</translation>
     </message>
     <message>
         <source>Heavy Industry</source>
         <extracomment>attributeC</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Težka industrija</translation>
     </message>
     <message>
         <source>Research and development</source>
         <extracomment>attributeD</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Raziskovanje in razvoj</translation>
     </message>
     <message>
         <source>Politics</source>
         <extracomment>attributeE</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Politika</translation>
     </message>
     <message>
         <source>Economics</source>
         <extracomment>attributeF</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ekonomija</translation>
     </message>
     <message>
         <source>Extension: %1</source>
         <extracomment>window_extensioninfo</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Razširitev: %1</translation>
     </message>
     <message>
         <source>Primary attribute</source>
         <extracomment>extensioninfo_learningAttributePrimary</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Osnovna lastnost</translation>
     </message>
     <message>
         <source>Secondary attribute</source>
         <extracomment>extensioninfo_learningAttributeSecondary</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Pomožna lastnost</translation>
     </message>
 </context>
 <context>
@@ -331,35 +331,35 @@ Error on line %1: %2</source>
     <message>
         <source>Extension</source>
         <extracomment>entityinfo_bonus_extensionname</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Smotrna razširitev</translation>
     </message>
     <message>
         <source>Info</source>
         <extracomment>contextmenu_definition_info</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Informacije</translation>
     </message>
     <message>
         <source>Current</source>
-        <translation type="unfinished"></translation>
+        <translation>Trenutna</translation>
     </message>
     <message>
         <source>Progress</source>
         <extracomment>knowledgebaseupdate_progress</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Napredek</translation>
     </message>
     <message>
         <source>Planned</source>
-        <translation type="unfinished"></translation>
+        <translation>Načrtovan</translation>
     </message>
     <message>
         <source>Next Lvl</source>
         <extracomment>extension_nextlevelcost</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Naslednja stopnja</translation>
     </message>
     <message>
         <source>Prerequisites: %L1 EP</source>
         <extracomment>extensioninfo_requiredextensions</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Predpogoji: %L1 EP</translation>
     </message>
 </context>
 <context>
@@ -374,66 +374,66 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Click to edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Kliknite za urejanje</translation>
     </message>
     <message>
         <source>Politics</source>
         <extracomment>attributeE</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Politika</translation>
     </message>
     <message>
         <source>Research and Development</source>
         <extracomment>attributeD</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Raziskovanje in razvoj</translation>
     </message>
     <message>
         <source>Heavy Industry</source>
         <extracomment>attributeC</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Težka industrija</translation>
     </message>
     <message>
         <source>Mechatronics</source>
         <extracomment>attributeB</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Mechatronika</translation>
     </message>
     <message>
         <source>Tactics</source>
         <extracomment>attributeA</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Taktika</translation>
     </message>
     <message>
         <source>Economics</source>
         <extracomment>attributeF</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ekonomija</translation>
     </message>
     <message>
         <source>Attributes</source>
         <extracomment>extension_attributes</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Lastnosti</translation>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nov</translation>
     </message>
     <message>
         <source>&amp;Load...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Odpri...</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Shrani</translation>
     </message>
     <message>
         <source>Sa&amp;ve As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Shrani &amp;kot ...</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Izhod</translation>
     </message>
     <message>
         <source>Expand All</source>
-        <translation type="unfinished"></translation>
+        <translation>Razširi vse</translation>
     </message>
     <message>
         <source>X</source>
@@ -441,7 +441,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Collapse All</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrči vse</translation>
     </message>
     <message>
         <source>Ctrl+X</source>
@@ -457,7 +457,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>&amp;Information</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Informacije</translation>
     </message>
     <message>
         <source>I</source>
@@ -503,7 +503,7 @@ Error on line %1: %2</source>
     <message>
         <source>Error</source>
         <extracomment>combatlog_error</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Napaka</translation>
     </message>
     <message>
         <source>Unable to load
@@ -513,11 +513,11 @@ Error on line %1: %2</source>
     <message>
         <source>Confirmation</source>
         <extracomment>window_confirm</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Potrditev</translation>
     </message>
     <message>
         <source>Save changes to &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Shranim spremembe v &apos;%1&apos;?</translation>
     </message>
     <message>
         <source> [Modified]</source>
@@ -547,15 +547,11 @@ Error on line %1: %2</source>
         <source>%n day(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -563,15 +559,11 @@ Error on line %1: %2</source>
         <source>%n minute(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nd</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -579,15 +571,11 @@ Error on line %1: %2</source>
         <source>%nh</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nm</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -596,11 +584,11 @@ Error on line %1: %2</source>
     <name>HeaderActions</name>
     <message>
         <source>Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Stolpci</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Ponastavi</translation>
     </message>
 </context>
 <context>
@@ -608,11 +596,11 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;Filter:</source>
         <extracomment>market_searchfield</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Filter:</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Počisti</translation>
     </message>
     <message>
         <source>Hide prototypes</source>
@@ -625,17 +613,17 @@ Error on line %1: %2</source>
     <message>
         <source>No items found</source>
         <extracomment>market_itemnotfound</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ni najdenih predmetov</translation>
     </message>
     <message>
         <source>&amp;PARAMETERS</source>
         <extracomment>entityinfo_parameters</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;PARAMETRI</translation>
     </message>
     <message>
         <source>&amp;COMPONENTS</source>
         <extracomment>entityinfo_components</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;SESTAVINE</translation>
     </message>
     <message>
         <source>Decoding level</source>
@@ -648,16 +636,16 @@ Error on line %1: %2</source>
     <message>
         <source>E&amp;XTENSIONS</source>
         <extracomment>entityinfo_extensions</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;RAZŠIRITVE</translation>
     </message>
     <message>
         <source>&amp;BONUSES</source>
         <extracomment>entityinfo_bonuses</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;BONUSI</translation>
     </message>
     <message>
         <source>Expand All</source>
-        <translation type="unfinished"></translation>
+        <translation>Razširi vse</translation>
     </message>
     <message>
         <source>X</source>
@@ -665,7 +653,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Collapse All</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrči vse</translation>
     </message>
     <message>
         <source>Ctrl+X</source>
@@ -681,7 +669,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Copy To Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiraj na odložišče</translation>
     </message>
     <message>
         <source>Ctrl+C</source>
@@ -693,7 +681,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>&amp;Information</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Informacije</translation>
     </message>
     <message>
         <source>I</source>
@@ -707,8 +695,6 @@ Error on line %1: %2</source>
     <message numerus="yes">
         <source>%n items</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -728,33 +714,33 @@ Error on line %1: %2</source>
     <name>Main</name>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Napaka</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Perpetuum Planner</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Help</source>
         <extracomment>menu_help</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pomoč</translation>
     </message>
     <message>
         <source>&amp;Options</source>
         <extracomment>menu_options</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Možnosti</translation>
     </message>
     <message>
         <source>A&amp;bout</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;O programu</translation>
     </message>
     <message>
         <source>&amp;EXTENSIONS</source>
         <extracomment>characterprofile_progress</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;RAZŠIRITVE</translation>
     </message>
     <message>
         <source>&amp;ITEM DATABASE</source>
@@ -762,7 +748,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Pomoč</translation>
     </message>
     <message>
         <source>F1</source>
@@ -770,7 +756,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Možnosti</translation>
     </message>
     <message>
         <source>Ctrl+P</source>
@@ -778,21 +764,21 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>O programu</translation>
     </message>
 </context>
 <context>
     <name>MessageBox</name>
     <message>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Sporočilo</translation>
     </message>
 </context>
 <context>
     <name>OptionsDialog</name>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Možnosti</translation>
     </message>
     <message>
         <source>User Interface</source>
@@ -858,12 +844,12 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;Apply</source>
         <extracomment>apply</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Uveljavi</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
         <extracomment>cancel</extracomment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Prekliči</translation>
     </message>
     <message>
         <source>Error</source>

@@ -22,12 +22,12 @@ Error on line %1: %2</source>
     <message>
         <source>Value</source>
         <extracomment>entityinfo_value</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Value</translation>
     </message>
     <message>
         <source>Parameters</source>
         <extracomment>entityinfo_parameters</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
 </context>
 <context>
@@ -50,11 +50,11 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Failed to launch automatic updater.</source>
@@ -66,7 +66,7 @@ Error on line %1: %2</source>
     <message>
         <source>School:</source>
         <extracomment>characterinfo_cw_school</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ecole:</translation>
     </message>
     <message>
         <source>Military</source>
@@ -87,7 +87,7 @@ Error on line %1: %2</source>
     <message>
         <source>Speciality:</source>
         <extracomment>characterinfo_cw_major</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Spécialité:</translation>
     </message>
     <message>
         <source>buttonGroupSpeciality</source>
@@ -96,7 +96,7 @@ Error on line %1: %2</source>
     <message>
         <source>Corporation:</source>
         <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Corporation actuelle:</translation>
     </message>
     <message>
         <source>buttonGroupCorporation</source>
@@ -105,7 +105,7 @@ Error on line %1: %2</source>
     <message>
         <source>Spark:</source>
         <extracomment>characterinfo_cw_spark</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Spark:</translation>
     </message>
     <message>
         <source>Ubenor (Military)</source>
@@ -149,7 +149,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Truhold-Markson</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>buttonGroupMegacorp</source>
@@ -157,68 +157,68 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>ICS</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Asintec</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Megacorporation:</source>
         <extracomment>characterinfo_cw_race</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Méga-corporation:</translation>
     </message>
     <message>
         <source>Attributes</source>
         <extracomment>extension_attributes</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Caractéristiques</translation>
     </message>
     <message>
         <source>Tactics</source>
         <extracomment>attributeA</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Tactiques</translation>
     </message>
     <message>
         <source>Mechatronics</source>
         <extracomment>attributeB</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Mechatronique</translation>
     </message>
     <message>
         <source>Heavy Industry</source>
         <extracomment>attributeC</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Industrie lourde</translation>
     </message>
     <message>
         <source>Research and development</source>
         <extracomment>attributeD</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Recherche et développement</translation>
     </message>
     <message>
         <source>Politics</source>
         <extracomment>attributeE</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Politique</translation>
     </message>
     <message>
         <source>Economics</source>
         <extracomment>attributeF</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Economie</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser</translation>
     </message>
     <message>
         <source>Optimize</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimiser</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <source>%1 - Attributes</source>
         <extracomment>extension_attributes</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 - Caractéristiques</translation>
     </message>
     <message>
         <source>(Depends on previous choice)</source>
@@ -230,7 +230,7 @@ Error on line %1: %2</source>
     <message>
         <source>Bonus</source>
         <extracomment>entityinfo_bonus_extensionbonus</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Bonus</translation>
     </message>
     <message>
         <source>Relevant extension</source>
@@ -240,7 +240,7 @@ Error on line %1: %2</source>
     <message>
         <source>Effect</source>
         <extracomment>entityinfo_bonus_aggregate</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Effet</translation>
     </message>
 </context>
 <context>
@@ -248,12 +248,12 @@ Error on line %1: %2</source>
     <message>
         <source>Amount</source>
         <extracomment>entityinfo_amount</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Quantité</translation>
     </message>
     <message>
         <source>Components</source>
         <extracomment>entityinfo_components</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Composants</translation>
     </message>
 </context>
 <context>
@@ -265,7 +265,7 @@ Error on line %1: %2</source>
     <message>
         <source>Amount</source>
         <extracomment>entityinfo_amount</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Quantité</translation>
     </message>
 </context>
 <context>
@@ -273,57 +273,57 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;DESCRIPTION</source>
         <extracomment>extensioninfo_description</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;DESCRIPTION</translation>
     </message>
     <message>
         <source>&amp;PREREQUISITES</source>
         <extracomment>extensioninfo_requiredextensions</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;CONDITIONS</translation>
     </message>
     <message>
         <source>Tactics</source>
         <extracomment>attributeA</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Tactiques</translation>
     </message>
     <message>
         <source>Mechatronics</source>
         <extracomment>attributeB</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Mechatronique</translation>
     </message>
     <message>
         <source>Heavy Industry</source>
         <extracomment>attributeC</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Industrie lourde</translation>
     </message>
     <message>
         <source>Research and development</source>
         <extracomment>attributeD</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Recherche et développement</translation>
     </message>
     <message>
         <source>Politics</source>
         <extracomment>attributeE</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Politique</translation>
     </message>
     <message>
         <source>Economics</source>
         <extracomment>attributeF</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Economie</translation>
     </message>
     <message>
         <source>Extension: %1</source>
         <extracomment>window_extensioninfo</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Extension: %1</translation>
     </message>
     <message>
         <source>Primary attribute</source>
         <extracomment>extensioninfo_learningAttributePrimary</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Caractéristique principale</translation>
     </message>
     <message>
         <source>Secondary attribute</source>
         <extracomment>extensioninfo_learningAttributeSecondary</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Caractéristique secondaire</translation>
     </message>
 </context>
 <context>
@@ -331,35 +331,35 @@ Error on line %1: %2</source>
     <message>
         <source>Extension</source>
         <extracomment>entityinfo_bonus_extensionname</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Extension concernée</translation>
     </message>
     <message>
         <source>Info</source>
         <extracomment>contextmenu_definition_info</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Infos</translation>
     </message>
     <message>
         <source>Current</source>
-        <translation type="unfinished"></translation>
+        <translation>Actuelle</translation>
     </message>
     <message>
         <source>Progress</source>
         <extracomment>knowledgebaseupdate_progress</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Progression</translation>
     </message>
     <message>
         <source>Planned</source>
-        <translation type="unfinished"></translation>
+        <translation>Planifié</translation>
     </message>
     <message>
         <source>Next Lvl</source>
         <extracomment>extension_nextlevelcost</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Niveau suivant</translation>
     </message>
     <message>
         <source>Prerequisites: %L1 EP</source>
         <extracomment>extensioninfo_requiredextensions</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Conditions: %L1 EP</translation>
     </message>
 </context>
 <context>
@@ -374,66 +374,66 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Click to edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Cliquez pour modifier</translation>
     </message>
     <message>
         <source>Politics</source>
         <extracomment>attributeE</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Politique</translation>
     </message>
     <message>
         <source>Research and Development</source>
         <extracomment>attributeD</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Recherche et développement</translation>
     </message>
     <message>
         <source>Heavy Industry</source>
         <extracomment>attributeC</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Industrie lourde</translation>
     </message>
     <message>
         <source>Mechatronics</source>
         <extracomment>attributeB</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Mechatronique</translation>
     </message>
     <message>
         <source>Tactics</source>
         <extracomment>attributeA</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Tactiques</translation>
     </message>
     <message>
         <source>Economics</source>
         <extracomment>attributeF</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Economie</translation>
     </message>
     <message>
         <source>Attributes</source>
         <extracomment>extension_attributes</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Caractéristiques</translation>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nouveau</translation>
     </message>
     <message>
         <source>&amp;Load...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ouvrir...</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Enregistrer</translation>
     </message>
     <message>
         <source>Sa&amp;ve As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer &amp;sous...</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Quitter</translation>
     </message>
     <message>
         <source>Expand All</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout développer</translation>
     </message>
     <message>
         <source>X</source>
@@ -441,7 +441,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Collapse All</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout réduire</translation>
     </message>
     <message>
         <source>Ctrl+X</source>
@@ -457,7 +457,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>&amp;Information</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Information</translation>
     </message>
     <message>
         <source>I</source>
@@ -503,7 +503,7 @@ Error on line %1: %2</source>
     <message>
         <source>Error</source>
         <extracomment>combatlog_error</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Unable to load
@@ -513,11 +513,11 @@ Error on line %1: %2</source>
     <message>
         <source>Confirmation</source>
         <extracomment>window_confirm</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Confirmation</translation>
     </message>
     <message>
         <source>Save changes to &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer les changements dans le &apos;%1&apos;?</translation>
     </message>
     <message>
         <source> [Modified]</source>
@@ -547,13 +547,11 @@ Error on line %1: %2</source>
         <source>%n day(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -561,13 +559,11 @@ Error on line %1: %2</source>
         <source>%n minute(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nd</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -575,13 +571,11 @@ Error on line %1: %2</source>
         <source>%nh</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nm</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -590,11 +584,11 @@ Error on line %1: %2</source>
     <name>HeaderActions</name>
     <message>
         <source>Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Colonnes</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser</translation>
     </message>
 </context>
 <context>
@@ -602,11 +596,11 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;Filter:</source>
         <extracomment>market_searchfield</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Filtre:</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished"></translation>
+        <translation>E&amp;ffacer</translation>
     </message>
     <message>
         <source>Hide prototypes</source>
@@ -619,17 +613,17 @@ Error on line %1: %2</source>
     <message>
         <source>No items found</source>
         <extracomment>market_itemnotfound</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Aucun objet trouvé</translation>
     </message>
     <message>
         <source>&amp;PARAMETERS</source>
         <extracomment>entityinfo_parameters</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;PARAMÈTRES</translation>
     </message>
     <message>
         <source>&amp;COMPONENTS</source>
         <extracomment>entityinfo_components</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;COMPOSANTS</translation>
     </message>
     <message>
         <source>Decoding level</source>
@@ -642,16 +636,16 @@ Error on line %1: %2</source>
     <message>
         <source>E&amp;XTENSIONS</source>
         <extracomment>entityinfo_extensions</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>E&amp;XTENSIONS</translation>
     </message>
     <message>
         <source>&amp;BONUSES</source>
         <extracomment>entityinfo_bonuses</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;BONUS</translation>
     </message>
     <message>
         <source>Expand All</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout développer</translation>
     </message>
     <message>
         <source>X</source>
@@ -659,7 +653,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Collapse All</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout réduire</translation>
     </message>
     <message>
         <source>Ctrl+X</source>
@@ -675,7 +669,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Copy To Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier dans le presse-papiers</translation>
     </message>
     <message>
         <source>Ctrl+C</source>
@@ -687,7 +681,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>&amp;Information</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Information</translation>
     </message>
     <message>
         <source>I</source>
@@ -701,7 +695,6 @@ Error on line %1: %2</source>
     <message numerus="yes">
         <source>%n items</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -721,33 +714,33 @@ Error on line %1: %2</source>
     <name>Main</name>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Perpetuum Planner</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Help</source>
         <extracomment>menu_help</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <source>&amp;Options</source>
         <extracomment>menu_options</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Options</translation>
     </message>
     <message>
         <source>A&amp;bout</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;À propos</translation>
     </message>
     <message>
         <source>&amp;EXTENSIONS</source>
         <extracomment>characterprofile_progress</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>E&amp;XTENSIONS</translation>
     </message>
     <message>
         <source>&amp;ITEM DATABASE</source>
@@ -755,7 +748,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <source>F1</source>
@@ -763,7 +756,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
     <message>
         <source>Ctrl+P</source>
@@ -771,21 +764,21 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>À propos</translation>
     </message>
 </context>
 <context>
     <name>MessageBox</name>
     <message>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Message</translation>
     </message>
 </context>
 <context>
     <name>OptionsDialog</name>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
     <message>
         <source>User Interface</source>
@@ -851,12 +844,12 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;Apply</source>
         <extracomment>apply</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
         <extracomment>cancel</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Annuler</translation>
     </message>
     <message>
         <source>Error</source>

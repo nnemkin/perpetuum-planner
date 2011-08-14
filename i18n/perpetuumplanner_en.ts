@@ -235,7 +235,7 @@ Error on line %1: %2</source>
     <message>
         <source>Relevant extension</source>
         <extracomment>entityinfo_bonus_extensionname</extracomment>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Effect</source>
@@ -700,9 +700,9 @@ Error on line %1: %2</source>
     </message>
     <message numerus="yes">
         <source>%n items</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n item</numerusform>
+            <numerusform>%n items</numerusform>
         </translation>
     </message>
 </context>
@@ -886,7 +886,7 @@ Error on line %1: %2</source>
     <name>QuaZipFile</name>
     <message>
         <source>ZIP/UNZIP API error %1</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -897,7 +897,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Error</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unable to replace program file.</source>

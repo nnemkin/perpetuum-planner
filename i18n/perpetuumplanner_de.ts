@@ -265,7 +265,7 @@ Error on line %1: %2</source>
     <message>
         <source>Amount</source>
         <extracomment>entityinfo_amount</extracomment>
-        <translation type="unfinished">Menge</translation>
+        <translation>Menge</translation>
     </message>
 </context>
 <context>
