@@ -40,7 +40,11 @@ public:
 
     inline bool operator()(const QModelIndex &left, const QModelIndex &right) const
     {
-        return variantCompare(left.data(m_role), right.data(m_role)) ^ (m_order == Qt::DescendingOrder);
+        QVariant l = left.data(m_role), r = right.data(m_role);
+        if (m_order == Qt::AscendingOrder)
+            return variantCompare(l, r);
+        else
+            return variantCompare(r, l);
     }
 
 private:
@@ -71,7 +75,6 @@ private:
             return l.toDateTime() < r.toDateTime();
         case QVariant::String:
         default:
-            //return l.toString().compare(r.toString(), Qt::CaseInsensitive) < 0;
             return l.toString().localeAwareCompare(r.toString()) < 0;
         }
     }
@@ -141,22 +144,22 @@ void SimpleTreeModel::beginResetModel()
     QAbstractItemModel::beginResetModel();
     delete m_root;
     m_root = new Node(0);
+    m_sortColumn = -1;
+    m_sortOrder = Qt::AscendingOrder;
 }
 
 void SimpleTreeModel::endResetModel()
 {
-    applySortFilter(m_root);
+    applySortFilter(m_root, m_sortColumn != -1);
     Q_ASSERT_MODEL(this);
     QAbstractItemModel::endResetModel();
 }
 
 void SimpleTreeModel::sort(int column, Qt::SortOrder order)
 {
-    qDebug() << "sort" << this << column << order;
-
-    if (m_sortColumn != column || m_rowSortOrder != order) {
+    if (m_sortColumn != column || m_sortOrder != order) {
         m_sortColumn = column;
-        m_rowSortOrder = order;
+        m_sortOrder = order;
         invalidateSortFilter();
     }
 }
@@ -187,42 +190,47 @@ void SimpleTreeModel::invalidateSortFilter()
     emit layoutChanged();
 }
 
-void SimpleTreeModel::setRowSort(int column, int role, Qt::SortOrder order)
+void SimpleTreeModel::setSort(int column, int role, Qt::SortOrder order)
 {
     m_sortColumn = column;
     m_sortRole = role;
-    m_rowSortOrder = order;
+    m_sortOrder = order;
 }
 
-void SimpleTreeModel::applySortFilter(Node *node)
+void SimpleTreeModel::applySortFilter(Node *node, bool permanent)
 {
-    if (!node->children.isEmpty()) {
-        int numChildren = node->children.size();
+    int numChildren = node->children.size();
+    if (!numChildren)
+        return;
 
+    if (m_sortColumn == -1 && !m_filterEnabled) {
+        node->displayChildren = node->children;
+        foreach (Node *child, node->children)
+            applySortFilter(child);
+    }
+    else {
         QVector<QModelIndex> indexes;
         indexes.reserve(numChildren);
 
-        for (int i = 0; i < numChildren; ++i) {
-            Node *child = node->children.at(i);
-
-            if (filterAcceptRow(child)) {
-                applySortFilter(child);
-                indexes << createIndex(i, m_sortColumn, child);
-            }
-        }
+        for (int i = 0; i < numChildren; ++i)
+            indexes << createIndex(i, m_sortColumn, node->children.at(i));
 
         if (m_sortColumn != -1)
-            qStableSort(indexes.begin(), indexes.end(), IndexCompare(m_sortRole, m_rowSortOrder));
+            qStableSort(indexes.begin(), indexes.end(), IndexCompare(m_sortRole, m_sortOrder));
 
-        if (m_sortColumn == -1 && indexes.size() == numChildren) {
-            // no sort, and nothing is filtered out
-            node->displayChildren = node->children;
-        }
-        else {
-            numChildren = indexes.size();
-            node->displayChildren.resize(numChildren);
-            for (int i = 0; i < numChildren; ++i)
-                node->displayChildren[i]  = nodeFromIndex(indexes.at(i));
+        node->displayChildren.clear();
+        node->displayChildren.reserve(numChildren);
+
+        for (int i = 0; i < numChildren; ++i) {
+            Node *child = nodeFromIndex(indexes.at(i));
+
+            if (permanent)
+                node->children[i] = child;
+
+            if (!m_filterEnabled || filterAcceptRow(child)) {
+                applySortFilter(child, permanent);
+                node->displayChildren << child;
+            }
         }
     }
 }
@@ -236,12 +244,12 @@ bool SimpleTreeModel::event(QEvent *event)
 }
 
 
-// ItemGroupsModel
+// MarketTreeModel
 
 MarketTreeModel::MarketTreeModel(Category *category, QObject *parent) : SimpleTreeModel(parent)
 {
     beginResetModel();
-    setRowSort(0, SortKeyRole);
+    setSort(0, SortKeyRole);
     fillNode(rootNode(), category);
     endResetModel();
 }
@@ -265,18 +273,21 @@ QVariant MarketTreeModel::data(const QModelIndex &index, int role) const
 }
 
 
-// ItemsListModel
+// DefinitionListModel
 
 DefinitionListModel::DefinitionListModel(QObject *parent)
-    : SimpleTreeModel(parent), m_category(0), m_hidePrototypes(false), m_showTierIcons(true)
+    : SimpleTreeModel(parent), m_category(0), m_hidePrototypes(false), m_logicalOrder(false), m_showTierIcons(true)
 {
-    setLogicalOrder(false);
+    setFilterEnabled(true);
 }
 
 void DefinitionListModel::setLogicalOrder(bool logical)
 {
-    setRowSort(0, logical ? SortKeyRole : Qt::DisplayRole);
-    invalidateSortFilter();
+    if (m_logicalOrder != logical) {
+        m_logicalOrder = logical;
+        setSort(0, logical ? SortKeyRole : Qt::DisplayRole);
+        invalidateSortFilter();
+    }
 }
 
 QVariant DefinitionListModel::data(const QModelIndex &index, int role) const
@@ -313,10 +324,13 @@ bool DefinitionListModel::filterAcceptRow(Node *node)
 void DefinitionListModel::setCategory(Category *category)
 {
     beginResetModel();
-    if (category)
+    if (category) {
+        setSort(0, m_logicalOrder ? SortKeyRole : Qt::DisplayRole);
+
         foreach (Definition *definition, category->definitions())
             if (definition->inMarket())
                 rootNode()->addChild(definition);
+    }
     endResetModel();
 }
 
@@ -327,7 +341,7 @@ void DefinitionListModel::setShowTierIcons(bool show)
 }
 
 
-// ItemComparisonModel
+// ComparisonModel
 
 QVariant ComparisonModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
@@ -448,6 +462,7 @@ QString AggregatesModel::columnName(int index) const
 void AggregatesModel::setDefinitions(const QList<Definition *> &definitions)
 {
     beginResetModel();
+    setSort(0, SortKeyRole);
     ComparisonModel::setDefinitions(definitions);
 
     if (!definitions.isEmpty()) {
@@ -647,21 +662,31 @@ QString ComponentsModel::columnName(int index) const
 void ComponentsModel::setDefinitions(const QList<Definition *> &definitions)
 {
     beginResetModel();
+    setSort(0, SortKeyRole, Qt::DescendingOrder);
     ComparisonModel::setDefinitions(definitions);
 
     if (!definitions.isEmpty()) {
-        QSet<Definition *> components;
+        QHash<Definition *, Node *> componentNodes;
 
         foreach (Definition *definition, definitions) {
             foreach (Definition *component, definition->components().keys()) {
-                if (!components.contains(component)) {
-                    components.insert(component);
-                    rootNode()->addChild(component);
+                int amount = definition->components().value(component);
+
+                Node *node = componentNodes.value(component);
+                if (!node) {
+                    node = rootNode()->addChild(component);
+                    node->data << amount;
+                    componentNodes.insert(component, node);
+                }
+                else {
+                    node->data[0] = qMax(node->data.at(0).toInt(), amount);
                 }
             }
         }
     }
     endResetModel();
+
+    setSort(-1, Qt::DisplayRole); // role for header-triggered sorts
 }
 
 QVariant ComponentsModel::data(const QModelIndex &index, int role) const
@@ -680,6 +705,9 @@ QVariant ComponentsModel::data(const QModelIndex &index, int role) const
             else if (role == Qt::SizeHintRole) {
                 if (!m_smallComponentIcons)
                     return QSize(0, 32);
+            }
+            else if (role == SortKeyRole) {
+                return nodeFromIndex(index)->data.at(0);
             }
         }
         else if (Definition *definition = fromColumn(index)) {
@@ -738,7 +766,12 @@ Qt::ItemFlags RequirementsModel::flags(const QModelIndex &index) const
 }
 
 
-// ComponentUseModel
+// DefinitionUseModel
+
+DefinitionUseModel::DefinitionUseModel(QObject *parent) : SimpleTreeModel(parent), m_component(0)
+{
+    setFilterEnabled(true);
+}
 
 void DefinitionUseModel::setComponent(Definition *component)
 {

@@ -42,9 +42,9 @@
 
 ExtensionsModel::ExtensionsModel(Agent *agent, QObject *parent) : SimpleTreeModel(parent), m_agent(agent)
 {
-    setRowSort(0, SortKeyRole);
-
     beginResetModel();
+    setSort(0, SortKeyRole);
+
     foreach (ExtensionCategory *category, m_agent->gameData()->extensionCategories()) {
         if (category->extensions().isEmpty())
             continue;

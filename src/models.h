@@ -32,8 +32,8 @@ class SimpleTreeModel : public QAbstractItemModel {
 public:
     enum { SortKeyRole = Qt::UserRole + 100 };
 
-    SimpleTreeModel(QObject *parent) : QAbstractItemModel(parent), m_root(new Node(0)),
-        m_sortColumn(-1), m_rowSortOrder(Qt::AscendingOrder), m_sortRole(Qt::DisplayRole) {}
+    SimpleTreeModel(QObject *parent) : QAbstractItemModel(parent), m_root(new Node(0)), m_filterEnabled(false),
+        m_sortColumn(-1), m_sortRole(Qt::DisplayRole), m_sortOrder(Qt::AscendingOrder) {}
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return 1; }
@@ -49,9 +49,9 @@ public:
 
     void sort(int column, Qt::SortOrder order);
 
-    int sortColumn() { return m_sortColumn; }
-    int sortRole() { return m_sortRole; }
-    int rowSortOrder() { return m_rowSortOrder; }
+    int sortColumn() const { return m_sortColumn; }
+    int sortRole() const { return m_sortRole; }
+    int sortOrder() const { return m_sortOrder; }
 
     QModelIndex objectIndex(QObject *object) const;
 
@@ -79,8 +79,10 @@ protected:
     void beginResetModel();
     void endResetModel();
 
-    void setRowSort(int column, int role, Qt::SortOrder order = Qt::AscendingOrder);
+    void setSort(int column, int role, Qt::SortOrder order = Qt::AscendingOrder);
     void invalidateSortFilter();
+
+    void setFilterEnabled(bool enabled) { m_filterEnabled = enabled; }
     virtual bool filterAcceptRow(Node *node) { Q_UNUSED(node) return true; }
 
     Node *findNode(QObject *object, Node *parent) const;
@@ -88,9 +90,10 @@ protected:
 private:
     Node *m_root;
     int m_sortRole, m_sortColumn;
-    Qt::SortOrder m_rowSortOrder;
+    Qt::SortOrder m_sortOrder;
+    bool m_filterEnabled;
 
-    void applySortFilter(Node *node);
+    void applySortFilter(Node *node, bool permanent = false);
 };
 
 
@@ -135,8 +138,9 @@ private:
     Category *m_category;
 
     bool m_hidePrototypes;
-    QString m_nameFilter;
+    bool m_logicalOrder;
     bool m_showTierIcons;
+    QString m_nameFilter;
 };
 
 
@@ -184,7 +188,7 @@ class AggregatesModel : public ComparisonModel {
     Q_OBJECT
 
 public:
-    AggregatesModel(QObject *parent) : ComparisonModel(parent) { setRowSort(0, SortKeyRole); }
+    AggregatesModel(QObject *parent) : ComparisonModel(parent) {}
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
@@ -220,7 +224,7 @@ class BonusesModel : public ComparisonModel {
     Q_OBJECT
 
 public:
-    BonusesModel(QObject *parent) : ComparisonModel(parent) { setRowSort(0, SortKeyRole); }
+    BonusesModel(QObject *parent) : ComparisonModel(parent) {}
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -252,7 +256,7 @@ class DefinitionUseModel : public SimpleTreeModel {
     Q_OBJECT
 
 public:
-    DefinitionUseModel(QObject *parent) : SimpleTreeModel(parent), m_component(0) {}
+    DefinitionUseModel(QObject *parent);
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
