@@ -143,7 +143,7 @@ def compile_sql(db_path='planner.db'):
             yield attr['ID'], attr['name']
 
     def t_translations(data):
-        '''name, en, hu, de, ru, it, fr, sk'''
+        '''name, en, hu, de, ru, it, fr, sl'''
         translations = genxy_consolidate('translations')
         names = translation_tokens(data) & set(translations['en'])
         for name in names:

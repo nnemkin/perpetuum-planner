@@ -107,11 +107,11 @@
          </item>
          <item>
           <property name="text">
-           <string notr="true">Slovene (Slovenščina)</string>
+           <string notr="true">Slovenian (Slovenščina)</string>
           </property>
           <property name="icon">
            <iconset resource="../res/resources.qrc">
-            <normaloff>:/flag-sk.png</normaloff>:/flag-sk.png</iconset>
+            <normaloff>:/flag-sl.png</normaloff>:/flag-sl.png</iconset>
           </property>
          </item>
         </widget>

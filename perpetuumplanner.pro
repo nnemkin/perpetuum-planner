@@ -133,7 +133,7 @@ TRANSLATIONS = \
     i18n/perpetuumplanner_ru.ts \
     i18n/perpetuumplanner_it.ts \
     i18n/perpetuumplanner_fr.ts \
-    i18n/perpetuumplanner_sk.ts
+    i18n/perpetuumplanner_sl.ts
 
 RC_FILE = res/winres.rc
 

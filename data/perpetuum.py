@@ -8,7 +8,7 @@ import fnmatch
 from collections import OrderedDict, namedtuple, Mapping
 
 
-PERPETUUM_LANGUAGES = ['en', 'hu', 'de', 'ru', 'it', 'fr', 'sk']
+PERPETUUM_LANGUAGES = ['en', 'hu', 'de', 'ru', 'it', 'fr', 'sl']
 
 
 def genxy_parse(data, builder=None):

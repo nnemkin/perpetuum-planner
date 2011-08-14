@@ -6,12 +6,12 @@
         <file>perpetuumplanner_ru.qm</file>
         <file>perpetuumplanner_it.qm</file>
         <file>perpetuumplanner_fr.qm</file>
-        <file>perpetuumplanner_sk.qm</file>
+        <file>perpetuumplanner_sl.qm</file>
         <file>qt_de.qm</file>
         <file>qt_hu.qm</file>
         <file>qt_ru.qm</file>
         <file>qt_it.qm</file>
         <file>qt_fr.qm</file>
-        <file>qt_sk.qm</file>
+        <file>qt_sl.qm</file>
     </qresource>
 </RCC>

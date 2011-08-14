@@ -114,7 +114,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 void MainWindow::updateLanguageSelector()
 {
-    static const char *languageList[]= { "en", "hu", "de", "ru", "it", "fr", "sk" };
+    static const char *languageList[]= { "en", "hu", "de", "ru", "it", "fr", "sl" };
     for (int i = 0; i < listLanguage->count(); ++i)
         listLanguage->setItemData(i, languageList[i]);
 
