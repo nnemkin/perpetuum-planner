@@ -82,7 +82,7 @@ def build_variant(exclude_definitions=[]):
                 elif type in ('4', '6', 'N'):
                     value = QtCore.QVariant.fromList(value)
                 elif type == '5':
-                    value = QtCore.QVariant.fromList(item.decode('utf-8') for item in value)
+                    value = QtCore.QVariant.fromList([item.decode('utf-8') for item in value])
                 d[key] = value
 
         if d.get('definition') in exclude_definitions:

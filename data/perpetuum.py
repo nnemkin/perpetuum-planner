@@ -26,8 +26,9 @@ def genxy_parse(data, builder=None):
             f-?\d*(\.\d+)?|  # float
             N-?\d+(\s*,\s*-?\d+)*| # int array
             n-?\d+|                # int
-            [dpr3]-?[\da-fA-F]+(?:\.-?[\da-fA-F]+)*|  # hex int tuple
-            [64]-?[\da-fA-F]+(?:\s*,\s*-?[\da-fA-F]+)*|     # hex int list
+            [dpr3]-?[\da-fA-F]+(?:\.-?[\da-fA-F]+)*|   # hex int tuple
+            [64]-?[\da-fA-F]+(?:s*,\s*-?[\da-fA-F]+)*| # hex int list
+            5[^\r\n\|\]#]*(?:s*,\s*[^\r\n\|\]#]*)*|    # string list
             [Lic]-?[\da-fA-F]+|  # hex int
             t[\da-fA-F]{8}|      # float in hex int
             (?P<WS>)[\s\r\n]+    # whitespace''')
