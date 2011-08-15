@@ -147,4 +147,7 @@ INCLUDEPATH += \
 
 QMAKE_RESOURCE_FLAGS += -threshold 0 -compress 9
 
-QMAKE_LFLAGS += -FORCE:MULTIPLE -MAP
+static:QMAKE_LFLAGS += -FORCE:MULTIPLE -MAP
+
+# temporary workaround for debug builds
+shared:LIBS += zdll.lib shell32.lib user32.lib gdi32.lib
