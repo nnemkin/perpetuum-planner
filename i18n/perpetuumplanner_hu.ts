@@ -101,7 +101,7 @@ Error on line %1: %2</source>
     <message>
         <source>Corporation:</source>
         <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation>Jelenlegi vállalat:</translation>
+        <translation>Vállalat:</translation>
     </message>
     <message>
         <source>buttonGroupCorporation</source>
@@ -626,10 +626,6 @@ Error on line %1: %2</source>
         <translation>&amp;KOMPONENSEK</translation>
     </message>
     <message>
-        <source>Decoding level</source>
-        <translation>Dekódolási szint</translation>
-    </message>
-    <message>
         <source>COMPONENT &amp;IN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -697,6 +693,11 @@ Error on line %1: %2</source>
         <translation>
             <numerusform>%n elemek</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Lowest decoding level</source>
+        <extracomment>entityinfo_researchkitrequired</extracomment>
+        <translation>Legalacsonyabb dekódolási szint</translation>
     </message>
 </context>
 <context>

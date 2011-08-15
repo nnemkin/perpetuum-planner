@@ -632,10 +632,6 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Decoding level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>COMPONENT &amp;IN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -704,6 +700,11 @@ Error on line %1: %2</source>
             <numerusform>%n item</numerusform>
             <numerusform>%n items</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Lowest decoding level</source>
+        <extracomment>entityinfo_researchkitrequired</extracomment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

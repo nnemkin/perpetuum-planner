@@ -42,7 +42,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre à jour</translation>
     </message>
     <message>
         <source>Perpetuum Agent</source>
@@ -96,7 +96,7 @@ Error on line %1: %2</source>
     <message>
         <source>Corporation:</source>
         <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation>Corporation actuelle:</translation>
+        <translation>Corporation:</translation>
     </message>
     <message>
         <source>buttonGroupCorporation</source>
@@ -545,38 +545,44 @@ Error on line %1: %2</source>
     <name>Formatter</name>
     <message numerus="yes">
         <source>%n day(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jour</numerusform>
+            <numerusform>%n jours</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n heure</numerusform>
+            <numerusform>%n heures</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n minute</numerusform>
+            <numerusform>%n minutes</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nd</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%nd</numerusform>
+            <numerusform>%nd</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nh</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%nh</numerusform>
+            <numerusform>%nh</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nm</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%nm</numerusform>
+            <numerusform>%nm</numerusform>
         </translation>
     </message>
 </context>
@@ -600,7 +606,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation>E&amp;ffacer</translation>
+        <translation>Efface&amp;r</translation>
     </message>
     <message>
         <source>Hide prototypes</source>
@@ -624,10 +630,6 @@ Error on line %1: %2</source>
         <source>&amp;COMPONENTS</source>
         <extracomment>entityinfo_components</extracomment>
         <translation>&amp;COMPOSANTS</translation>
-    </message>
-    <message>
-        <source>Decoding level</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>COMPONENT &amp;IN</source>
@@ -690,13 +692,19 @@ Error on line %1: %2</source>
     <message>
         <source>Level %1 decoder</source>
         <extracomment>def_research_kit_1</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Décodeur niveau %1</translation>
     </message>
     <message numerus="yes">
         <source>%n items</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n objet</numerusform>
+            <numerusform>%n objets</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Lowest decoding level</source>
+        <extracomment>entityinfo_researchkitrequired</extracomment>
+        <translation>Niveau minimum de décodage</translation>
     </message>
 </context>
 <context>
@@ -854,7 +862,7 @@ Error on line %1: %2</source>
     <message>
         <source>Error</source>
         <extracomment>combatlog_error</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Invalid proxy address.</source>
@@ -898,7 +906,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Erreur</translation>
     </message>
     <message>
         <source>Download failed:

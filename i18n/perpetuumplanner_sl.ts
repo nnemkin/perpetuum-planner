@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sl_SL">
+<TS version="2.0" language="sl_SI">
 <context>
     <name>Agent</name>
     <message>
@@ -42,7 +42,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Posodobi</translation>
     </message>
     <message>
         <source>Perpetuum Agent</source>
@@ -96,7 +96,7 @@ Error on line %1: %2</source>
     <message>
         <source>Corporation:</source>
         <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation>Trenutna korporacija:</translation>
+        <translation>Korporacija:</translation>
     </message>
     <message>
         <source>buttonGroupCorporation</source>
@@ -545,20 +545,29 @@ Error on line %1: %2</source>
     <name>Formatter</name>
     <message numerus="yes">
         <source>%n day(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n dan</numerusform>
+            <numerusform>%n dni</numerusform>
+            <numerusform>%n dni</numerusform>
+            <numerusform>%n dni</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n uro</numerusform>
+            <numerusform>%n uri</numerusform>
+            <numerusform>%n ure</numerusform>
+            <numerusform>%n ur</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n minuto</numerusform>
+            <numerusform>%n minuti</numerusform>
+            <numerusform>%n minute</numerusform>
+            <numerusform>%n minut</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -626,10 +635,6 @@ Error on line %1: %2</source>
         <translation>&amp;SESTAVINE</translation>
     </message>
     <message>
-        <source>Decoding level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>COMPONENT &amp;IN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -690,13 +695,21 @@ Error on line %1: %2</source>
     <message>
         <source>Level %1 decoder</source>
         <extracomment>def_research_kit_1</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Dekodirnik %1. stopnje</translation>
     </message>
     <message numerus="yes">
         <source>%n items</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n predmet</numerusform>
+            <numerusform>%n predmeta</numerusform>
+            <numerusform>%n predmeti</numerusform>
+            <numerusform>%n predmetov</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Lowest decoding level</source>
+        <extracomment>entityinfo_researchkitrequired</extracomment>
+        <translation>Najnižji dešifrirni nivo</translation>
     </message>
 </context>
 <context>
@@ -849,12 +862,12 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;Cancel</source>
         <extracomment>cancel</extracomment>
-        <translation type="unfinished">&amp;Prekliči</translation>
+        <translation>&amp;Prekliči</translation>
     </message>
     <message>
         <source>Error</source>
         <extracomment>combatlog_error</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Napaka</translation>
     </message>
     <message>
         <source>Invalid proxy address.</source>
@@ -898,7 +911,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Napaka</translation>
     </message>
     <message>
         <source>Download failed:

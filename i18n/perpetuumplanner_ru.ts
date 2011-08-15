@@ -641,10 +641,6 @@ Error on line %1: %2</source>
         <translation>&amp;КОМПОНЕНТЫ</translation>
     </message>
     <message>
-        <source>Decoding level</source>
-        <translation>Уровень декодирования</translation>
-    </message>
-    <message>
         <source>COMPONENT &amp;IN</source>
         <translation>КОМПОНЕНТ &amp;В</translation>
     </message>
@@ -710,10 +706,15 @@ Error on line %1: %2</source>
     <message numerus="yes">
         <source>%n items</source>
         <translation>
-            <numerusform>%n предметов</numerusform>
-            <numerusform>%n предметов</numerusform>
+            <numerusform>%n предмет</numerusform>
+            <numerusform>%n предмета</numerusform>
             <numerusform>%n предметов</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Lowest decoding level</source>
+        <extracomment>entityinfo_researchkitrequired</extracomment>
+        <translation>Мин-й уровень декодирования</translation>
     </message>
 </context>
 <context>

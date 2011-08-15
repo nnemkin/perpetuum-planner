@@ -101,7 +101,7 @@ Error on line %1: %2</source>
     <message>
         <source>Corporation:</source>
         <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation>Derzeitige Corporation:</translation>
+        <translation>Corporation:</translation>
     </message>
     <message>
         <source>buttonGroupCorporation</source>
@@ -632,10 +632,6 @@ Error on line %1: %2</source>
         <translation>&amp;KOMPONENTEN</translation>
     </message>
     <message>
-        <source>Decoding level</source>
-        <translation>Decoding-Stufe</translation>
-    </message>
-    <message>
         <source>COMPONENT &amp;IN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -701,9 +697,14 @@ Error on line %1: %2</source>
     <message numerus="yes">
         <source>%n items</source>
         <translation>
-            <numerusform>%n Element</numerusform>
-            <numerusform>%n Elemente</numerusform>
+            <numerusform>%n Gegenstand</numerusform>
+            <numerusform>%n Gegenstände</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Lowest decoding level</source>
+        <extracomment>entityinfo_researchkitrequired</extracomment>
+        <translation>niedrigste Decoding-Stufe</translation>
     </message>
 </context>
 <context>
