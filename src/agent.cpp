@@ -249,6 +249,39 @@ bool Agent::load(const QString& fileName)
     return load(&file);
 }
 
+bool Agent::importHistory(QIODevice *io)
+{
+    if (!io->isOpen()) {
+        if (!io->open(QIODevice::ReadOnly)) {
+            m_lastError = tr("Failed to import extension history");
+            false;
+        }
+    }
+    m_lastError.clear();
+
+    ExtensionLevelMap importExts;
+
+    QString data = io->readAll();
+    foreach (const QString &line, data.split('\n')) {
+        QString extName = line.section(',', 0, 0).remove('"');
+        int extLevel = line.section(',', 1, 1).remove('"').toInt();
+
+        if (Extension *extension = m_gameData->findByName<Extension *>(extName)) {
+            if (extLevel > importExts.value(extension))
+                importExts.insert(extension, extLevel);
+        }
+    }
+
+    m_currentExtensions->setFrom(importExts);
+    return true;
+}
+
+bool Agent::importHistory(const QString& fileName)
+{
+    QFile file(fileName);
+    return importHistory(&file);
+}
+
 bool Agent::save(QIODevice *io)
 {
     QVariantMap dataMap;

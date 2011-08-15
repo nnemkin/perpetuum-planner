@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>430</width>
+    <width>502</width>
     <height>509</height>
    </rect>
   </property>
@@ -372,6 +372,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonImport">
+       <property name="text">
+        <string>Import...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="buttonSave">
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
@@ -478,6 +485,14 @@
     <string>Ctrl+Shift+S</string>
    </property>
   </action>
+  <action name="actionImport">
+   <property name="text">
+    <string>Import...</string>
+   </property>
+   <property name="toolTip">
+    <string>Import extension history from Perpetuum</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -576,6 +591,22 @@
    <hints>
     <hint type="sourcelabel">
      <x>295</x>
+     <y>490</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonImport</sender>
+   <signal>clicked()</signal>
+   <receiver>actionImport</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>210</x>
      <y>490</y>
     </hint>
     <hint type="destinationlabel">

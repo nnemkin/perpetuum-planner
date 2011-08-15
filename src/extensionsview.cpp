@@ -538,7 +538,8 @@ void ExtensionsView::on_actionSaveAs_triggered()
 {
     QSettings settings;
     QString lastUsedDir = settings.value("LastUsedDir").toString();
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save plan"), lastUsedDir, tr("Agents (*.agent);;All files (*.*)"));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save plan"), lastUsedDir,
+                                                    tr("Agents (*.agent);;All files (*.*)"));
     if (!fileName.isEmpty()) {
         settings.setValue("LastUsedDir", QFileInfo(fileName).dir().canonicalPath());
         if (!m_agent->save(fileName))
@@ -550,11 +551,26 @@ void ExtensionsView::on_actionLoad_triggered()
 {
     QSettings settings;
     QString lastUsedDir = settings.value("LastUsedDir").toString();
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Load plan"), lastUsedDir,    tr("Agents (*.agent);;All files (*.*)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Load plan"), lastUsedDir,
+                                                    tr("Agents (*.agent);;All files (*.*)"));
     if (!fileName.isEmpty()) {
         settings.setValue("LastUsedDir", QFileInfo(fileName).dir().canonicalPath());
         if (canClose())
-            m_agent->load(fileName);
+            if (!m_agent->load(fileName))
+                MessageBox::exec(this, tr("Error"), m_agent->lastError());
+    }
+}
+
+void ExtensionsView::on_actionImport_triggered()
+{
+    QSettings settings;
+    QString lastImportDir = settings.value("LastImportDir").toString();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Import extension history"), lastImportDir,
+                                                    tr("CSV files (*.csv);;All files (*.*)"));
+    if (!fileName.isEmpty()) {
+        settings.setValue("LastImportDir", QFileInfo(fileName).dir().canonicalPath());
+        if (!m_agent->importHistory(fileName))
+            MessageBox::exec(this, tr("Error"), m_agent->lastError());
     }
 }
 

@@ -16,6 +16,10 @@ Error on line %1: %2</source>
         <source>Failed to save agent data.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Failed to import extension history</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AggregatesModel</name>
@@ -538,6 +542,22 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Load plan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import extension history from Perpetuum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import extension history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CSV files (*.csv);;All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

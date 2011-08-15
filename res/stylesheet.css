@@ -335,7 +335,7 @@ OptionsDialog QPushButton { width: 75px; margin: 0; }
 
 /* Extensions Tab */
 
-ExtensionsView > QPushButton { width: 110px; }
+ExtensionsView > QPushButton { width: 100px; }
 
 QTreeView#treeExtensions > QHeaderView::section { padding: 3px 5px; border-style: none; }
 

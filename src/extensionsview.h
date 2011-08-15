@@ -94,6 +94,7 @@ private slots:
     void on_actionSaveAs_triggered();
     void on_actionNew_triggered();
     void on_actionLoad_triggered();
+    void on_actionImport_triggered();
     void on_actionSave_triggered();
     void on_actionInformation_triggered();
     void on_actionAttributeEditor_triggered();

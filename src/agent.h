@@ -37,6 +37,8 @@ public:
 
     bool load(QIODevice *io);
     bool load(const QString& fileName);
+    bool importHistory(QIODevice *io);
+    bool importHistory(const QString& fileName);
     bool save(QIODevice *io);
     bool save(const QString& fileName = QString());
     QString lastError() const { return m_lastError; }
