@@ -88,7 +88,7 @@ class ItemTableHeader : public QHeaderView {
     Q_OBJECT
 
 public:
-    ItemTableHeader(int firstColumnWidth, int minColumnWidth, int maxColumnWidth, QWidget *parent=0);
+    ItemTableHeader(int firstColumnWidth, int minColumnWidth, int maxColumnWidth, QWidget *parent = 0);
 
     void toggleSort(int section);
 

@@ -450,31 +450,30 @@ void ItemTableHeader::updateGeometries()
 {
     QHeaderView::updateGeometries();
 
-    //qDebug() << model() << "updateGeometries";
-
     int colCount = count();
     if (colCount >= 2) {
         setResizeMode(Fixed);
         setResizeMode(0, Interactive);
         setResizeMode(colCount - 1, Stretch); // stretch placeholder
-        resizeSection(0, m_firstColumnWidth); // XXX remove
-        resizeSection(colCount - 1, 0);       // XXX remove
 
         int availWidth = viewport()->width() - sectionSize(0) - 3;
+        int usedWidth = 0;
 
         for (int i = 1; i < colCount - 1; ++i) {
             int colWidth;
             QVariant vSizeHint = model()->headerData(i, orientation(), Qt::SizeHintRole);
             if (vSizeHint.isValid()) {
-                colWidth = vSizeHint.value<QSize>().width();
+                colWidth = qBound(m_minColumnWidth, vSizeHint.value<QSize>().width(), availWidth - usedWidth);
             }
             else {
                 colWidth = qMax(1, availWidth / (colCount - 2));
                 colWidth += (i-1 < availWidth % colWidth); // distribute remainder
                 colWidth = qBound(m_minColumnWidth, colWidth, defaultSectionSize());
             }
+            usedWidth += colWidth;
             resizeSection(i, colWidth);
         }
+        resizeSection(colCount - 1, qMax(0, availWidth - usedWidth));
     }
 }
 
@@ -494,7 +493,9 @@ void ItemTableHeader::toggleSort(int section)
 
 void ItemTableHeader::modelReset()
 {
-    setSortIndicator(-1, Qt::AscendingOrder);
+    setSortIndicator(-1, Qt::AscendingOrder); // XXX remove
+
+    resizeSection(0, m_firstColumnWidth);
 }
 
 void ItemTableHeader::setModel(QAbstractItemModel *m)
