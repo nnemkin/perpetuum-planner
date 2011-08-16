@@ -19,7 +19,7 @@ pre p { margin-left: 3em; }
 img { border-style: none; }
 
 .languages { float: right; margin: 8px; }
-.languages a { background: transparent url(flags.png) no-repeat left 5px; padding-left: 20px; }
+.languages a { background: transparent url(images/flags.png) no-repeat left 5px; padding-left: 20px; }
 .languages a.ru { background-position: left -11px; }
 
 .sidebar { float: right; text-align: center; border-left: 1px solid #555; margin-left: 8px; padding: 0 8px; }
@@ -34,15 +34,18 @@ img { border-style: none; }
 
 .backlink { margin-top: 1em; }
 
-.footer { margin: 20px 8px 0 0; font-size: 10px; color: #999; text-align: right; }
+.footer { padding: 15px 8px 0 0; font-size: 10px; color: #999; text-align: right; clear: both; }
 
 .button {
-	display: inline-block;
+    display: block;
 	outline: none;
 	text-decoration: none;
-	padding: .5em 1.5em .55em;
-	/* text-shadow: 0 1px 1px rgba(0,0,0,.3); */
+	width: 246px;
+	height: 48px;
+	padding-top: 8px;
+	text-align: center;
+	/*text-shadow: 0 1px 1px rgba(0,0,0,.3);*/
 	color: #ffd000;
-	background: transparent url(button.png) no-repeat center;
+	background: transparent url(images/button.png) no-repeat;
 }
-.button:hover { background: transparent url(button-hover.png) no-repeat center; }
+.button:hover { background-color: transparent; background-position: 0 -56px; }
