@@ -66,7 +66,7 @@ def build_variant(exclude_definitions=[]):
             else:
                 if type == '$':
                     if key == 'options' and value.strip().startswith('#'):
-                        value = genxy_parse(value, _build)
+                        value = genxy_parse(value, lambda events: _build(events, False))
                     else:
                         value = value.decode('utf-8')
                 elif type == '2':
