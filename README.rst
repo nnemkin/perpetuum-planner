@@ -23,54 +23,61 @@ Game data is used without any specific license.
 Game data
 ---------
 
-Game data comes from two sources. Until version 1.2 all the data came from the OCRed screenshots.
-(A couple of thousand of them, mostly of item information windows).
-Starting from version 1.2 I've unpacked `Perpetuum.gbf` and got translation strings and HQ icons from there.
-To my great disappointment, `Perpetuum.gbf` did not contain item attributes, components and requirements.
+Game data is distributed separately (see project downloads).
+It is a set of text files in JSON-like format native to the client.
+Parser and converters for this format can be found in `data/perpetuum.py` and `data/tools.py`.
 
-Language independent data is stored in the YAML format in the `data/yaml` directory. Translation keys serve as identifiers.
-Translation dictionaries, extracted from the .gbf, can be found in the `data/re` directory.
-Along with dictionaries there are some text files that were used to build and clean up the yaml dataset and might prove useful in the future.
+Data is split into `fragments`, `translations` and  `icons`.
+Fragments are pieces of data with uniform structure (much like SQL tables), translations
+and icons are self-explanatory.
 
-Note: at any given time there is only one dictionary in the `Perpetuum.gbf`. To extract another language version
-you should change the language in the options, restart Perpetuum and let it download the new dictionary.
+Note 1: Included icons are the recompressed (for smaller size) low-quality versions
+used in the Planner. Originals can be extracted from `Perpetuum.gbf`.
 
-The unpacker script is `data/unpack.py`. It requires Python 2.7 to run. To unpack a dictionary use::
+Note 2: At any given time there is only one translation dictionary in `Perpetuum.gbf`.
+To extract another language version you need to change the language and restart Perpetuum
+(notice how it downloads a new dictionary).
 
-    python -f path\to\perpetuum.gbf -s dictionary path\to\output\dir
+The GBF unpacker script is `data/tools.py`. It requires Python 2.7 to run. To unpack
+the whole `Perpetuum.gbf` use::
 
-To unpack the whole `Perpetuum.gbf` use::
+    python tools.py -i path\to\perpetuum.gbf -o output\dir
 
-    python -f path\to\perpetuum.gbf dictionary path\to\output\dir
-
-If you're only interested in the game data, download `planner_data.zip` from the downloads section and have fun.
-The icons in `planner_data.zip` are recompressed for smaller size. If you want HQ originals (with 8bit alpha),
-unpack them yourself from the gbf.
+If you're only interested in the game data, download the latest `planner_data_YYYY_MM_DD.zip`
+from the downloads section and have fun.
 
 
 Build procedure
 ---------------
 
-Note: you should have some experience with Pyhton and Qt.
+You need:
+
+* Python 2.7, Qt 4.7 binaries, Qt Creator.
+* Some experience with C++, Pyhton and Qt.
+
+Official builds of PerpetuumPlanner are created with VisualStudio 2008.
+Qt version used is the latest 4.7 from git (http://qt.gitorious.org/) configured and built according to `meta/config_skin.cache`
+with the ``/MT`` flag patched into win32-msvc2008 mkspec (``QMAKE_CFLAGS_RELEASE = -O2 -MT``).
+(The goal is relatively small and portable binary without external dependencies).
+
+Steps:
 
 1. Fetch the project from git.
-2. Download `planner_data.zip` from the downloads section and unpack it into the project directory.
+2. Download `planner_data_YYYY_MM_DD.zip` from the downloads section and unpack it into the project's `data` directory.
 3. Get the `MyriadPro-BoldCond.otf` (Myriad Pro Cond font) somewhere and put it in the res directory.
    It's a commercial font from Adobe with draconian license. I'm not sure it's legal to embed it even if you buy it.
    Therefore it's not included. To build without it, remove corresponding line from res/resources.qrc.
-4. Install Python 2.7, PyYAML and PyQt. (They are used to prepare the game data.)
-5. In the data directory run::
+4. In the data directory run::
 
        python compile.py
 
-   This command combines language-independent game data from the `data/yaml` directory and serializes it as QVariant into the `data/compiled/game.dat`.
-   It also takes the `data/re/dictionary_*.txt` files with translated strings and creates `data/compiled/lang_*.dat` files.
-   (To have an idea of what's stored in the QVariant serialized `.dat` files have a look at the corresponding `.yaml` files.)
-6. Download and install Qt.
-   The "official" builds of PerpetuumPlanner are done with VisualStudio 2008.
-   Qt version used is the latest 4.7 from git (http://qt.gitorious.org/) configured and built according to `meta/config_skin.cache`
-   with an ``/MT`` flag patched into win32-msvc2008 mkspec (``QMAKE_CFLAGS_RELEASE = -O2 -MT``).
-7. Download QtCreator, open perpetuumplanner.pro, set up your Qt paths in the settings and build.
+   This command parses data fragments and converts them into serialized `QVariant` blobs which are
+   written as `data/compiled/*.dat` files. Apart from throwing out some unused definitions, no changes are made during conversion.
+   Later these `*.dat` filed (and also icons from the `data/icons`) are compiled into the Planner executable.
+
+   If you have PyYAML installed this command also creates `game.yaml` file which us handy for debugging data errors.
+
+5. Download QtCreator, open perpetuumplanner.pro, set up your Qt paths in the settings and build.
 
 
 Coding style
@@ -79,9 +86,3 @@ Coding style
 The coding style used is more or less the `Qt coding style`__.
 
 .. __: http://qt.gitorious.org/qt/pages/QtCodingStyle
-
-
-Code notes
-----------
-
-TBD
