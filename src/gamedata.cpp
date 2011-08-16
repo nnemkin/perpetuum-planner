@@ -765,6 +765,9 @@ QPixmap Definition::icon(int size, bool decorated) const
             QPixmapCache::insert(key, pixmap);
         }
     }
+    else {
+        pixmap.load(":/icons/noIconAvailable.png");
+    }
     return pixmap;
 }
 
