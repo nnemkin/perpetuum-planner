@@ -23,8 +23,8 @@ Game data is used without any specific license.
 Game data
 ---------
 
-Game data is distributed separately (see project downloads).
-It is a set of text files in JSON-like format native to the client.
+Game data is provided separately, see `planner_data_YYYY_MM_DD.zip` in the project downloads.
+It is a set of text files in JSON-like format native to Perpetuum client.
 Parser and converters for this format can be found in `data/perpetuum.py` and `data/tools.py`.
 
 Data is split into `fragments`, `translations` and  `icons`.
@@ -41,10 +41,11 @@ To extract another language version you need to change the language and restart 
 The GBF unpacker script is `data/tools.py`. It requires Python 2.7 to run. To unpack
 the whole `Perpetuum.gbf` use::
 
-    python tools.py -i path\to\perpetuum.gbf -o output\dir
+    python tools.py data -i path\to\perpetuum.gbf -o output\dir --sort
 
-If you're only interested in the game data, download the latest `planner_data_YYYY_MM_DD.zip`
-from the downloads section and have fun.
+(Install numpy_ beforehead if you don't want to wait 15 minutes).
+
+.. _numpy: http://www.scipy.org/Download
 
 
 Build procedure
