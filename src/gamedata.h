@@ -329,7 +329,7 @@ public:
     int id() const { return m_id; }
     QColor color() const { return m_color; }
 
-    QPixmap icon() const;
+    QPixmap icon(bool overlay = false) const;
 private:
     int m_id;
     QColor m_color;
@@ -369,7 +369,9 @@ public:
     };
     enum ModuleFlags {
         TurretSlot = 0x1, MissileSlot = 0x2, IndustrialSlot = 0x200, OtherSlot = 0x400, HeadSlot = 0x8, LegSlot = 0x20,
-        Small = 0x40, Medium = 0x80, Large = 0x100
+        Small = 0x40, Medium = 0x80, Large = 0x100,
+
+        SlotMask = 0x62b, SizeMask = 0x1c0
     };
 
     Definition(GameData *gameData) : GameObject(gameData), m_id(0), m_quantity(0),
@@ -398,6 +400,9 @@ public:
     Definition *head() const { return m_head; }
     Definition *chassis() const { return m_chassis; }
     Definition *leg() const { return m_leg; }
+
+    int slotFlag() const { return m_moduleFlag & SlotMask; }
+    int sizeFlag() const { return m_moduleFlag & SizeMask; }
 
     const ExtensionLevelMap &requirements() const { return m_enablerExtensions; }
     const QMap<AggregateField *, QVariant> &aggregates() const { return m_aggregates; }

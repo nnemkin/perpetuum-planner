@@ -69,5 +69,14 @@
         <file>tier_bg.png</file>
         <file>tier_bg_short.png</file>
         <file>defaultSettings.ini</file>
+        <file>slot-head.png</file>
+        <file>slot-industrial.png</file>
+        <file>slot-leg.png</file>
+        <file>slot-missile.png</file>
+        <file>slot-other.png</file>
+        <file>slot-turret.png</file>
+        <file>slot-large.png</file>
+        <file>slot-medium.png</file>
+        <file>slot-small.png</file>
     </qresource>
 </RCC>

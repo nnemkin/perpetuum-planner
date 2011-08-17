@@ -536,13 +536,13 @@ bool Tier::load(const QVariantMap &dataMap)
     return true;
 }
 
-QPixmap Tier::icon() const
+QPixmap Tier::icon(bool overlay) const
 {
     QPixmap pixmap;
-    QString key = QString("TierIcon-%1").arg(m_name);
+    QString key = QString("TierIcon-%1-%2").arg(m_name).arg(overlay);
 
     if (!QPixmapCache::find(key, pixmap)) {
-        QPixmap bg(":/tier_bg_short.png");
+        QPixmap bg(overlay ? ":/tier_bg.png" : ":/tier_bg_short.png");
 
         pixmap = bg;
         QPainter painter(&pixmap);
@@ -752,22 +752,49 @@ bool Definition::load(const QVariantMap &dataMap)
 QPixmap Definition::icon(int size, bool decorated) const
 {
     QPixmap pixmap;
-    if (!m_icon.isEmpty()) {
-        QString key = QString("icon-%1-%2-%3").arg(m_icon).arg(size).arg(decorated);
-        if (!QPixmapCache::find(key, &pixmap)) {
-            pixmap.load(QString(":/icons/%1.png").arg(m_icon), 0, Qt::NoOpaqueDetection);
-            if (size != -1 && pixmap.width() != size)
-                pixmap = pixmap.scaledToWidth(size, Qt::SmoothTransformation);
+    pixmap.load(QString(":/icons/%1.png").arg(m_icon.isEmpty() ? "noIconAvailable" : m_icon), 0, Qt::NoOpaqueDetection);
 
-            if (decorated) {
-                // TODO
-            }
-            QPixmapCache::insert(key, pixmap);
+    if (decorated && (m_tier || slotFlag() || sizeFlag())) {
+        QPixmap tierIcon, slotIcon, sizeIcon;
+
+        if (m_tier)
+            tierIcon = m_tier->icon(true);
+
+        switch (slotFlag()) {
+        case TurretSlot:
+            slotIcon.load(":/slot-turret.png"); break;
+        case MissileSlot:
+            slotIcon.load(":/slot-missile.png"); break;
+        case IndustrialSlot:
+            slotIcon.load(":/slot-industrial.png"); break;
+        case OtherSlot:
+            slotIcon.load(":/slot-other.png"); break;
+        case HeadSlot:
+            slotIcon.load(":/slot-head.png"); break;
+        case LegSlot:
+            slotIcon.load(":/slot-leg.png"); break;
         }
+
+        switch (sizeFlag()) {
+        case Small:
+            sizeIcon.load(":/slot-small.png"); break;
+        case Medium:
+            sizeIcon.load(":/slot-medium.png"); break;
+        case Large:
+            sizeIcon.load(":/slot-large.png"); break;
+        }
+
+        QPainter painter(&pixmap);
+        painter.drawPixmap((pixmap.width() - tierIcon.width()) / 2, 5, tierIcon);
+        int x = pixmap.width() - slotIcon.width() - 4;
+        painter.drawPixmap(x, pixmap.height() - slotIcon.height() - 4, slotIcon);
+        x -= slotIcon.width() - 1;
+        painter.drawPixmap(x, pixmap.height() - sizeIcon.height() - 4, sizeIcon);
     }
-    else {
-        pixmap.load(":/icons/noIconAvailable.png");
-    }
+
+    if (size != -1 && pixmap.width() != size)
+        pixmap = pixmap.scaledToWidth(size, Qt::SmoothTransformation);
+
     return pixmap;
 }
 
