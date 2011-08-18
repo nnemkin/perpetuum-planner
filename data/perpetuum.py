@@ -303,6 +303,7 @@ class SkinFile(object):
     """GenxySkin file reader"""
 
     Rect = namedtuple('Rect', 'image_id, id, x1, y1, x2, y2')
+    Image = namedtuple('Image', 'id, data')
 
     def __init__(self, filename):
         """ construct definition:
@@ -331,17 +332,18 @@ class SkinFile(object):
             String('dict', lambda ctx: ctx.dict_size)
         )
         """
+        self.filename = filename
 
         with open(filename, 'rb') as f:
-            if f.read(8) != 'GXS2':
+            if f.read(4) != 'GXS2':
                 raise Exception('Invalid skin file (wrong magic)')
 
-            self.images = {}
+            self.images = []
             num_images = struct.unpack('i', f.read(4))[0]
             for i in xrange(num_images):
                 image_id, image_size = struct.unpack('ii', f.read(8))
-                self.images[image_id] = (f.tell(), image_size)
-                f.seek(image_size, os.SEEK_CUR)
+                image = self.Image(image_id, f.read(image_size))
+                self.images.append(image)
 
             self.rects = []
             num_rects = struct.unpack('i', f.read(4))[0]
@@ -350,4 +352,4 @@ class SkinFile(object):
                 self.rects.append(rect)
 
             dict_size = struct.unpack('i', f.read(4))[0]
-            self._dict = f.read(dict_size)
+            self.dict = f.read(dict_size)

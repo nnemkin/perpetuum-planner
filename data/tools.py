@@ -25,19 +25,24 @@ def command_skin(args):
     skin = SkinFile(args.input)
 
     for image in skin.images:
-        with open('image_%04d.png' % image.id, 'wb') as f:
-            f.write(image.skin.value)
+        with open(os.path.join(args.output, 'image_%04d.png' % image.id), 'wb') as f:
+            f.write(image.data)
 
         qimage = QtGui.QImage()
-        qimage.loadFromData(image.data.value, 'PNG')
+        qimage.loadFromData(image.data, 'PNG')
 
         for rect in skin.rects:
             if rect.image_id == image.id:
                 qrect = QtCore.QRect(rect.x1, rect.y1, rect.x2 - rect.x1, rect.y2 - rect.y1)
-                qimage.copy(qrect).save('part_%04d_%04d.png' % (rect.id, rect.image_id), 'PNG')
+                if args.parts:
+                    part_filename = os.path.join(args.output, 'part_%04d_%04d.png' % (rect.id, rect.image_id))
+                    qimage.copy(qrect).save(part_filename, 'PNG')
 
         painter = QtGui.QPainter(qimage)
-        painter.setFont(QtGui.QFont('Arial Narrow', 8))
+        font = QtGui.QFont('Arial Narrow')
+        font.setPixelSize(8)
+        font.setStyleStrategy(QtGui.QFont.NoAntialias)
+        painter.setFont(font)
 
         for rect in skin.rects:
             if rect.image_id == image.id:
@@ -45,10 +50,13 @@ def command_skin(args):
                 painter.setPen(QtCore.Qt.red)
                 painter.drawRect(qrect)
                 painter.setPen(QtCore.Qt.green)
-                painter.drawText(qrect, QtCore.Qt.AlignTop, unicode(rect.id))
+                painter.drawText(rect.x1, rect.y1 + 6, unicode(rect.id))
 
         painter.end()
-        qimage.save(QtCore.QFile('parts_%04d.png' % image.id), 'PNG')
+        qimage.save(QtCore.QFile(os.path.join(args.output, 'parts_%04d.png' % image.id)), 'PNG')
+
+    with open(os.path.join(args.output, 'dict.txt'), 'wb') as f:
+        f.write(skin.dict)
 
 
 def command_wire(args):
@@ -108,6 +116,7 @@ def main():
     subparser = subparsers.add_parser('skin', help='Parse skin file.')
     subparser.add_argument('-i', '--input', metavar='PATH', required=True, help='Input file path')
     subparser.add_argument('-o', '--output', metavar='PATH', default='.', help='Output directory')
+    subparser.add_argument('--parts', action='store_true', help='Save slices as separate images')
     subparser.set_defaults(command=command_skin)
 
     subparser = subparsers.add_parser('wire', help='Parse wire dump.')
