@@ -100,6 +100,27 @@ def command_wire(args):
                     f.write(record)
 
 
+def command_convert(args):
+    with open(args.input, 'rb') as f:
+        data = f.read()
+
+    if args.format == 'xml':
+        from lxml import etree
+        data = etree.tostring(genxy_parse(data, 'xml'),
+                              xml_declaration=True,
+                              encoding='UTF-8',
+                              pretty_print=True)
+        ext = 'xml'
+    elif args.format == 'yaml':
+        import yaml
+        import yaml_use_ordered_dict
+        data = yaml.dump(genxy_parse(data))
+        ext = 'yaml'
+
+    with open(args.output, 'wb') as f:
+        f.write(data)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Perpetuum data utilities.')
     subparsers = parser.add_subparsers(help='Available commands')
@@ -124,6 +145,12 @@ def main():
     subparser.add_argument('-o', '--output', metavar='PATH', default='.', help='Output directory')
     subparser.add_argument('-f', '--format', choices=['raw', 'xml', 'yaml'], default='raw', help='Output format')
     subparser.set_defaults(command=command_wire)
+
+    subparser = subparsers.add_parser('convert', help='Convert genxy files to various formats.')
+    subparser.add_argument('-i', '--input', metavar='PATH', required=True, help='Input file path')
+    subparser.add_argument('-o', '--output', metavar='PATH', required=True, help='Output file path')
+    subparser.add_argument('-f', '--format', choices=['xml', 'yaml'], default='raw', help='Output format')
+    subparser.set_defaults(command=command_convert)
 
     args = parser.parse_args()
     args.command(args)
