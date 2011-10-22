@@ -5,6 +5,7 @@ import re
 import struct
 import array
 import fnmatch
+import datetime
 from collections import OrderedDict, namedtuple, Mapping
 
 
@@ -67,8 +68,10 @@ def genxy_parse(data, builder=None):
                     value = [s.strip() for s in value.split(',')]
                 elif type in '64':
                     value = [int(tok, 16) for tok in value.split(',')]
-                elif type in 'dpr3':
+                elif type in 'pr3':
                     value = tuple(int(tok, 16) for tok in value.split('.'))
+                elif type in 'd':
+                    value = datetime.datetime(*map(int, value.split('.')))
                 else:
                     raise Exception('Unexpected token', type, token)
 
@@ -134,14 +137,19 @@ def genxy_parse(data, builder=None):
         return builder(_parse(_tokenize(data, data_start)))
 
 
+def genxy_parse_file(filename, builder):
+    """Same as genxy_parse, but for files."""
+    with open(filename, 'rb') as f:
+        return genxy_parse(f.read(), builder)
+
+
 def genxy_consolidate(path, builder=None):
     """Parse files in a given directory and return filename->contents dictionary.
        Extensions are stripped from filenames."""
     result = {}
     for filename in os.listdir(path):
         key = os.path.splitext(filename)[0]
-        with open(os.path.join(path, filename), 'rb') as f:
-            value = genxy_parse(f.read(), builder)
+        value = genxy_parse_file(os.path.join(path, filename), builder)
         result[key] = value
     return result
 
