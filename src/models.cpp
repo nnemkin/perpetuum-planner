@@ -257,7 +257,7 @@ MarketTreeModel::MarketTreeModel(Category *category, QObject *parent) : SimpleTr
 void MarketTreeModel::fillNode(Node *node, Category *category)
 {
     foreach (Category *subcat, category->categories())
-        if (subcat->inMarket())
+        if (subcat->inMarket() && !subcat->hidden())
             fillNode(node->addChild(subcat), subcat);
 }
 

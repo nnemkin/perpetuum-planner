@@ -287,13 +287,15 @@ class Category : public GameObject {
     Q_OBJECT
 
 public:
-    Category(GameData *gameData) : GameObject(gameData), m_id(0), m_inMarket(false), m_marketCount(-1), m_parent(0) {}
+    Category(GameData *gameData)
+        : GameObject(gameData), m_id(0), m_inMarket(false), m_hidden(false), m_marketCount(-1), m_parent(0) {}
 
     bool load(const QVariantMap &dataMap);
 
     quint64 id() const { return m_id; }
     quint64 order() const { return m_order; }
     quint64 orderHigh() const;
+    bool hidden() const { return m_hidden; }
     bool inMarket() const { return m_inMarket; }
     Category *parent() const { return m_parent; }
 
@@ -308,6 +310,7 @@ public:
 private:
     quint64 m_id, m_order;
     bool m_inMarket;
+    bool m_hidden;
     mutable int m_marketCount;
 
     friend class Definition;

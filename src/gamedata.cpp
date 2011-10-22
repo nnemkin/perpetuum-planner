@@ -164,16 +164,6 @@ bool GameData::load(QIODevice *dataFile, QIODevice *translationFile)
 
     if (!ok) return false;
 
-    // Update market presence flags
-    const QVariantMap &market = dataMap.value("marketAvailableItems").toMap();
-    foreach (const QVariant &definitionId, market.value("definition").toList())
-        if (Definition *definition = m_definitions.value(definitionId.toInt()))
-            definition->setInMarket(true);
-
-    foreach (const QVariant &categoryFlag, market.value("categoryflags").toList())
-        if (Category *category = m_categories.value(categoryFlag.toLongLong()))
-            category->setInMarket(true);
-
     // Load character wizard steps
     QVariantMap charWiz = dataMap.value("characterWizardData").toMap();
     ok = loadObjects(m_charWizSteps[Race], charWiz.value("race").toMap(), "ID")
@@ -395,6 +385,7 @@ bool Category::load(const QVariantMap &dataMap)
     if (!m_id) {
         m_id = dataMap.value("value").toInt();
         m_name = dataMap.value("name").toString();
+        m_hidden = dataMap.value("hidden").toBool();
         m_order = _byteswap_uint64(m_id);
     }
     else {
@@ -614,9 +605,6 @@ bool Definition::load(const QVariantMap &dataMap)
                 m_category = m_gameData->rootCategory();
             }
 
-            // m_hidden = dataMap.value("hidden").toBool();
-            m_inMarket = dataMap.value("purchasable").toBool() || dataMap.value("market").toBool();
-
             // m_health = dataMap.value("health").toFloat();
             m_mass = dataMap.value("mass").toFloat();
             m_volume = dataMap.value("volume").toFloat();
@@ -663,6 +651,11 @@ bool Definition::load(const QVariantMap &dataMap)
 
             m_researchLevel = 0;
             m_calibrationProgram = 0;
+
+            m_inMarket = !dataMap.value("hidden").toBool()
+                    && (dataMap.value("purchasable").toBool() || m_tier && m_tier->name().endsWith("+"));
+            if (m_inMarket)
+                m_category->setInMarket(m_inMarket);
         }
         else {
             QVariantMap options = dataMap.value("options").toMap();
