@@ -246,5 +246,29 @@
         <file>icons/icon_universal_armor.png</file>
         <file>icons/icon_weapon_stabilizer.png</file>
         <file>icons/noIconAvailable.png</file>
+        <file>icons/icon_npc_egg_industrial_1.png</file>
+        <file>icons/icon_npc_egg_industrial_1b.png</file>
+        <file>icons/icon_npc_egg_industrial_2.png</file>
+        <file>icons/icon_npc_egg_industrial_2b.png</file>
+        <file>icons/icon_npc_egg_industrial_3.png</file>
+        <file>icons/icon_npc_egg_industrial_3b.png</file>
+        <file>icons/icon_npc_egg_nuimqol_1.png</file>
+        <file>icons/icon_npc_egg_nuimqol_1b.png</file>
+        <file>icons/icon_npc_egg_nuimqol_2.png</file>
+        <file>icons/icon_npc_egg_nuimqol_2b.png</file>
+        <file>icons/icon_npc_egg_nuimqol_3.png</file>
+        <file>icons/icon_npc_egg_nuimqol_3b.png</file>
+        <file>icons/icon_npc_egg_pelistal_1.png</file>
+        <file>icons/icon_npc_egg_pelistal_1b.png</file>
+        <file>icons/icon_npc_egg_pelistal_2.png</file>
+        <file>icons/icon_npc_egg_pelistal_2b.png</file>
+        <file>icons/icon_npc_egg_pelistal_3.png</file>
+        <file>icons/icon_npc_egg_pelistal_3b.png</file>
+        <file>icons/icon_npc_egg_thelodica_1.png</file>
+        <file>icons/icon_npc_egg_thelodica_1b.png</file>
+        <file>icons/icon_npc_egg_thelodica_2.png</file>
+        <file>icons/icon_npc_egg_thelodica_2b.png</file>
+        <file>icons/icon_npc_egg_thelodica_3.png</file>
+        <file>icons/icon_npc_egg_thelodica_3b.png</file>
     </qresource>
 </RCC>
