@@ -196,9 +196,6 @@
              </attribute>
             </widget>
             <widget class="ItemsView" name="itemsView">
-             <property name="styleSheet">
-              <string notr="true">ItemsView {}</string>
-             </property>
              <attribute name="title">
               <string>&amp;ITEM DATABASE</string>
              </attribute>
