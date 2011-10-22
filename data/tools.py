@@ -19,6 +19,11 @@ def command_data(args):
 def command_skin(args):
     """Skin file operations"""
 
+    try:
+        os.makedirs(args.output)
+    except OSError:
+        pass
+
     from PyQt4 import QtCore, QtGui
     app = QtGui.QApplication([]) # needed to access fonts
 
@@ -57,47 +62,6 @@ def command_skin(args):
 
     with open(os.path.join(args.output, 'dict.txt'), 'wb') as f:
         f.write(skin.dict)
-
-
-def command_wire(args):
-    """Wire dump operations"""
-
-    with open(args.input, 'rb') as f:
-        records = f.read().decode('utf-16').encode('utf-8').split('\x00')
-
-        try:
-            os.makedirs(args.output)
-        except OSError:
-            pass
-
-        use_counts = defaultdict(int)
-
-        for record in records:
-            if record.find('#') != -1:
-                name = record[:record.index(':')]
-                if args.format == 'xml':
-                    from lxml import etree
-                    record = etree.tostring(genxy_parse(record, 'xml'),
-                                            xml_declaration=True,
-                                            encoding='UTF-8',
-                                            pretty_print=True)
-                    ext = 'xml'
-                elif args.format == 'yaml':
-                    import yaml
-                    import yaml_use_ordered_dict
-                    record = yaml.dump(genxy_parse(record))
-                    ext = 'yaml'
-                else:
-                    record = record[record.index('#'):].replace('#', '\r\n#').strip()
-                    ext = 'txt'
-
-                use_counts[name] += 1
-                if use_counts[name] > 1:
-                    name = '%s_%d' % (name, use_counts[name])
-
-                out_filename = os.path.join(args.output, '%s.%s' % (name, ext))
-                with open(out_filename, 'wb') as f:
-                    f.write(record)
 
 
 def command_convert(args):
@@ -139,12 +103,6 @@ def main():
     subparser.add_argument('-o', '--output', metavar='PATH', default='.', help='Output directory')
     subparser.add_argument('--parts', action='store_true', help='Save slices as separate images')
     subparser.set_defaults(command=command_skin)
-
-    subparser = subparsers.add_parser('wire', help='Parse wire dump.')
-    subparser.add_argument('-i', '--input', metavar='PATH', required=True, help='Input file path')
-    subparser.add_argument('-o', '--output', metavar='PATH', default='.', help='Output directory')
-    subparser.add_argument('-f', '--format', choices=['raw', 'xml', 'yaml'], default='raw', help='Output format')
-    subparser.set_defaults(command=command_wire)
 
     subparser = subparsers.add_parser('convert', help='Convert genxy files to various formats.')
     subparser.add_argument('-i', '--input', metavar='PATH', required=True, help='Input file path')
