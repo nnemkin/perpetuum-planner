@@ -154,7 +154,7 @@ class GameObject : public QObject {
     Q_OBJECT
 
 public:
-    GameObject(GameData *gameData) : m_gameData(gameData) {}
+    GameObject(GameData *gameData) : m_gameData(gameData), m_hidden(false) {}
 
     virtual bool load(const QVariantMap &dataMap) = 0;
 
@@ -163,9 +163,11 @@ public:
     QString systemName() const { return m_name; }
     QString name() const { return m_gameData->translate(m_name); }
     QString persistentName() const { return m_gameData->persistentName(m_name); }
+    bool hidden() const { return m_hidden; }
 
 protected:
     QString m_name;
+    bool m_hidden;
     GameData *m_gameData;
 };
 
@@ -254,13 +256,12 @@ public:
     };
 
     AggregateField(GameData *gameData)
-        : GameObject(gameData), m_id(0), m_multiplier(1), m_offset(0), m_digits(0), m_category(0), m_hidden(false) {}
+        : GameObject(gameData), m_id(0), m_multiplier(1), m_offset(0), m_digits(0), m_category(0) {}
 
     bool load(const QVariantMap &dataMap);
 
     QString unit() const { return m_unitName.isEmpty() ? QString() : gameData()->translate(m_unitName); }
     int digits() const { return m_digits; }
-    bool hidden() const { return m_hidden; }
     bool lessIsBetter() const { return m_lessIsBetter; }
 
     FieldCategory *category() const { return m_category; }
@@ -276,7 +277,6 @@ private:
     QString m_unitName;
     float m_multiplier, m_offset;
     int m_digits;
-    bool m_hidden;
     FieldCategory *m_category;
 
     QString formatAuto(float value) const;
@@ -288,14 +288,13 @@ class Category : public GameObject {
 
 public:
     Category(GameData *gameData)
-        : GameObject(gameData), m_id(0), m_inMarket(false), m_hidden(false), m_marketCount(-1), m_parent(0) {}
+        : GameObject(gameData), m_id(0), m_inMarket(false), m_marketCount(-1), m_parent(0) {}
 
     bool load(const QVariantMap &dataMap);
 
     quint64 id() const { return m_id; }
     quint64 order() const { return m_order; }
     quint64 orderHigh() const;
-    bool hidden() const { return m_hidden; }
     bool inMarket() const { return m_inMarket; }
     Category *parent() const { return m_parent; }
 
@@ -310,7 +309,6 @@ public:
 private:
     quint64 m_id, m_order;
     bool m_inMarket;
-    bool m_hidden;
     mutable int m_marketCount;
 
     friend class Definition;

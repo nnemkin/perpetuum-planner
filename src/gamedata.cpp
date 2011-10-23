@@ -317,6 +317,7 @@ bool ExtensionCategory::load(const QVariantMap &dataMap)
 {
     m_id = dataMap.value("ID").toInt();
     m_name = dataMap.value("name").toString();
+    m_hidden = dataMap.value("hidden").toBool();
     return true;
 }
 
@@ -333,8 +334,13 @@ bool Extension::load(const QVariantMap &dataMap)
         m_rank = dataMap.value("rank").toInt();
         m_price = dataMap.value("price").toInt();
         m_bonus = dataMap.value("bonus").toFloat();
-        m_primaryAttribute = dataMap.value("learningAttributePrimary").toString().at(9).toLatin1() - 'A';
-        m_secondaryAttribute = dataMap.value("learningAttributeSecondary").toString().at(9).toLatin1() - 'A';
+
+        QString primaryAttr = dataMap.value("learningAttributePrimary").toString(),
+                secondaryAttr = dataMap.value("learningAttributeSecondary").toString();
+        m_primaryAttribute = primaryAttr.startsWith("attribute") ? primaryAttr.at(9).toLatin1() - 'A' : 0;
+        m_secondaryAttribute = secondaryAttr.startsWith("attribute") ? secondaryAttr.at(9).toLatin1() - 'A' : 0;
+
+        m_hidden = dataMap.value("hidden").toBool();
 
         m_category = m_gameData->extensionCategories().value(dataMap.value("category").toInt());
         if (!m_category) {
@@ -652,9 +658,9 @@ bool Definition::load(const QVariantMap &dataMap)
             m_researchLevel = 0;
             m_calibrationProgram = 0;
 
-            m_inMarket = !dataMap.value("hidden").toBool()
-                    && (dataMap.value("purchasable").toBool() || m_tier && m_tier->name().endsWith("+"));
-            if (m_inMarket)
+            m_hidden = dataMap.value("hidden").toBool();
+            m_inMarket = dataMap.value("purchasable").toBool() || m_tier && m_tier->name().endsWith("+");
+            if (!m_hidden && m_inMarket)
                 m_category->setInMarket(m_inMarket);
         }
         else {

@@ -318,6 +318,8 @@ bool DefinitionListModel::filterAcceptRow(Node *node)
         return false;
     if (m_hidePrototypes && definition->isPrototype())
         return false;
+    if (definition->tier() && !m_hiddenTiers.isEmpty() && m_hiddenTiers.contains(definition->tier()->systemName()))
+        return false;
     return true;
 }
 
@@ -328,7 +330,7 @@ void DefinitionListModel::setCategory(Category *category)
         setSort(0, m_logicalOrder ? SortKeyRole : Qt::DisplayRole);
 
         foreach (Definition *definition, category->definitions())
-            if (definition->inMarket())
+            if (!definition->hidden() && definition->inMarket())
                 rootNode()->addChild(definition);
     }
     endResetModel();

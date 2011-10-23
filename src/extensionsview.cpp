@@ -46,12 +46,13 @@ ExtensionsModel::ExtensionsModel(Agent *agent, QObject *parent) : SimpleTreeMode
     setSort(0, SortKeyRole);
 
     foreach (ExtensionCategory *category, m_agent->gameData()->extensionCategories()) {
-        if (category->extensions().isEmpty())
+        if (category->extensions().isEmpty() || category->hidden())
             continue;
 
         Node *categoryNode = rootNode()->addChild(category);
         foreach (Extension *extension, category->extensions())
-            categoryNode->addChild(extension);
+            if (!extension->hidden())
+                categoryNode->addChild(extension);
     }
     endResetModel();
 
