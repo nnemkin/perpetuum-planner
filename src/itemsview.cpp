@@ -22,6 +22,7 @@
 #include <QMenu>
 #include <QClipboard>
 #include <QPainter>
+#include <QWidgetAction>
 #include <QDebug>
 
 #include "application.h"
@@ -30,6 +31,7 @@
 #include "models.h"
 #include "delegates.h"
 #include "util.h"
+#include "tierfilter.h"
 
 
 // Helpers
@@ -97,6 +99,17 @@ ItemsView::ItemsView(QWidget *parent) : QWidget(parent), m_gameData(0), m_groups
     connect(treeParameters, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(tableDoubleClicked(QModelIndex)));
     connect(treeComponents, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(tableDoubleClicked(QModelIndex)));
     connect(treeBonuses, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(tableDoubleClicked(QModelIndex)));
+
+    QWidgetAction *widgetAction = new QWidgetAction(this);
+    m_tierFilter = new TierFilter(this);
+    widgetAction->setDefaultWidget(m_tierFilter);
+
+    QMenu *menu = new QMenu(this);
+    menu->setObjectName("menuTiers");
+    menu->addAction(widgetAction);
+    buttonTiers->setMenu(menu);
+
+    connect(m_tierFilter, SIGNAL(changed(QStringList)), this, SLOT(tierFilterChanged()));
 }
 
 void ItemsView::initialize(QSettings &settings, GameData *gameData)
@@ -108,13 +121,17 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
     listItems->setModel(m_itemsModel);
 
     bool hidePrototypes = settings.value(QLatin1String("ItemsView/HidePrototypes")).toBool();
+    QStringList hiddenTiers = settings.value(QLatin1String("ItemsView/HideTiers")).toStringList();
     bool logicalOrder = settings.value(QLatin1String("ItemsView/LogicalOrder")).toBool();
     bool tierIcons = settings.value(QLatin1String("ItemsView/TierIcons")).toBool();
     m_itemsModel->setHidePrototypes(hidePrototypes);
+    m_itemsModel->setHiddenTiers(hiddenTiers);
     m_itemsModel->setLogicalOrder(logicalOrder);
     m_itemsModel->setShowTierIcons(tierIcons);
     checkHidePrototypes->setChecked(hidePrototypes);
     checkLogicalOrder->setChecked(logicalOrder);
+
+    m_tierFilter->setHiddenTiers(hiddenTiers);
 
     ForegroundFixDelegate *fgFixDelefate = new ForegroundFixDelegate(this);
 
@@ -186,6 +203,7 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
     connect(checkHidePrototypes, SIGNAL(clicked(bool)), m_itemsModel, SLOT(setHidePrototypes(bool)));
     connect(checkHidePrototypes, SIGNAL(clicked(bool)), m_componentUse, SLOT(setHidePrototypes(bool)));
     connect(checkLogicalOrder, SIGNAL(clicked(bool)), m_itemsModel, SLOT(setLogicalOrder(bool)));
+    connect(m_tierFilter, SIGNAL(changed(QStringList)), m_itemsModel, SLOT(setHiddenTiers(QStringList)));
 
     connect(treeParameters, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(tableContextMenuRequested(QPoint)));
     connect(treeComponents, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(tableContextMenuRequested(QPoint)));
@@ -204,13 +222,15 @@ void ItemsView::finalize(QSettings &settings)
     QStringList defNames;
     foreach (Definition *definition, m_definitions)
         defNames << definition->systemName();
-
     settings.setValue(QLatin1String("ItemsView/SelectedItems"), defNames);
+
     if (treeGroups->selectionModel()->hasSelection()) {
         QModelIndex catIndex = treeGroups->selectionModel()->selectedIndexes().at(0);
         Category *category = m_groupsModel->fromIndex<Category *>(catIndex);
         settings.setValue(QLatin1String("ItemsView/SelectedGroup"), category ? category->systemName() : 0);
     }
+
+    settings.setValue(QLatin1String("ItemsView/HideTiers"), m_tierFilter->hiddenTiers());
 }
 
 void ItemsView::changeEvent(QEvent *event)
@@ -244,10 +264,11 @@ void ItemsView::customEvent(QEvent *event)
 bool ItemsView::eventFilter(QObject *object, QEvent *event)
 {
     if (event->type() == QEvent::Paint) {
+        // Draw a joint between vertical and horizontal splitter.
+
         QSplitterHandle *handle = static_cast<QSplitterHandle *>(object);
 
         QColor lineColor(0x494645);
-
         QPainter painter(handle);
 
         QRect rect = splitterItems->handle(1)->rect();
@@ -265,6 +286,12 @@ bool ItemsView::eventFilter(QObject *object, QEvent *event)
         }
     }
     return false;
+}
+
+void ItemsView::tierFilterChanged()
+{
+    buttonTiers->setProperty("role", m_tierFilter->isActive() ? "active" : "");
+    buttonTiers->setStyleSheet(" ");
 }
 
 void ItemsView::on_splitterItems_splitterMoved(int, int index)

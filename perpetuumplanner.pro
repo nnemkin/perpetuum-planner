@@ -51,7 +51,8 @@ SOURCES += src/main.cpp\
     3rdparty/quazip/src/quazipnewinfo.cpp \
     3rdparty/quazip/src/quazipfile.cpp \
     3rdparty/quazip/src/quazip.cpp \
-    3rdparty/quazip/src/ioapi.c
+    3rdparty/quazip/src/ioapi.c \
+    src/tierfilter.cpp
 
 HEADERS += src/mainwindow.h \
     src/levelchooser.h \
@@ -96,7 +97,8 @@ HEADERS += src/mainwindow.h \
     3rdparty/quazip/src/quazipfile.h \
     3rdparty/quazip/src/quazip.h \
     3rdparty/quazip/src/ioapi.h \
-    3rdparty/quazip/src/crypt.h
+    3rdparty/quazip/src/crypt.h \
+    src/tierfilter.h
 
 FORMS += src/mainwindow.ui \
     src/titlebar.ui \
@@ -107,7 +109,8 @@ FORMS += src/mainwindow.ui \
     src/messagebox.ui \
     src/itemsview.ui \
     src/textwindow.ui \
-    src/updater.ui
+    src/updater.ui \
+    src/tierfilter.ui
 
 OTHER_FILES += \
     res/winres.rc \

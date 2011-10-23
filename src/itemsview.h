@@ -33,6 +33,7 @@ class ComponentsModel;
 class BonusesModel;
 class RequirementsModel;
 class DefinitionUseModel;
+class TierFilter;
 
 
 class ItemsView : public QWidget, private Ui::ItemsView
@@ -60,8 +61,8 @@ private slots:
     void tableContextMenuRequested(QPoint pos);
     void itemSelectionChanged();
     void groupSelectionChanged(const QItemSelection &selected);
-
     void tableDoubleClicked(const QModelIndex &index);
+    void tierFilterChanged();
 
 private:
     GameData *m_gameData;
@@ -77,6 +78,8 @@ private:
 
     QList<QWidget *> m_tabs;
     QList<Definition *> m_definitions;
+
+    TierFilter *m_tierFilter;
 
     void setDefinitions(QList<Definition *> items, bool retranslate = false);
 

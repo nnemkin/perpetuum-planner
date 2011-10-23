@@ -130,6 +130,7 @@ public slots:
     void setHidePrototypes(bool hide) { m_hidePrototypes = hide; invalidateSortFilter(); }
     void setLogicalOrder(bool logical);
     void setNameFilter(const QString& filter) { m_nameFilter = filter; invalidateSortFilter(); }
+    void setHiddenTiers(const QStringList &tiers) { m_hiddenTiers = tiers; invalidateSortFilter(); }
 
 protected:
     bool filterAcceptRow(Node *node);
@@ -138,6 +139,7 @@ private:
     Category *m_category;
 
     bool m_hidePrototypes;
+    QStringList m_hiddenTiers;
     bool m_logicalOrder;
     bool m_showTierIcons;
     QString m_nameFilter;

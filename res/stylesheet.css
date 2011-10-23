@@ -33,7 +33,6 @@ TitleBar #label {
     font: 8px 'uni 05_53'; text-transform: uppercase;
     padding: -1px 0 0 8px; color: #acacac;
     background: transparent url(:/button-transition.png) no-repeat right top;
-
 }
 /*TitleBar #label:active { color: #efefef; }*/
 TitleBar #buttonClose { background: url(:/button-close.png) no-repeat; }
@@ -118,17 +117,27 @@ QScrollBar::handle:horizontal { min-width: 25px; }
 
 QPushButton {
     color: #aaa;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.095 #747474, stop:0.1 #343434, stop:0.85 #000, stop: 0.9 #262626);
     font-size: 11px;
-    border: 1px solid;
-    border-color: #a6a6a6 #3e3e3e #2b2b2b #3e3e3e;
     width: 130px;
     height: 15px;
     padding: 0;
 }
 QPushButton:hover:!pressed {
     color: #fff;
+}
+QPushButton:!flat {
+    border: 1px solid;
+    border-color: #a6a6a6 #3e3e3e #2b2b2b #3e3e3e;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.095 #747474, stop:0.1 #343434, stop:0.85 #000, stop: 0.9 #262626);
+}
+QPushButton:hover:!pressed:!flat {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.07 #888, stop:0.095 #888, stop: 0.1 #515151, stop:0.85 #1c1c1c, stop: 0.9 #3f3f3f);
+}
+QPushButton::menu-indicator {
+    image: url(:/combo-dropdown.png);
+    subcontrol-origin: padding;
+    subcontrol-position: right;
+    left: -3px; top: 2px;
 }
 
 QDialogButtonBox { button-layout: 0; dialogbuttonbox-buttons-have-icons: 0; qproperty-centerButtons: true; }
@@ -249,6 +258,8 @@ QListView { show-decoration-selected: 1; }
 QCheckBox::indicator { image: url(:/checkbox.png); border-style: none; padding-right: 5px; }
 QCheckBox::indicator:checked { image: url(:/checkbox-checked.png); }
 QCheckBox::indicator:checked:disabled { image: url(:/checkbox-checked-disabled.png); }
+QCheckBox::indicator:indeterminate { image: url(:/checkbox-indeterminate.png); }
+QCheckBox::indicator:indeterminate:disabled { image: url(:/checkbox-indeterminate-disabled.png); }
 
 QRadioButton::indicator { image: url(:/radio.png); border-style: none; padding-right: 5px; }
 QRadioButton::indicator:checked { image: url(:/radio-checked.png); }
@@ -434,6 +445,12 @@ AttributeEditor QPushButton { width: 100px; }
 
 ItemsView #buttonClearFilter { width: 42px; }
 ItemsView #textFilter { border: 1px solid #545454; background-color: #082024; padding: 0; }
+
+ItemsView #buttonTiers { width: auto; /*border: 0 none; background: transparent;*/ padding-right: 6px; }
+ItemsView #buttonTiers[role~="active"] { color: #ffff00; }
+#menuTiers { background-color: #000; border: 1px solid #666; }
+#menuTiers QCheckBox::indicator, ItemsView QCheckBox::indicator { padding-right: 2px; }
+ItemsView #checkAllTiers { border-bottom: 1px solid #666; padding-bottom: 4px; }
 
 ItemsView QAbstractItemView { color: #9da3a3; selection-color: #9da3a3; }
 ItemsView QAbstractItemView > QHeaderView { color: #fff; border-bottom-color: #1e3031; }

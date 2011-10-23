@@ -110,11 +110,18 @@
           <number>12</number>
          </property>
          <property name="rightMargin">
-          <number>4</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
-          <number>2</number>
+          <number>0</number>
          </property>
+         <item>
+          <widget class="QCheckBox" name="checkLogicalOrder">
+           <property name="text">
+            <string>Logical order</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QCheckBox" name="checkHidePrototypes">
            <property name="text">
@@ -123,9 +130,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkLogicalOrder">
+          <widget class="QPushButton" name="buttonTiers">
            <property name="text">
-            <string>Logical order</string>
+            <string>Tiers</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -137,7 +147,7 @@
            <property name="sizeHint" stdset="0">
             <size>
              <width>0</width>
-             <height>5</height>
+             <height>20</height>
             </size>
            </property>
           </spacer>
@@ -747,22 +757,6 @@
  </resources>
  <connections>
   <connection>
-   <sender>buttonClearFilter</sender>
-   <signal>clicked()</signal>
-   <receiver>textFilter</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>222</x>
-     <y>21</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>156</x>
-     <y>21</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionGroupsCollapseAll</sender>
    <signal>triggered()</signal>
    <receiver>treeGroups</receiver>
@@ -791,6 +785,22 @@
     <hint type="destinationlabel">
      <x>127</x>
      <y>183</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonClearFilter</sender>
+   <signal>clicked()</signal>
+   <receiver>textFilter</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>269</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>141</x>
+     <y>19</y>
     </hint>
    </hints>
   </connection>

@@ -78,5 +78,7 @@
         <file>slot-large.png</file>
         <file>slot-medium.png</file>
         <file>slot-small.png</file>
+        <file>checkbox-indeterminate.png</file>
+        <file>checkbox-indeterminate-disabled.png</file>
     </qresource>
 </RCC>
