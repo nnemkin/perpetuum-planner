@@ -461,6 +461,8 @@ bool FieldCategory::load(const QVariantMap &dataMap)
 
 bool AggregateField::load(const QVariantMap &dataMap)
 {
+    static QRegExp lessIsBetterExpr("(blob_level|mass|volume)|(_time|_usage|_miss|signature_radius|blob_emission(_radius)?)$");
+
     if (dataMap.contains("name")) {
         m_id = dataMap.value("ID").toInt();
         m_name = dataMap.value("name").toString();
@@ -475,7 +477,7 @@ bool AggregateField::load(const QVariantMap &dataMap)
         }
         m_category->m_aggregates.append(this);
 
-        m_lessIsBetter = QRegExp("(blob_level|mass)|(_time|_usage|_miss|signature_radius|blob_emission(_radius)?)$").indexIn(m_name) != -1;
+        m_lessIsBetter = lessIsBetterExpr.indexIn(m_name) != -1;
     }
     else {
         m_hidden = dataMap.value("hidden").toBool();
