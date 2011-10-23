@@ -26,7 +26,7 @@
     </property>
     <item>
      <widget class="QWidget" name="windowHeader" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0,0,0">
+      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0,0">
        <property name="spacing">
         <number>10</number>
        </property>
@@ -114,19 +114,6 @@
             <normaloff>:/flag-sl.png</normaloff>:/flag-sl.png</iconset>
           </property>
          </item>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="buttonHelp">
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string extracomment="menu_help">&amp;Help</string>
-         </property>
-         <property name="role" stdset="0">
-          <string notr="true">dialog-button</string>
-         </property>
         </widget>
        </item>
        <item>
@@ -262,22 +249,6 @@
    <hints>
     <hint type="sourcelabel">
      <x>450</x>
-     <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonHelp</sender>
-   <signal>clicked()</signal>
-   <receiver>actionHelp</receiver>
-   <slot>trigger()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>290</x>
      <y>12</y>
     </hint>
     <hint type="destinationlabel">
