@@ -250,19 +250,19 @@ public:
         // Some aggregate IDs
         ShieldAbsorbtion = 318, Slope = 326,
 
-        // Artificial IDs generic entity info fields
+        // Artificial IDs for generic entity info fields
         EI_Mass = 9001, EI_Volume, EI_RepackedVolume, EI_Quantity, EI_Capacity, EI_Tier, EI_AmmoCapacity, EI_AmmoType,
         EI_ActiveModule, EI_SlotType, EI_HeadSlots, EI_ChassisSlots, EI_LegSlots
     };
 
     AggregateField(GameData *gameData)
-        : GameObject(gameData), m_id(0), m_multiplier(1), m_offset(0), m_digits(0), m_category(0) {}
+        : GameObject(gameData), m_id(0), m_multiplier(1), m_offset(0), m_digits(0), m_category(0), m_lessIsBetter(false) {}
 
     bool load(const QVariantMap &dataMap);
 
     QString unit() const { return m_unitName.isEmpty() ? QString() : gameData()->translate(m_unitName); }
     int digits() const { return m_digits; }
-    bool lessIsBetter() const { return m_lessIsBetter; }
+    bool lessIsBetter(Definition *definition = 0) const;
 
     FieldCategory *category() const { return m_category; }
 

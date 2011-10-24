@@ -504,7 +504,7 @@ void AggregatesModel::setDefinitions(const QList<Definition *> &definitions)
         foreach (Node *aggregateNode, aggregateNodes) {
             if (aggregateNode->data.at(0) == aggregateNode->data.at(1))
                 aggregateNode->data.clear();
-            else if (static_cast<AggregateField *>(aggregateNode->object)->lessIsBetter())
+            else if (static_cast<AggregateField *>(aggregateNode->object)->lessIsBetter(definitions.at(0)))
                 qSwap(aggregateNode->data[0], aggregateNode->data[1]);
         }
     }

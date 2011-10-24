@@ -148,8 +148,8 @@ bool GameData::load(QIODevice *dataFile, QIODevice *translationFile)
 
             && loadObjects(m_fieldCategories, custom.value("aggregateCategories").toMap(), "ID")
             && loadObjects(m_aggregateFields, dataMap.value("getAggregateFields").toMap(), "ID")
-            && loadObjects(m_aggregateFields, custom.value("hiddenAggregates").toMap(), "ID", false) // hidden flag
             && loadObjects(m_aggregateFields, custom.value("genericFields").toMap(), "ID")
+            && loadObjects(m_aggregateFields, custom.value("aggregateDetails").toMap(), "ID", false)
 
             && loadObjects(m_tiers, custom.value("tiers").toMap(), "name")
 
@@ -461,8 +461,6 @@ bool FieldCategory::load(const QVariantMap &dataMap)
 
 bool AggregateField::load(const QVariantMap &dataMap)
 {
-    static QRegExp lessIsBetterExpr("(blob_level|mass|volume)|(_time|_usage|_miss|signature_radius|blob_emission(_radius)?)$");
-
     if (dataMap.contains("name")) {
         m_id = dataMap.value("ID").toInt();
         m_name = dataMap.value("name").toString();
@@ -476,11 +474,10 @@ bool AggregateField::load(const QVariantMap &dataMap)
             return false;
         }
         m_category->m_aggregates.append(this);
-
-        m_lessIsBetter = lessIsBetterExpr.indexIn(m_name) != -1;
     }
     else {
         m_hidden = dataMap.value("hidden").toBool();
+        m_lessIsBetter = dataMap.value("lessIsBetter").toBool();
     }
     return true;
 }
@@ -524,6 +521,13 @@ QString AggregateField::formatAuto(float value) const
     return QString("%1 %2").arg(value, 0, 'f', digits).arg(m_gameData->translate(m_unitName));
 }
 
+bool AggregateField::lessIsBetter(Definition *definition) const
+{
+    // less mass is better for mods, but not for bots
+    if (m_id == EI_Mass && definition && definition->isRobot())
+        return false;
+    return m_lessIsBetter;
+}
 
 // Tier
 
