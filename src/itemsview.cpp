@@ -389,7 +389,7 @@ void ItemsView::setDefinitions(QList<Definition *> definitions, bool retranslate
             QStringList names;
             foreach (Definition *item, m_definitions)
                 names << item->name();
-            textDescription->setText(names.join(QLatin1String(", ")) + QLatin1Char('.'));
+            textDescription->setText(QString("<p>%1</p>").arg(names.join(QLatin1String(", ")) + QLatin1Char('.')));
 
             labelIcon->setVisible(false);
         }
