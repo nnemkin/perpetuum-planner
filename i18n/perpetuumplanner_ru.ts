@@ -19,7 +19,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Failed to import extension history</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при импорте истории обновления расширений</translation>
     </message>
 </context>
 <context>
@@ -553,15 +553,15 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Import extension history from Perpetuum</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортировать историю расширений из игры</translation>
     </message>
     <message>
         <source>Import extension history</source>
-        <translation type="unfinished">Импортировать историю расширений</translation>
+        <translation>Импортировать историю расширений</translation>
     </message>
     <message>
         <source>CSV files (*.csv);;All files (*.*)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSV файлы (*.csv);;Все файлы (*.*)</translation>
     </message>
 </context>
 <context>
@@ -643,7 +643,7 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Logical order</source>
-        <translation>Логический порядок</translation>
+        <translation>Логич. порядок</translation>
     </message>
     <message>
         <source>No items found</source>
@@ -736,6 +736,10 @@ Error on line %1: %2</source>
         <extracomment>entityinfo_researchkitrequired</extracomment>
         <translation>Мин-й уровень декодирования</translation>
     </message>
+    <message>
+        <source>Tiers</source>
+        <translation>Уровни</translation>
+    </message>
 </context>
 <context>
     <name>LevelChooserDelegate</name>
@@ -760,11 +764,6 @@ Error on line %1: %2</source>
     <message>
         <source>Perpetuum Planner</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <extracomment>menu_help</extracomment>
-        <translation>&amp;Помощь</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -918,6 +917,57 @@ Error on line %1: %2</source>
     <message>
         <source>ZIP/UNZIP API error %1</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>TierFilter</name>
+    <message>
+        <source>All Tiers</source>
+        <translation>Все тех. уровни</translation>
+    </message>
+    <message>
+        <source>T0 (Flawed)</source>
+        <translation>T0 (Повр.)</translation>
+    </message>
+    <message>
+        <source>groupTiers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mk2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T2+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T3- (Niani)</source>
+        <translation>T3- (Ниани)</translation>
+    </message>
+    <message>
+        <source>T4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T4+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syn-tec</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

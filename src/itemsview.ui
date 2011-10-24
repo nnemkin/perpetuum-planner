@@ -130,16 +130,6 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonTiers">
-           <property name="text">
-            <string>Tiers</string>
-           </property>
-           <property name="flat">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -151,6 +141,16 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonTiers">
+           <property name="text">
+            <string>Tiers</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

@@ -446,7 +446,7 @@ AttributeEditor QPushButton { width: 100px; }
 ItemsView #buttonClearFilter { width: 42px; }
 ItemsView #textFilter { border: 1px solid #545454; background-color: #082024; padding: 0; }
 
-ItemsView #buttonTiers { width: auto; padding-right: 6px; }
+ItemsView #buttonTiers { width: 45px; padding-right: 6px; }
 ItemsView #buttonTiers[role~="active"] { color: #ffff00; }
 #menuTiers { background-color: #000; border: 1px solid #666; qproperty-windowOpacity: 0.93; }
 ItemsView QCheckBox::indicator, TierFilter QCheckBox::indicator { padding-right: 2px; }

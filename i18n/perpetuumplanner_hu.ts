@@ -719,6 +719,10 @@ Error on line %1: %2</source>
         <extracomment>entityinfo_researchkitrequired</extracomment>
         <translation>Legalacsonyabb dekódolási szint</translation>
     </message>
+    <message>
+        <source>Tiers</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LevelChooserDelegate</name>
@@ -743,11 +747,6 @@ Error on line %1: %2</source>
     <message>
         <source>Perpetuum Planner</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <extracomment>menu_help</extracomment>
-        <translation>&amp;Segítség</translation>
     </message>
     <message>
         <source>&amp;Options</source>
@@ -901,6 +900,57 @@ Error on line %1: %2</source>
     <message>
         <source>ZIP/UNZIP API error %1</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>TierFilter</name>
+    <message>
+        <source>All Tiers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T0 (Flawed)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>groupTiers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mk2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T2+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T3- (Niani)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T4+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syn-tec</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
