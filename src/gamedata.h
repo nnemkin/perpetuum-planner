@@ -288,7 +288,7 @@ class Category : public GameObject {
 
 public:
     Category(GameData *gameData)
-        : GameObject(gameData), m_id(0), m_inMarket(false), m_marketCount(-1), m_parent(0) {}
+        : GameObject(gameData), m_id(0), m_order(0), m_inMarket(false), m_marketCount(-1), m_parent(0) {}
 
     bool load(const QVariantMap &dataMap);
 

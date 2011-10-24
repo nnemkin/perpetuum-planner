@@ -389,7 +389,7 @@ const ExtensionLevelMap &Extension::transitiveReqs() const
 bool Category::load(const QVariantMap &dataMap)
 {
     if (!m_id) {
-        m_id = dataMap.value("value").toInt();
+        m_id = dataMap.value("value").toULongLong();
         m_name = dataMap.value("name").toString();
         m_hidden = dataMap.value("hidden").toBool();
         m_order = _byteswap_uint64(m_id);
