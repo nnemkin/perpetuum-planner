@@ -121,16 +121,12 @@ QPushButton {
     width: 130px;
     height: 15px;
     padding: 0;
-}
-QPushButton:hover:!pressed {
-    color: #fff;
-}
-QPushButton:!flat {
     border: 1px solid;
     border-color: #a6a6a6 #3e3e3e #2b2b2b #3e3e3e;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.095 #747474, stop:0.1 #343434, stop:0.85 #000, stop: 0.9 #262626);
 }
-QPushButton:hover:!pressed:!flat {
+QPushButton:hover:!pressed {
+    color: #fff;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.07 #888, stop:0.095 #888, stop: 0.1 #515151, stop:0.85 #1c1c1c, stop: 0.9 #3f3f3f);
 }
 QPushButton::menu-indicator {
@@ -138,6 +134,10 @@ QPushButton::menu-indicator {
     subcontrol-origin: padding;
     subcontrol-position: right;
     left: -3px; top: 2px;
+}
+QPushButton:flat, QPushButton:flat:hover {
+    border: 0 none;
+    background: transparent;
 }
 
 QDialogButtonBox { button-layout: 0; dialogbuttonbox-buttons-have-icons: 0; qproperty-centerButtons: true; }
@@ -446,10 +446,10 @@ AttributeEditor QPushButton { width: 100px; }
 ItemsView #buttonClearFilter { width: 42px; }
 ItemsView #textFilter { border: 1px solid #545454; background-color: #082024; padding: 0; }
 
-ItemsView #buttonTiers { width: auto; /*border: 0 none; background: transparent;*/ padding-right: 6px; }
+ItemsView #buttonTiers { width: auto; padding-right: 6px; }
 ItemsView #buttonTiers[role~="active"] { color: #ffff00; }
-#menuTiers { background-color: #000; border: 1px solid #666; }
-#menuTiers QCheckBox::indicator, ItemsView QCheckBox::indicator { padding-right: 2px; }
+#menuTiers { background-color: #000; border: 1px solid #666; qproperty-windowOpacity: 0.93; }
+ItemsView QCheckBox::indicator, TierFilter QCheckBox::indicator { padding-right: 2px; }
 ItemsView #checkAllTiers { border-bottom: 1px solid #666; padding-bottom: 4px; }
 
 ItemsView QAbstractItemView { color: #9da3a3; selection-color: #9da3a3; }
