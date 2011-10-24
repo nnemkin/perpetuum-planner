@@ -270,5 +270,14 @@
         <file>icons/icon_npc_egg_thelodica_2b.png</file>
         <file>icons/icon_npc_egg_thelodica_3.png</file>
         <file>icons/icon_npc_egg_thelodica_3b.png</file>
+        <file>icons/icon_material_triandlus_rare.png</file>
+        <file>icons/icon_material_titan_rare.png</file>
+        <file>icons/icon_material_imentium_rare.png</file>
+        <file>icons/icon_material_liquizit_rare.png</file>
+        <file>icons/icon_material_stermonit_rare.png</file>
+        <file>icons/icon_material_electroplant_fruit_rare.png</file>
+        <file>icons/icon_material_epriton_rare.png</file>
+        <file>icons/icon_material_helioptris_rare.png</file>
+        <file>icons/icon_material_crude_rare.png</file>
     </qresource>
 </RCC>
