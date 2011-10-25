@@ -255,13 +255,15 @@ QListView { show-decoration-selected: 1; }
 
 /* Checks */
 
-QCheckBox::indicator { image: url(:/checkbox.png); border-style: none; padding-right: 5px; }
+QCheckBox { spacing: 10px; }
+QCheckBox::indicator { image: url(:/checkbox.png); border-style: none; }
 QCheckBox::indicator:checked { image: url(:/checkbox-checked.png); }
 QCheckBox::indicator:checked:disabled { image: url(:/checkbox-checked-disabled.png); }
 QCheckBox::indicator:indeterminate { image: url(:/checkbox-indeterminate.png); }
 QCheckBox::indicator:indeterminate:disabled { image: url(:/checkbox-indeterminate-disabled.png); }
 
-QRadioButton::indicator { image: url(:/radio.png); border-style: none; padding-right: 5px; }
+QRadioButton { spacing: 10px; }
+QRadioButton::indicator { image: url(:/radio.png); border-style: none; }
 QRadioButton::indicator:checked { image: url(:/radio-checked.png); }
 QRadioButton::indicator:checked:disabled { image: url(:/radio-checked-disabled.png); }
 
@@ -448,9 +450,9 @@ ItemsView #textFilter { border: 1px solid #545454; background-color: #082024; pa
 
 ItemsView #buttonTiers { width: 45px; padding-right: 6px; }
 ItemsView #buttonTiers[role~="active"] { color: #ffff00; }
+TierFilter QCheckBox { spacing: 5px; }
+TierFilter #checkAllTiers { border-bottom: 1px solid #666; padding-bottom: 4px; }
 #menuTiers { background-color: #000; border: 1px solid #666; qproperty-windowOpacity: 0.93; }
-ItemsView QCheckBox::indicator, TierFilter QCheckBox::indicator { padding-right: 2px; }
-ItemsView #checkAllTiers { border-bottom: 1px solid #666; padding-bottom: 4px; }
 
 ItemsView QAbstractItemView { color: #9da3a3; selection-color: #9da3a3; }
 ItemsView QAbstractItemView > QHeaderView { color: #fff; border-bottom-color: #1e3031; }
