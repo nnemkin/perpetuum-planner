@@ -276,7 +276,7 @@ QVariant MarketTreeModel::data(const QModelIndex &index, int role) const
 // DefinitionListModel
 
 DefinitionListModel::DefinitionListModel(QObject *parent)
-    : SimpleTreeModel(parent), m_category(0), m_hidePrototypes(false), m_logicalOrder(false), m_showTierIcons(true)
+    : SimpleTreeModel(parent), m_category(0), m_logicalOrder(false), m_showTierIcons(true)
 {
     setFilterEnabled(true);
 }
@@ -314,11 +314,9 @@ QVariant DefinitionListModel::data(const QModelIndex &index, int role) const
 bool DefinitionListModel::filterAcceptRow(Node *node)
 {
     Definition *definition = static_cast<Definition *>(node->object);
-    if (!definition->name().contains(m_nameFilter, Qt::CaseInsensitive))
+    if (!m_nameFilter.isEmpty() && !definition->name().contains(m_nameFilter, Qt::CaseInsensitive))
         return false;
-    if (m_hidePrototypes && definition->isPrototype())
-        return false;
-    if (definition->tier() && !m_hiddenTiers.isEmpty() && m_hiddenTiers.contains(definition->tier()->systemName()))
+    if (!m_hiddenTiers.isEmpty() && definition->tier() && m_hiddenTiers.contains(definition->tier()->systemName()))
         return false;
     return true;
 }
@@ -793,12 +791,6 @@ void DefinitionUseModel::setComponent(Definition *component)
         }
     }
     endResetModel();
-}
-
-bool DefinitionUseModel::filterAcceptRow(Node *node)
-{
-    Definition *item = static_cast<Definition *>(node->object);
-    return !m_hidePrototypes || !item->objectName().endsWith(QLatin1String("_pr"));
 }
 
 int DefinitionUseModel::columnCount(const QModelIndex &parent) const

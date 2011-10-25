@@ -638,10 +638,6 @@ Error on line %1: %2</source>
         <translation>&amp;Отмена</translation>
     </message>
     <message>
-        <source>Hide prototypes</source>
-        <translation>Скрыть прототипы</translation>
-    </message>
-    <message>
         <source>Logical order</source>
         <translation>Логич. порядок</translation>
     </message>
@@ -967,6 +963,18 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Syn-tec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T2P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T3P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T4P</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

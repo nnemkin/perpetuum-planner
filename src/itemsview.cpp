@@ -120,17 +120,18 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
     m_itemsModel = new DefinitionListModel(this);
     listItems->setModel(m_itemsModel);
 
-    bool hidePrototypes = settings.value(QLatin1String("ItemsView/HidePrototypes")).toBool();
-    QStringList hiddenTiers = settings.value(QLatin1String("ItemsView/HideTiers")).toStringList();
-    bool logicalOrder = settings.value(QLatin1String("ItemsView/LogicalOrder")).toBool();
-    bool tierIcons = settings.value(QLatin1String("ItemsView/TierIcons")).toBool();
-    m_itemsModel->setHidePrototypes(hidePrototypes);
+    QStringList hiddenTiers = settings.value("ItemsView/HideTiers").toStringList();
+    bool logicalOrder = settings.value("ItemsView/LogicalOrder").toBool();
+    bool tierIcons = settings.value("ItemsView/TierIcons").toBool();
+    if (settings.contains("ItemsView/HidePrototypes")) {
+        if (settings.value("ItemsView/HidePrototypes").toBool())
+            hiddenTiers << "tierlevel_t2_pr" << "tierlevel_t3_pr" << "tierlevel_t4_pr";
+        settings.remove("ItemsView/HidePrototypes");
+    }
     m_itemsModel->setHiddenTiers(hiddenTiers);
     m_itemsModel->setLogicalOrder(logicalOrder);
     m_itemsModel->setShowTierIcons(tierIcons);
-    checkHidePrototypes->setChecked(hidePrototypes);
     checkLogicalOrder->setChecked(logicalOrder);
-
     m_tierFilter->setHiddenTiers(hiddenTiers);
 
     ForegroundFixDelegate *fgFixDelefate = new ForegroundFixDelegate(this);
@@ -157,7 +158,6 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
     treeBonuses->setItemDelegateForColumn(0, new SortableRowDelegate(treeBonuses));
 
     m_componentUse = new DefinitionUseModel(this);
-    m_componentUse->setHidePrototypes(hidePrototypes);
     treeComponentUse->setModel(m_componentUse);
     treeComponentUse->setHeader(new ItemTableHeader(220, 60, 140, treeComponentUse));
 
@@ -200,8 +200,6 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
     connect(m_itemsModel, SIGNAL(layoutChanged()), this, SLOT(itemSelectionChanged()));
 
     connect(textFilter, SIGNAL(textChanged(QString)), m_itemsModel, SLOT(setNameFilter(QString)));
-    connect(checkHidePrototypes, SIGNAL(clicked(bool)), m_itemsModel, SLOT(setHidePrototypes(bool)));
-    connect(checkHidePrototypes, SIGNAL(clicked(bool)), m_componentUse, SLOT(setHidePrototypes(bool)));
     connect(checkLogicalOrder, SIGNAL(clicked(bool)), m_itemsModel, SLOT(setLogicalOrder(bool)));
     connect(m_tierFilter, SIGNAL(changed(QStringList)), m_itemsModel, SLOT(setHiddenTiers(QStringList)));
 
@@ -212,7 +210,6 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
 
 void ItemsView::finalize(QSettings &settings)
 {
-    settings.setValue(QLatin1String("ItemsView/HidePrototypes"), checkHidePrototypes->isChecked());
     settings.setValue(QLatin1String("ItemsView/LogicalOrder"), checkLogicalOrder->isChecked());
     settings.setValue(QLatin1String("ItemsView/Splitter1"), splitterInfo->saveState());
     settings.setValue(QLatin1String("ItemsView/Splitter2"), splitterItems->saveState());

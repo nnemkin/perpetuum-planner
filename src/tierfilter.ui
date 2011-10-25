@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>172</width>
+    <width>193</width>
     <height>130</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="horizontalSpacing">
-    <number>8</number>
+    <number>16</number>
    </property>
    <property name="verticalSpacing">
     <number>4</number>
@@ -26,14 +26,14 @@
    <property name="margin">
     <number>4</number>
    </property>
-   <item row="0" column="0" colspan="2">
+   <item row="0" column="0" colspan="4">
     <widget class="QCheckBox" name="checkAllTiers">
      <property name="text">
       <string>All Tiers</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="0" colspan="2">
     <widget class="QCheckBox" name="checkBox_9">
      <property name="text">
       <string>T0 (Flawed)</string>
@@ -59,7 +59,7 @@
      </attribute>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="2" column="2">
     <widget class="QCheckBox" name="checkBox_8">
      <property name="text">
       <string>Mk2</string>
@@ -85,7 +85,7 @@
      </attribute>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="3" column="2">
     <widget class="QCheckBox" name="checkBox_6">
      <property name="text">
       <string>T2+</string>
@@ -111,7 +111,7 @@
      </attribute>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="4" column="2">
     <widget class="QCheckBox" name="checkBox_5">
      <property name="text">
       <string>T3- (Niani)</string>
@@ -137,7 +137,7 @@
      </attribute>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="5" column="2">
     <widget class="QCheckBox" name="checkBox_7">
      <property name="text">
       <string>T4+</string>
@@ -150,13 +150,52 @@
      </attribute>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="1" column="2">
     <widget class="QCheckBox" name="checkBox_10">
      <property name="text">
       <string>Syn-tec</string>
      </property>
      <property name="tier" stdset="0">
       <string notr="true">tierlevel_s</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string>groupTiers</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QCheckBox" name="checkBox_12">
+     <property name="text">
+      <string>T2P</string>
+     </property>
+     <property name="tier" stdset="0">
+      <string notr="true">tierlevel_t2_pr</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string>groupTiers</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QCheckBox" name="checkBox_13">
+     <property name="text">
+      <string>T3P</string>
+     </property>
+     <property name="tier" stdset="0">
+      <string notr="true">tierlevel_t3_pr</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string>groupTiers</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QCheckBox" name="checkBox_14">
+     <property name="text">
+      <string>T4P</string>
+     </property>
+     <property name="tier" stdset="0">
+      <string notr="true">tierlevel_t4_pr</string>
      </property>
      <attribute name="buttonGroup">
       <string>groupTiers</string>

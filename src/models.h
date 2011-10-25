@@ -120,14 +120,12 @@ public:
 
     void setCategory(Category *category);
 
-    bool hidePrototypes() const { return m_hidePrototypes; }
     QString nameFilter() const { return m_nameFilter; }
     bool showTierIcons() const { return m_showTierIcons; }
 
     void setShowTierIcons(bool show);
 
 public slots:
-    void setHidePrototypes(bool hide) { m_hidePrototypes = hide; invalidateSortFilter(); }
     void setLogicalOrder(bool logical);
     void setNameFilter(const QString& filter) { m_nameFilter = filter; invalidateSortFilter(); }
     void setHiddenTiers(const QStringList &tiers) { m_hiddenTiers = tiers; invalidateSortFilter(); }
@@ -138,7 +136,6 @@ protected:
 private:
     Category *m_category;
 
-    bool m_hidePrototypes;
     QStringList m_hiddenTiers;
     bool m_logicalOrder;
     bool m_showTierIcons;
@@ -266,15 +263,8 @@ public:
 
     void setComponent(Definition *component);
 
-public slots:
-    void setHidePrototypes(bool hide) { m_hidePrototypes = hide; invalidateSortFilter(); }
-
-protected:
-    bool filterAcceptRow(Node *node);
-
 private:
     Definition *m_component;
-    bool m_hidePrototypes;
 };
 
 
