@@ -51,13 +51,9 @@ public:
     QUndoCommand *setStarterChoicesCommand(const QString &choices);
     QUndoCommand *setLevelsCommand(const ExtensionLevelMap &levels);
 
-    bool attributesComplete() { return !m_starterChoices.mid(1).contains(QLatin1Char(' ')); }
-
     const ExtensionLevels *starterExtensions() const { return m_starterExtensions; }
     ExtensionLevels *currentExtensions() { return m_currentExtensions; }
     ExtensionLevels *plannedExtensions() { return m_plannedExtensions; }
-
-    const AttributeSet& attributes() { return m_attributes; }
 
     bool isModified() { return m_modified; }
     QString fileName() { return m_fileName; }
@@ -65,12 +61,11 @@ public:
     QString name();
 
 public slots:
-    void resetAttributes();
+    void resetInfo();
     void reset();
-    void optimizeAttributes();
 
 signals:
-    void statsChanged();
+    void infoChanged();
     void extensionsChanged();
     void persistenceChanged();
 
@@ -81,7 +76,6 @@ private:
     GameData *m_gameData;
     QString m_lastError;
 
-    AttributeSet m_attributes;
     QString m_starterChoices;
 
     ExtensionLevels *m_starterExtensions;

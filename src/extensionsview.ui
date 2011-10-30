@@ -61,7 +61,7 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QWidget" name="points" native="true">
-       <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,1">
+       <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0,0,0,0,0,0">
         <property name="leftMargin">
          <number>15</number>
         </property>
@@ -69,7 +69,7 @@
          <number>5</number>
         </property>
         <property name="rightMargin">
-         <number>5</number>
+         <number>15</number>
         </property>
         <property name="bottomMargin">
          <number>5</number>
@@ -97,7 +97,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0" rowspan="2">
+        <item row="0" column="3">
          <widget class="QLabel" name="label_15">
           <property name="text">
            <string>Planned EP</string>
@@ -107,229 +107,51 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1" rowspan="2">
+        <item row="0" column="6">
+         <widget class="QPushButton" name="buttonAgentDetails">
+          <property name="text">
+           <string>Initial Extensions</string>
+          </property>
+          <property name="role" stdset="0">
+           <string notr="true">dialog-button</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
          <widget class="QLabel" name="labelPlannedPoints">
           <property name="textFormat">
            <enum>Qt::RichText</enum>
           </property>
          </widget>
         </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QWidget" name="attributes" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>270</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Click to edit</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <property name="leftMargin">
-         <number>15</number>
-        </property>
-        <property name="topMargin">
-         <number>5</number>
-        </property>
-        <property name="rightMargin">
-         <number>5</number>
-        </property>
-        <property name="bottomMargin">
-         <number>5</number>
-        </property>
-        <property name="horizontalSpacing">
-         <number>15</number>
-        </property>
-        <property name="verticalSpacing">
-         <number>0</number>
-        </property>
-        <item row="4" column="1">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string extracomment="attributeE">Politics</string>
+        <item row="0" column="5">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="role" stdset="0">
-           <string notr="true">name</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string extracomment="attributeD">Research and Development</string>
-          </property>
-          <property name="role" stdset="0">
-           <string notr="true">name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string extracomment="attributeC">Heavy Industry</string>
-          </property>
-          <property name="role" stdset="0">
-           <string notr="true">name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string extracomment="attributeB">Mechatronics</string>
-          </property>
-          <property name="role" stdset="0">
-           <string notr="true">name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string extracomment="attributeA">Tactics</string>
-          </property>
-          <property name="role" stdset="0">
-           <string notr="true">name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string extracomment="attributeF">Economics</string>
-          </property>
-          <property name="role" stdset="0">
-           <string notr="true">name</string>
-          </property>
-         </widget>
+         </spacer>
         </item>
         <item row="0" column="2">
-         <widget class="QLabel" name="label_7">
-          <property name="minimumSize">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>15</width>
-            <height>0</height>
+            <width>10</width>
+            <height>10</height>
            </size>
           </property>
-          <property name="text">
-           <string notr="true">0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="index" stdset="0">
-           <number>0</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QLabel" name="label_8">
-          <property name="minimumSize">
-           <size>
-            <width>15</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string notr="true">0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="index" stdset="0">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QLabel" name="label_9">
-          <property name="minimumSize">
-           <size>
-            <width>15</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string notr="true">0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="index" stdset="0">
-           <number>2</number>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QLabel" name="label_10">
-          <property name="minimumSize">
-           <size>
-            <width>15</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string notr="true">0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="index" stdset="0">
-           <number>3</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QLabel" name="label_11">
-          <property name="minimumSize">
-           <size>
-            <width>15</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string notr="true">0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="index" stdset="0">
-           <number>4</number>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QLabel" name="label_12">
-          <property name="minimumSize">
-           <size>
-            <width>15</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string notr="true">0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="index" stdset="0">
-           <number>5</number>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" rowspan="6">
-         <widget class="QLabel" name="label_16">
-          <property name="text">
-           <string extracomment="extension_attributes">Attributes</string>
-          </property>
-          <property name="role" stdset="0">
-           <string notr="true">header</string>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -608,6 +430,22 @@
     <hint type="sourcelabel">
      <x>210</x>
      <y>490</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAgentDetails</sender>
+   <signal>clicked()</signal>
+   <receiver>actionAttributeEditor</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>446</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

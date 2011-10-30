@@ -29,15 +29,14 @@ AttributeEditor::AttributeEditor(Agent *agent, QWidget *parent)
 {
     setupUi(this);
 
-    connect(agent, SIGNAL(statsChanged()), this, SLOT(agentStatsChanged()));
+    connect(agent, SIGNAL(infoChanged()), this, SLOT(agentInfoChanged()));
     connect(agent, SIGNAL(persistenceChanged()), this, SLOT(agentPersistenceChanged()));
-    connect(actionReset, SIGNAL(triggered()), agent, SLOT(resetAttributes()));
-    connect(actionOptimize, SIGNAL(triggered()), agent, SLOT(optimizeAttributes()));
+    connect(actionReset, SIGNAL(triggered()), agent, SLOT(resetInfo()));
 
     foreach (QButtonGroup *buttonGroup, findChildren<QButtonGroup *>())
         connect(buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(buttonGroupClicked(QAbstractButton*)));
 
-    QTimer::singleShot(0, this, SLOT(agentStatsChanged())); // wait for the final layout
+    QTimer::singleShot(0, this, SLOT(agentInfoChanged())); // wait for the final layout
 }
 
 void AttributeEditor::changeEvent(QEvent *e)
@@ -48,7 +47,7 @@ void AttributeEditor::changeEvent(QEvent *e)
         retranslateUi(this);
 
         agentPersistenceChanged();
-        agentStatsChanged();
+        agentInfoChanged();
         break;
     }
 }
@@ -64,7 +63,7 @@ void AttributeEditor::agentPersistenceChanged()
     setWindowTitle(tr("%1 - Attributes").arg(m_agent->name()));
 }
 
-void AttributeEditor::agentStatsChanged()
+void AttributeEditor::agentInfoChanged()
 {
     foreach (QToolButton *button, findChildren<QToolButton *>()) {
         QVariant vIndex = button->property("index");
@@ -82,24 +81,6 @@ void AttributeEditor::agentStatsChanged()
                 button->setToolTip(buttonName.isEmpty() ? tr("(Depends on previous choice)") : buttonName);
             }
         }
-    }
-    foreach (QLabel *label, attributeBars->findChildren<QLabel *>()) {
-        QVariant vIndex = label->property("index");
-        if (vIndex.isValid()) {
-            int value = m_agent->attributes()[static_cast<Attribute>(vIndex.toInt())];
-            label->setText(QString::number(value));
-
-            int margin = (label->width() - 18) * (1 - value / 30.);
-            const char* align = label->property("role").toString().contains(QLatin1String("left")) ? "left" : "right";
-            label->setStyleSheet(QString("margin-%1: %2px").arg(align).arg(margin));
-        }
-    }
-
-    foreach (QLabel *label, choices->findChildren<QLabel *>()) {
-        int index = label->property("index").toInt();
-        bool complete = m_agent->starterChoices().at(index) != QLatin1Char(' ');
-        label->setProperty("role", QLatin1String(complete ? "complete" : ""));
-        label->setStyleSheet(QLatin1String(" "));
     }
 }
 

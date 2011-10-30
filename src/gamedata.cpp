@@ -32,48 +32,6 @@
 using namespace std;
 
 
-// AttributeSet
-
-AttributeSet::AttributeSet()
-{
-    memset(m_attributes, 0, sizeof(m_attributes));
-}
-
-AttributeSet::AttributeSet(QVariant data)
-{
-    QVariantList dataList = data.toList();
-    for (int i = 0; i < NumAttributes; ++i)
-        m_attributes[i] = dataList.at(i).toInt();
-}
-
-AttributeSet::AttributeSet(const AttributeSet& other)
-{
-    memcpy(m_attributes, other.m_attributes, sizeof(m_attributes));
-}
-
-AttributeSet::operator QVariant() const
-{
-    QVariantList dataList;
-    for (int i = 0; i < NumAttributes; ++i)
-        dataList << m_attributes[i];
-    return dataList;
-}
-
-AttributeSet AttributeSet::operator+(const AttributeSet& other) const
-{
-    AttributeSet sum(other);
-    for (int i = 0; i < NumAttributes; ++i)
-        sum.m_attributes[i] += m_attributes[i];
-    return sum;
-}
-
-void AttributeSet::load(const QVariantMap &dataMap)
-{
-    for (int i = 0; i < NumAttributes; ++i)
-        m_attributes[i] = dataMap.value(QString("attribute") + QChar('A' + i)).toInt();
-}
-
-
 // GameData
 
 QVariantMap GameData::loadVariantMap(QIODevice *io)
@@ -249,7 +207,7 @@ QVector<CharacterWizardStep *> GameData::decodeCharWizSteps(const QString &choic
 QString GameData::starterName(QString choices) const
 {
     CharacterWizardStep *step = decodeCharWizSteps(choices).at(choices.size() - 1);
-    return step ? (step->name() + QString(" (ID=%1)").arg(step->id())) : QString();
+    return step ? step->name() : QString();
 }
 
 ExtensionLevelMap GameData::starterExtensions(QString choices) const
@@ -259,15 +217,6 @@ ExtensionLevelMap GameData::starterExtensions(QString choices) const
         if (step)
             extensions += step->extensions();
     return extensions;
-}
-
-AttributeSet GameData::starterAttributes(QString choices) const
-{
-    AttributeSet attributes;
-    foreach (CharacterWizardStep *step, decodeCharWizSteps(choices))
-        if (step)
-            attributes += step->attributes();
-    return attributes;
 }
 
 QList<Definition *> GameData::definitionsInCategory(const Category *category) const
@@ -334,12 +283,6 @@ bool Extension::load(const QVariantMap &dataMap)
         m_rank = dataMap.value("rank").toInt();
         m_price = dataMap.value("price").toInt();
         m_bonus = dataMap.value("bonus").toFloat();
-
-        QString primaryAttr = dataMap.value("learningAttributePrimary").toString(),
-                secondaryAttr = dataMap.value("learningAttributeSecondary").toString();
-        m_primaryAttribute = primaryAttr.startsWith("attribute") ? primaryAttr.at(9).toLatin1() - 'A' : 0;
-        m_secondaryAttribute = secondaryAttr.startsWith("attribute") ? secondaryAttr.at(9).toLatin1() - 'A' : 0;
-
         m_hidden = dataMap.value("hidden").toBool();
 
         m_category = m_gameData->extensionCategories().value(dataMap.value("category").toInt());
@@ -665,7 +608,7 @@ bool Definition::load(const QVariantMap &dataMap)
             m_calibrationProgram = 0;
 
             m_hidden = dataMap.value("hidden").toBool();
-            m_inMarket = dataMap.value("purchasable").toBool() || m_tier && m_tier->name().endsWith("+");
+            m_inMarket = dataMap.value("purchasable").toBool();
             if (!m_hidden && m_inMarket)
                 m_category->setInMarket(m_inMarket);
         }
@@ -825,8 +768,6 @@ bool CharacterWizardStep::load(const QVariantMap &dataMap)
         if (extension)
             m_extensions.insert(extension, entryMap.value("add").toInt());
     }
-
-    m_attributes.load(dataMap);
 
     if (dataMap.contains("raceID"))
         m_baseStep = m_gameData->charWizSteps(GameData::Race).value(dataMap.value("raceID").toInt());

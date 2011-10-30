@@ -39,29 +39,6 @@ class ExtensionLevelMap;
 class CharacterWizardStep;
 
 
-enum Attribute { Tactics, Mechatronics, Industry, Research, Politics, Economics, NumAttributes };
-
-
-class AttributeSet {
-public:
-    AttributeSet();
-    AttributeSet(QVariant data);
-    AttributeSet(const AttributeSet& other);
-
-    operator QVariant() const;
-    AttributeSet operator+(const AttributeSet& other) const;
-    AttributeSet &operator+=(const AttributeSet& other) { *this = *this + other; return *this; }
-
-    int operator[](int a) const { return m_attributes[a]; }
-    int &operator[](int a) { return m_attributes[a]; }
-
-    void load(const QVariantMap &dataMap);
-
-private:
-    int m_attributes[NumAttributes];
-};
-
-
 class GameData : public QObject {
     Q_OBJECT
 
@@ -102,7 +79,6 @@ public:
     QList<Definition *> definitionsInCategory(const Category *category) const;
 
     ExtensionLevelMap starterExtensions(QString steps) const;
-    AttributeSet starterAttributes(QString steps) const;
     QString starterName(QString steps) const;
 
     QString translate(const QString &key) const { return m_translation.value(key, key); }
@@ -195,16 +171,13 @@ class Extension : public GameObject {
     Q_OBJECT
 
 public:
-    Extension(GameData *gameData) : GameObject(gameData), m_id(0), m_rank(0), m_price(0),
-        m_primaryAttribute(-1), m_secondaryAttribute(-1), m_category(0) {}
+    Extension(GameData *gameData) : GameObject(gameData), m_id(0), m_rank(0), m_price(0), m_category(0) {}
 
     bool load(const QVariantMap &dataMap);
 
     QString description() const;
     int complexity() const { return m_rank; }
     int price() const { return m_price; }
-    int primaryAttribute() const { return m_primaryAttribute; }
-    int secondaryAttribute() const { return m_secondaryAttribute; }
 
     ExtensionCategory *category() const { return m_category; }
 
@@ -216,7 +189,6 @@ private:
     QString m_description;
     int m_rank, m_price;
     float m_bonus;
-    int m_primaryAttribute, m_secondaryAttribute;
     ExtensionCategory *m_category;
     ExtensionLevelMap m_requirements;
     mutable ExtensionLevelMap m_transitiveReqs;
@@ -454,13 +426,11 @@ public:
 
     int id() const { return m_id; }
     QString description() const { return m_gameData->translate(m_description); }
-    const AttributeSet &attributes() const { return m_attributes; }
     const ExtensionLevelMap &extensions() const { return m_extensions; }
 
 private:
     int m_id, m_baseEID;
     QString m_description;
-    AttributeSet m_attributes;
     ExtensionLevelMap m_extensions;
 
     CharacterWizardStep *m_baseStep;

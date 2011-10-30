@@ -40,7 +40,7 @@ protected:
 
 private slots:
     void buttonGroupClicked(QAbstractButton *);
-    void agentStatsChanged();
+    void agentInfoChanged();
     void agentPersistenceChanged();
 
 private:

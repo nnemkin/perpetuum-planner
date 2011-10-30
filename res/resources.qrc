@@ -15,15 +15,6 @@
         <file>checkbox-checked.png</file>
         <file>tree-minus.png</file>
         <file>tree-plus.png</file>
-        <file>spark_cc.png</file>
-        <file>spark_ci.png</file>
-        <file>spark_cm.png</file>
-        <file>spark_ic.png</file>
-        <file>spark_ii.png</file>
-        <file>spark_im.png</file>
-        <file>spark_mc.png</file>
-        <file>spark_mi.png</file>
-        <file>spark_mm.png</file>
         <file>choice-border.png</file>
         <file>choice-border-selected.png</file>
         <file>megacorp-asi.png</file>
@@ -57,7 +48,6 @@
         <file>doc-stylesheet-big.css</file>
         <file>stylesheet-big.css</file>
         <file>decoder.png</file>
-        <file>attrs.png</file>
         <file>bars.png</file>
         <file>flag-de.png</file>
         <file>flag-en.png</file>

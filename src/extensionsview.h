@@ -59,8 +59,6 @@ private slots:
 
 private:
     Agent *m_agent;
-
-    QPixmap createAttributesMarker(Extension *extension) const;
 };
 
 
@@ -101,7 +99,6 @@ private slots:
     void on_treeExtensions_doubleClicked(QModelIndex index);
     void on_treeExtensions_customContextMenuRequested(QPoint pos);
 
-    void agentStatsChanged();
     void agentExtensionsChanged();
     void agentPersistenceChanged();
     void actionSetLevelTriggered();

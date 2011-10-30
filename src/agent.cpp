@@ -19,7 +19,7 @@
 
 #include <QFile>
 #include <QUndoCommand>
-#include <QTime>
+#include <QDateTime>
 #include <QDebug>
 #include <QFileInfo>
 
@@ -183,10 +183,7 @@ int ExtensionLevels::points(Extension *extension, int lvl) const
     if (lvl == 0)
         return 0;
 
-    Agent *a = agent();
-    int base = a ? (200 - 2 * a->attributes()[extension->primaryAttribute()] - a->attributes()[extension->secondaryAttribute()]) : 200;
-
-    return base * extension->complexity() * multipliers[lvl] / 2;
+    return 60 * extension->complexity() * multipliers[lvl];
 }
 
 
@@ -259,20 +256,24 @@ bool Agent::importHistory(QIODevice *io)
     }
     m_lastError.clear();
 
-    ExtensionLevelMap importExts;
+    ExtensionLevelMap extLevels;
+    QHash<Extension *, QDateTime> extDates;
 
     QString data = io->readAll();
     foreach (const QString &line, data.split('\n')) {
         QString extName = line.section(',', 0, 0).remove('"');
         int extLevel = line.section(',', 1, 1).remove('"').toInt();
+        QDateTime extDate = QDateTime::fromString(line.section(',', 2, 2).remove('"'), "yyyy-MM-dd HH:mm:ss");
 
         if (Extension *extension = m_gameData->findByName<Extension *>(extName)) {
-            if (extLevel > importExts.value(extension))
-                importExts.insert(extension, extLevel);
+            if (!extLevels.contains(extension) || extDate > extDates.value(extension)) {
+                extLevels.insert(extension, extLevel);
+                extDates.insert(extension, extDate);
+            }
         }
     }
 
-    m_currentExtensions->setFrom(importExts);
+    m_currentExtensions->setFrom(extLevels);
     return true;
 }
 
@@ -320,15 +321,15 @@ bool Agent::save(const QString& fileName)
 void Agent::setStarterChoices(const QString &choices)
 {
     m_starterChoices = choices.leftJustified(6, QLatin1Char(' '), true);
-    m_attributes = m_gameData->starterAttributes(choices);
     m_starterExtensions->setFrom(m_gameData->starterExtensions(choices));
-    emit statsChanged();
+    emit extensionsChanged();
+    emit infoChanged();
 
     m_modified = true;
     emit persistenceChanged();
 }
 
-void Agent::resetAttributes()
+void Agent::resetInfo()
 {
     setStarterChoices(QString());
 }
@@ -354,44 +355,6 @@ QUndoCommand *Agent::setLevelsCommand(const ExtensionLevelMap &levels)
 {
     Q_UNUSED(levels)
     return 0;
-}
-
-void Agent::optimizeAttributes()
-{
-    int minPoints = m_plannedExtensions->points() - m_currentExtensions->points();
-    QString minChoices = m_starterChoices;
-
-    ExtensionLevels *starterExtensions = new ExtensionLevels(m_currentExtensions, this);
-    ExtensionLevels *currentExtensions = new ExtensionLevels(m_currentExtensions, this);
-    ExtensionLevels *plannedExtensions = new ExtensionLevels(m_plannedExtensions, this);
-
-    currentExtensions->setBase(starterExtensions);
-    plannedExtensions->setBase(currentExtensions);
-
-    for (int i = 0; i < 3*27*9; ++i) {
-        QString choices(QLatin1Char("TIA"[i % 3]));
-        for (int j = 0, ii = i / 3; j < 5; ++j, ii /= 3)
-            choices += QLatin1Char("MIL"[ii % 3]);
-
-        m_attributes = m_gameData->starterAttributes(choices);
-        starterExtensions->setFrom(m_gameData->starterExtensions(choices));
-
-        int points = plannedExtensions->points() - currentExtensions->points();
-
-        if (points < minPoints) {
-            minPoints = points;
-            minChoices = choices;
-        }
-    }
-
-    delete starterExtensions;
-    delete currentExtensions;
-    delete plannedExtensions;
-
-    if (minChoices != m_starterChoices)
-        setStarterChoices(minChoices);
-    else
-        m_attributes = m_gameData->starterAttributes(m_starterChoices);
 }
 
 

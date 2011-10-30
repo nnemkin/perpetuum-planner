@@ -119,6 +119,7 @@ QVariant ExtensionsModel::data(const QModelIndex &index, int role) const
                     return QString("<div class=\"counter next\"><div class=\"ep\">%L1</div><div class=\"time\">%2</div></div>")
                             .arg(points).arg(Formatter::formatTimeSpanCompact(points * 60));
                 }
+                break;
             }
         }
         else if (role == Qt::ToolTipRole) {
@@ -128,11 +129,6 @@ QVariant ExtensionsModel::data(const QModelIndex &index, int role) const
                     //: extensioninfo_requiredextensions
                     return tr("Prerequisites: %L1 EP").arg(reqPoints);
                 }
-            }
-        }
-        else if (role == Qt::DecorationRole) {
-            if (index.column() == 1) {
-                return QVariant(createAttributesMarker(extension));
             }
         }
         else if (role == Qt::TextAlignmentRole) {
@@ -201,24 +197,6 @@ Qt::ItemFlags ExtensionsModel::flags(const QModelIndex &index) const
     return index.isValid() ? (Qt::ItemIsEnabled | Qt::ItemIsSelectable) : 0;
 }
 
-QPixmap ExtensionsModel::createAttributesMarker(Extension *extension) const
-{
-    QString key = QString("AttributesMarker-%1%2").arg(extension->primaryAttribute()).arg(extension->secondaryAttribute());
-    QPixmap pm;
-    if (!QPixmapCache::find(key, pm)) {
-        QPixmap pmAttrs(QLatin1String(":/attrs.png"), 0, Qt::NoOpaqueDetection);
-        int width = pmAttrs.width() / 2, height = pmAttrs.height() / NumAttributes;
-
-        pm = QPixmap(width * 2, height);
-        pm.fill(Qt::transparent); // NB: necessary to force alpha channel
-        QPainter p(&pm);
-        p.drawPixmap(0, 0, pmAttrs, 0, height * extension->primaryAttribute(), width, height);
-        p.drawPixmap(width, 0, pmAttrs, width, height * extension->secondaryAttribute(), width, height);
-        QPixmapCache::insert(key, pm);
-    }
-    return pm;
-}
-
 
 // ExtensionsView
 
@@ -271,7 +249,6 @@ ExtensionsView::ExtensionsView(QWidget *parent) : QWidget(parent), m_agent(0), m
         }
     }
 
-    attributes->installEventFilter(this);
     treeExtensions->installEventFilter(this);
 
     addActions(findChildren<QAction *>());
@@ -291,7 +268,6 @@ void ExtensionsView::initialize(QSettings &settings, GameData *gameData, const Q
         }
     }
 
-    connect(m_agent, SIGNAL(statsChanged()), this, SLOT(agentStatsChanged()));
     connect(m_agent, SIGNAL(extensionsChanged()), this, SLOT(agentExtensionsChanged()));
     connect(m_agent, SIGNAL(persistenceChanged()), this, SLOT(agentPersistenceChanged()));
 
@@ -314,6 +290,7 @@ void ExtensionsView::initialize(QSettings &settings, GameData *gameData, const Q
     treeExtensions->header()->resizeSection(3, 160);
     treeExtensions->header()->resizeSection(4, bigFonts ? 70 : 65);
     treeExtensions->header()->resizeSection(5, bigFonts ? 75 : 70);
+    treeExtensions->header()->resizeSection(6, bigFonts ? 70 : 65);
     treeExtensions->header()->setResizeMode(QHeaderView::Fixed);
     treeExtensions->header()->setResizeMode(0, QHeaderView::Stretch);
 
@@ -326,7 +303,6 @@ void ExtensionsView::initialize(QSettings &settings, GameData *gameData, const Q
 
     m_headerActions = new HeaderActions(treeExtensions->header(), this);
 
-    agentStatsChanged();
     agentExtensionsChanged();
     agentPersistenceChanged();
 }
@@ -348,7 +324,6 @@ void ExtensionsView::changeEvent(QEvent *event)
     switch (event->type()) {
     case QEvent::LanguageChange:
         retranslateUi(this);
-        agentStatsChanged();
         agentExtensionsChanged();
         agentPersistenceChanged();
         break;
@@ -402,10 +377,6 @@ bool ExtensionsView::eventFilter(QObject *object, QEvent *event)
             }
         }
     }
-    else if (object == attributes) {
-        if (event->type() == QEvent::MouseButtonPress && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton)
-            actionAttributeEditor->trigger();
-    }
     return false;
 }
 
@@ -424,20 +395,6 @@ bool ExtensionsView::canClose()
             actionSave->trigger();
     }
     return true;
-}
-
-void ExtensionsView::agentStatsChanged()
-{
-    bool complete = m_agent->attributesComplete();
-    foreach (QLabel *label, attributes->findChildren<QLabel *>()) {
-        QVariant vIndex = label->property("index");
-        if (vIndex.isValid()) {
-            int value = m_agent->attributes()[static_cast<Attribute>(vIndex.toInt())];
-            label->setText(QString::number(value));
-            label->setProperty("role", complete ? "complete" : "");
-            label->setStyleSheet(" "); // refresh the style, empty string won't do
-        }
-    }
 }
 
 void ExtensionsView::agentExtensionsChanged()

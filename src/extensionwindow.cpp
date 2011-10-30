@@ -72,33 +72,11 @@ void ExtensionWindow::customEvent(QEvent *event)
 
 void ExtensionWindow::updateExtensionInfo()
 {
-    static const char *attributeNames[] = {
-        //: attributeA
-        QT_TR_NOOP("Tactics"),
-        //: attributeB
-        QT_TR_NOOP("Mechatronics"),
-        //: attributeC
-        QT_TR_NOOP("Heavy Industry"),
-        //: attributeD
-        QT_TR_NOOP("Research and development"),
-        //: attributeE
-        QT_TR_NOOP("Politics"),
-        //: attributeF
-        QT_TR_NOOP("Economics"),
-    };
-
     //: window_extensioninfo
     setWindowTitle(tr("Extension: %1").arg(m_extension->name()));
 
     textDescription->document()->setDefaultStyleSheet(qApp->docStyleSheet());
     textDescription->document()->setDocumentMargin(10);
 
-    textDescription->setText(QString("<html><p>%1</p><p><b>%4:</b> %2<br/><b>%5:</b> %3</p>")
-        .arg(m_extension->description())
-        .arg(tr(attributeNames[m_extension->primaryAttribute()]))
-        .arg(tr(attributeNames[m_extension->secondaryAttribute()]))
-        //: extensioninfo_learningAttributePrimary
-        .arg(tr("Primary attribute"))
-        //: extensioninfo_learningAttributeSecondary
-        .arg(tr("Secondary attribute")));
+    textDescription->setText(QString("<html><p>%1</p></html>").arg(m_extension->description()));
 }
