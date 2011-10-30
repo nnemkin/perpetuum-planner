@@ -117,6 +117,7 @@ bool ExtensionLevels::load(GameData *gameData, const QVariantMap &dataMap)
         else
             qDebug() << "Unknown extension:" << i.key();
     }
+    emit levelChanged(0, 0);
     return true;
 }
 
