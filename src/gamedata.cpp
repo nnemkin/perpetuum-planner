@@ -215,7 +215,7 @@ ExtensionLevelMap GameData::starterExtensions(QString choices) const
     ExtensionLevelMap extensions;
     foreach (CharacterWizardStep *step, decodeCharWizSteps(choices))
         if (step)
-            extensions += step->extensions();
+            extensions.sum(step->extensions());
     return extensions;
 }
 
@@ -247,16 +247,16 @@ QString GameData::wikiToHtml(const QString &wiki) const
 
 // ExtensionLevelMap
 
-ExtensionLevelMap &ExtensionLevelMap::operator+=(const ExtensionLevelMap &other)
+void ExtensionLevelMap::merge(const ExtensionLevelMap &other)
 {
-    for (const_iterator i = other.constBegin(); i != other.constEnd(); ++i) {
-        iterator j = find(i.key());
-        if (j != end())
-            j.value() = qMax(j.value(), i.value());
-        else
-            insert(i.key(), i.value());
-    }
-    return *this;
+    for (const_iterator i = other.constBegin(); i != other.constEnd(); ++i)
+        insert(i.key(), qMax(value(i.key()), i.value()));
+}
+
+void ExtensionLevelMap::sum(const ExtensionLevelMap &other)
+{
+    for (const_iterator i = other.constBegin(); i != other.constEnd(); ++i)
+        insert(i.key(), value(i.key()) + i.value());
 }
 
 
@@ -321,7 +321,7 @@ const ExtensionLevelMap &Extension::transitiveReqs() const
     if (m_transitiveReqs.isEmpty() && !m_requirements.isEmpty()) {
         m_transitiveReqs = m_requirements;
         for (ExtensionLevelMap::const_iterator i = m_requirements.constBegin(); i != m_requirements.constEnd(); ++i)
-            m_transitiveReqs += i.key()->transitiveReqs();
+            m_transitiveReqs.merge(i.key()->transitiveReqs());
     }
     return m_transitiveReqs;
 }

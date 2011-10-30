@@ -122,7 +122,8 @@ class ExtensionLevelMap : public QMap<Extension *, int> {
 public:
     inline QList<Extension *> extensions() const { return keys(); }
 
-    ExtensionLevelMap &operator+=(const ExtensionLevelMap &other);
+    void sum(const ExtensionLevelMap &other);
+    void merge(const ExtensionLevelMap &other);
 };
 
 
