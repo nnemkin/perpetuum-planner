@@ -152,7 +152,6 @@ bool GameData::load(QIODevice *dataFile, QIODevice *translationFile)
         QString name = entryMap.value("name").toString();
         QString persistentName = entryMap.value("value").toString();
         if (Extension *extension = findByName<Extension *>(name)) {
-            m_persistentNames.insert(name, persistentName);
             m_objectsByName.insert(persistentName, extension);
         }
         else {
