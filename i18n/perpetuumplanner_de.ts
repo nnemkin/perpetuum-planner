@@ -68,11 +68,6 @@ Error on line %1: %2</source>
 <context>
     <name>AttributeEditor</name>
     <message>
-        <source>Attributes</source>
-        <extracomment>extension_attributes</extracomment>
-        <translation>Attribute</translation>
-    </message>
-    <message>
         <source>School:</source>
         <extracomment>characterinfo_cw_school</extracomment>
         <translation>Schule:</translation>
@@ -103,65 +98,6 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Corporation:</source>
-        <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation>Corporation:</translation>
-    </message>
-    <message>
-        <source>buttonGroupCorporation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Spark:</source>
-        <extracomment>characterinfo_cw_spark</extracomment>
-        <translation>Spark:</translation>
-    </message>
-    <message>
-        <source>Research and development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Forschung und Entwicklung</translation>
-    </message>
-    <message>
-        <source>buttonGroupSpark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ubenor (Military)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Geinos (Military-Industrial)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Yolleon (Military-Logistic)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pastex (Industrial-Military)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Apsidaz (Industrial)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Oprater (Industrial-Logistic)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Yphet (Logistic-Military)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Qassol (Logistic-Industrial)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Nivalla (Logistic)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Truhold-Markson</source>
         <translation></translation>
     </message>
@@ -183,37 +119,8 @@ Error on line %1: %2</source>
         <translation>Megacorporation:</translation>
     </message>
     <message>
-        <source>Tactics</source>
-        <extracomment>attributeA</extracomment>
-        <translation>Taktik</translation>
-    </message>
-    <message>
-        <source>Mechatronics</source>
-        <extracomment>attributeB</extracomment>
-        <translation>Mechatronik</translation>
-    </message>
-    <message>
-        <source>Heavy Industry</source>
-        <extracomment>attributeC</extracomment>
-        <translation>Schwerindustrie</translation>
-    </message>
-    <message>
-        <source>Politics</source>
-        <extracomment>attributeE</extracomment>
-        <translation>Politik</translation>
-    </message>
-    <message>
-        <source>Economics</source>
-        <extracomment>attributeF</extracomment>
-        <translation>Wirtschaft</translation>
-    </message>
-    <message>
         <source>Reset</source>
         <translation>Zurücksetzen</translation>
-    </message>
-    <message>
-        <source>Optimize</source>
-        <translation>Optimieren</translation>
     </message>
     <message>
         <source>Close</source>
@@ -285,49 +192,9 @@ Error on line %1: %2</source>
         <translation>&amp;VORAUSSETZUNG</translation>
     </message>
     <message>
-        <source>Tactics</source>
-        <extracomment>attributeA</extracomment>
-        <translation>Taktik</translation>
-    </message>
-    <message>
-        <source>Mechatronics</source>
-        <extracomment>attributeB</extracomment>
-        <translation>Mechatronik</translation>
-    </message>
-    <message>
-        <source>Heavy Industry</source>
-        <extracomment>attributeC</extracomment>
-        <translation>Schwerindustrie</translation>
-    </message>
-    <message>
-        <source>Research and development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Forschung und Entwicklung</translation>
-    </message>
-    <message>
-        <source>Politics</source>
-        <extracomment>attributeE</extracomment>
-        <translation>Politik</translation>
-    </message>
-    <message>
-        <source>Economics</source>
-        <extracomment>attributeF</extracomment>
-        <translation>Wirtschaft</translation>
-    </message>
-    <message>
         <source>Extension: %1</source>
         <extracomment>window_extensioninfo</extracomment>
         <translation>Extension: %1</translation>
-    </message>
-    <message>
-        <source>Primary attribute</source>
-        <extracomment>extensioninfo_learningAttributePrimary</extracomment>
-        <translation>Primärattribut</translation>
-    </message>
-    <message>
-        <source>Secondary attribute</source>
-        <extracomment>extensioninfo_learningAttributeSecondary</extracomment>
-        <translation>Sekundärattribut</translation>
     </message>
 </context>
 <context>
@@ -375,45 +242,6 @@ Error on line %1: %2</source>
     <message>
         <source>Planned EP</source>
         <translation>Geplante EP</translation>
-    </message>
-    <message>
-        <source>Click to edit</source>
-        <translation>Klicken zum Bearbeiten</translation>
-    </message>
-    <message>
-        <source>Politics</source>
-        <extracomment>attributeE</extracomment>
-        <translation>Politik</translation>
-    </message>
-    <message>
-        <source>Research and Development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Forschung und Entwicklung</translation>
-    </message>
-    <message>
-        <source>Heavy Industry</source>
-        <extracomment>attributeC</extracomment>
-        <translation>Schwerindustrie</translation>
-    </message>
-    <message>
-        <source>Mechatronics</source>
-        <extracomment>attributeB</extracomment>
-        <translation>Mechatronik</translation>
-    </message>
-    <message>
-        <source>Tactics</source>
-        <extracomment>attributeA</extracomment>
-        <translation>Taktik</translation>
-    </message>
-    <message>
-        <source>Economics</source>
-        <extracomment>attributeF</extracomment>
-        <translation>Wirtschaft</translation>
-    </message>
-    <message>
-        <source>Attributes</source>
-        <extracomment>extension_attributes</extracomment>
-        <translation>Attribute</translation>
     </message>
     <message>
         <source>&amp;New</source>
@@ -559,6 +387,10 @@ Error on line %1: %2</source>
     <message>
         <source>CSV files (*.csv);;All files (*.*)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initial Extensions</source>
+        <translation>Start-Extensions</translation>
     </message>
 </context>
 <context>

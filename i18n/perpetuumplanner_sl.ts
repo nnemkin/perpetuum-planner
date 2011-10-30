@@ -98,60 +98,6 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Corporation:</source>
-        <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation>Korporacija:</translation>
-    </message>
-    <message>
-        <source>buttonGroupCorporation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Spark:</source>
-        <extracomment>characterinfo_cw_spark</extracomment>
-        <translation>Iskra:</translation>
-    </message>
-    <message>
-        <source>Ubenor (Military)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>buttonGroupSpark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Geinos (Military-Industrial)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Yolleon (Military-Logistic)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pastex (Industrial-Military)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Apsidaz (Industrial)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Oprater (Industrial-Logistic)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Yphet (Logistic-Military)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Qassol (Logistic-Industrial)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Nivalla (Logistic)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Truhold-Markson</source>
         <translation></translation>
     </message>
@@ -173,47 +119,8 @@ Error on line %1: %2</source>
         <translation>Megakorporacija:</translation>
     </message>
     <message>
-        <source>Attributes</source>
-        <extracomment>extension_attributes</extracomment>
-        <translation>Lastnosti</translation>
-    </message>
-    <message>
-        <source>Tactics</source>
-        <extracomment>attributeA</extracomment>
-        <translation>Taktika</translation>
-    </message>
-    <message>
-        <source>Mechatronics</source>
-        <extracomment>attributeB</extracomment>
-        <translation>Mechatronika</translation>
-    </message>
-    <message>
-        <source>Heavy Industry</source>
-        <extracomment>attributeC</extracomment>
-        <translation>Težka industrija</translation>
-    </message>
-    <message>
-        <source>Research and development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Raziskovanje in razvoj</translation>
-    </message>
-    <message>
-        <source>Politics</source>
-        <extracomment>attributeE</extracomment>
-        <translation>Politika</translation>
-    </message>
-    <message>
-        <source>Economics</source>
-        <extracomment>attributeF</extracomment>
-        <translation>Ekonomija</translation>
-    </message>
-    <message>
         <source>Reset</source>
         <translation>Ponastavi</translation>
-    </message>
-    <message>
-        <source>Optimize</source>
-        <translation>Optimiraj</translation>
     </message>
     <message>
         <source>Close</source>
@@ -285,49 +192,9 @@ Error on line %1: %2</source>
         <translation>&amp;PREDPOGOJI</translation>
     </message>
     <message>
-        <source>Tactics</source>
-        <extracomment>attributeA</extracomment>
-        <translation>Taktika</translation>
-    </message>
-    <message>
-        <source>Mechatronics</source>
-        <extracomment>attributeB</extracomment>
-        <translation>Mechatronika</translation>
-    </message>
-    <message>
-        <source>Heavy Industry</source>
-        <extracomment>attributeC</extracomment>
-        <translation>Težka industrija</translation>
-    </message>
-    <message>
-        <source>Research and development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Raziskovanje in razvoj</translation>
-    </message>
-    <message>
-        <source>Politics</source>
-        <extracomment>attributeE</extracomment>
-        <translation>Politika</translation>
-    </message>
-    <message>
-        <source>Economics</source>
-        <extracomment>attributeF</extracomment>
-        <translation>Ekonomija</translation>
-    </message>
-    <message>
         <source>Extension: %1</source>
         <extracomment>window_extensioninfo</extracomment>
         <translation>Razširitev: %1</translation>
-    </message>
-    <message>
-        <source>Primary attribute</source>
-        <extracomment>extensioninfo_learningAttributePrimary</extracomment>
-        <translation>Osnovna lastnost</translation>
-    </message>
-    <message>
-        <source>Secondary attribute</source>
-        <extracomment>extensioninfo_learningAttributeSecondary</extracomment>
-        <translation>Pomožna lastnost</translation>
     </message>
 </context>
 <context>
@@ -375,45 +242,6 @@ Error on line %1: %2</source>
     <message>
         <source>Planned EP</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Click to edit</source>
-        <translation>Kliknite za urejanje</translation>
-    </message>
-    <message>
-        <source>Politics</source>
-        <extracomment>attributeE</extracomment>
-        <translation>Politika</translation>
-    </message>
-    <message>
-        <source>Research and Development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Raziskovanje in razvoj</translation>
-    </message>
-    <message>
-        <source>Heavy Industry</source>
-        <extracomment>attributeC</extracomment>
-        <translation>Težka industrija</translation>
-    </message>
-    <message>
-        <source>Mechatronics</source>
-        <extracomment>attributeB</extracomment>
-        <translation>Mechatronika</translation>
-    </message>
-    <message>
-        <source>Tactics</source>
-        <extracomment>attributeA</extracomment>
-        <translation>Taktika</translation>
-    </message>
-    <message>
-        <source>Economics</source>
-        <extracomment>attributeF</extracomment>
-        <translation>Ekonomija</translation>
-    </message>
-    <message>
-        <source>Attributes</source>
-        <extracomment>extension_attributes</extracomment>
-        <translation>Lastnosti</translation>
     </message>
     <message>
         <source>&amp;New</source>
@@ -560,6 +388,10 @@ Error on line %1: %2</source>
         <source>CSV files (*.csv);;All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Initial Extensions</source>
+        <translation>Začetnim razširitvam</translation>
+    </message>
 </context>
 <context>
     <name>Formatter</name>
@@ -594,26 +426,17 @@ Error on line %1: %2</source>
         <source>%nd</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nh</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nm</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>

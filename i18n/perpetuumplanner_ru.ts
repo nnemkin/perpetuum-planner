@@ -69,11 +69,6 @@ Error on line %1: %2</source>
 <context>
     <name>AttributeEditor</name>
     <message>
-        <source>Attributes</source>
-        <extracomment>extension_attributes</extracomment>
-        <translation>Атрибуты</translation>
-    </message>
-    <message>
         <source>School:</source>
         <extracomment>characterinfo_cw_school</extracomment>
         <translation>Школа:</translation>
@@ -104,65 +99,6 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Corporation:</source>
-        <extracomment>characterinfo_cw_corporation</extracomment>
-        <translation>Корпорация:</translation>
-    </message>
-    <message>
-        <source>buttonGroupCorporation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Spark:</source>
-        <extracomment>characterinfo_cw_spark</extracomment>
-        <translation>Спарк:</translation>
-    </message>
-    <message>
-        <source>Research and development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Исследования и разработки</translation>
-    </message>
-    <message>
-        <source>buttonGroupSpark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ubenor (Military)</source>
-        <translation>Убенор (Военный)</translation>
-    </message>
-    <message>
-        <source>Geinos (Military-Industrial)</source>
-        <translation>Гейнос (Военный-промышленный)</translation>
-    </message>
-    <message>
-        <source>Yolleon (Military-Logistic)</source>
-        <translation>Йолеон (Военный-логистик)</translation>
-    </message>
-    <message>
-        <source>Pastex (Industrial-Military)</source>
-        <translation>Пастекс (Промышленный-военный)</translation>
-    </message>
-    <message>
-        <source>Apsidaz (Industrial)</source>
-        <translation>Апсидаз (Промышленный)</translation>
-    </message>
-    <message>
-        <source>Oprater (Industrial-Logistic)</source>
-        <translation>Опратер (Промышленный-логистик)</translation>
-    </message>
-    <message>
-        <source>Yphet (Logistic-Military)</source>
-        <translation>Ифет (Логистик-военный)</translation>
-    </message>
-    <message>
-        <source>Qassol (Logistic-Industrial)</source>
-        <translation>Квассол (Логистик-промышленный)</translation>
-    </message>
-    <message>
-        <source>Nivalla (Logistic)</source>
-        <translation>Нивалла (Логистик)</translation>
-    </message>
-    <message>
         <source>Truhold-Markson</source>
         <translation>Трухолд-Марксон</translation>
     </message>
@@ -184,37 +120,8 @@ Error on line %1: %2</source>
         <translation>Мегакорпорация:</translation>
     </message>
     <message>
-        <source>Tactics</source>
-        <extracomment>attributeA</extracomment>
-        <translation>Тактика</translation>
-    </message>
-    <message>
-        <source>Mechatronics</source>
-        <extracomment>attributeB</extracomment>
-        <translation>Мехатроника</translation>
-    </message>
-    <message>
-        <source>Heavy Industry</source>
-        <extracomment>attributeC</extracomment>
-        <translation>Тяжелая промышленность</translation>
-    </message>
-    <message>
-        <source>Politics</source>
-        <extracomment>attributeE</extracomment>
-        <translation>Политика</translation>
-    </message>
-    <message>
-        <source>Economics</source>
-        <extracomment>attributeF</extracomment>
-        <translation>Экономика</translation>
-    </message>
-    <message>
         <source>Reset</source>
         <translation>Сброс</translation>
-    </message>
-    <message>
-        <source>Optimize</source>
-        <translation>Оптимизировать</translation>
     </message>
     <message>
         <source>Close</source>
@@ -286,49 +193,9 @@ Error on line %1: %2</source>
         <translation>&amp;НЕОБХОДИМЫЕ НАВЫКИ</translation>
     </message>
     <message>
-        <source>Tactics</source>
-        <extracomment>attributeA</extracomment>
-        <translation>Тактика</translation>
-    </message>
-    <message>
-        <source>Mechatronics</source>
-        <extracomment>attributeB</extracomment>
-        <translation>Мехатроника</translation>
-    </message>
-    <message>
-        <source>Heavy Industry</source>
-        <extracomment>attributeC</extracomment>
-        <translation>Тяжелая промышленность</translation>
-    </message>
-    <message>
-        <source>Research and development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Исследования и разработки</translation>
-    </message>
-    <message>
-        <source>Politics</source>
-        <extracomment>attributeE</extracomment>
-        <translation>Политика</translation>
-    </message>
-    <message>
-        <source>Economics</source>
-        <extracomment>attributeF</extracomment>
-        <translation>Экономика</translation>
-    </message>
-    <message>
         <source>Extension: %1</source>
         <extracomment>window_extensioninfo</extracomment>
         <translation>Расширение: %1</translation>
-    </message>
-    <message>
-        <source>Primary attribute</source>
-        <extracomment>extensioninfo_learningAttributePrimary</extracomment>
-        <translation>Базовый атрибут</translation>
-    </message>
-    <message>
-        <source>Secondary attribute</source>
-        <extracomment>extensioninfo_learningAttributeSecondary</extracomment>
-        <translation>Дополнительный атрибут</translation>
     </message>
 </context>
 <context>
@@ -376,45 +243,6 @@ Error on line %1: %2</source>
     <message>
         <source>Planned EP</source>
         <translation>Планируемые EP</translation>
-    </message>
-    <message>
-        <source>Click to edit</source>
-        <translation>Щелкните чтобы открыть редактор</translation>
-    </message>
-    <message>
-        <source>Politics</source>
-        <extracomment>attributeE</extracomment>
-        <translation>Политика</translation>
-    </message>
-    <message>
-        <source>Research and Development</source>
-        <extracomment>attributeD</extracomment>
-        <translation>Исследования и разработки</translation>
-    </message>
-    <message>
-        <source>Heavy Industry</source>
-        <extracomment>attributeC</extracomment>
-        <translation>Тяжелая промышленность</translation>
-    </message>
-    <message>
-        <source>Mechatronics</source>
-        <extracomment>attributeB</extracomment>
-        <translation>Мехатроника</translation>
-    </message>
-    <message>
-        <source>Tactics</source>
-        <extracomment>attributeA</extracomment>
-        <translation>Тактика</translation>
-    </message>
-    <message>
-        <source>Economics</source>
-        <extracomment>attributeF</extracomment>
-        <translation>Экономика</translation>
-    </message>
-    <message>
-        <source>Attributes</source>
-        <extracomment>extension_attributes</extracomment>
-        <translation>Атрибуты</translation>
     </message>
     <message>
         <source>&amp;New</source>
@@ -562,6 +390,10 @@ Error on line %1: %2</source>
     <message>
         <source>CSV files (*.csv);;All files (*.*)</source>
         <translation>CSV файлы (*.csv);;Все файлы (*.*)</translation>
+    </message>
+    <message>
+        <source>Initial Extensions</source>
+        <translation>Стартовые расширения</translation>
     </message>
 </context>
 <context>
