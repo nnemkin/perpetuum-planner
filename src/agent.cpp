@@ -131,9 +131,9 @@ QVariantMap ExtensionLevels::save() const
     return dataMap;
 }
 
-int ExtensionLevels::points() const
+int ExtensionLevels::points(bool withBase) const
 {
-    int total = m_base ? m_base->points() : 0;
+    int total = (m_base && withBase) ? m_base->points() : 0;
     for (ExtensionLevelMap::const_iterator i = m_levels.constBegin(); i != m_levels.constEnd(); ++i) {
         total += points(i.key(), i.value());
         if (m_base)

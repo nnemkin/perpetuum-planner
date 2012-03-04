@@ -82,6 +82,8 @@ void AttributeEditor::agentInfoChanged()
             }
         }
     }
+
+    labelStarterCost->setText(tr("Starting EP: %1").arg(m_agent->starterExtensions()->points()));
 }
 
 void AttributeEditor::buttonGroupClicked(QAbstractButton *button)

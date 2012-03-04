@@ -105,7 +105,7 @@ public:
 
     ExtensionLevelMap requirements(Extension *extension) const;
 
-    int points() const;
+    int points(bool withBase = true) const;
     int points(ExtensionCategory *category) const;
     int points(Extension *extension, int lvl=-1) const;
     int nextLevelPoints(Extension *extension, int lvl=-1) const;

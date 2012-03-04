@@ -399,9 +399,8 @@ bool ExtensionsView::canClose()
 
 void ExtensionsView::agentExtensionsChanged()
 {
-    int currentPoints = m_agent->currentExtensions()->points();
-    int plannedPoints = m_agent->plannedExtensions()->points();
-    plannedPoints -= currentPoints;
+    int currentPoints = m_agent->currentExtensions()->points(false);
+    int plannedPoints = m_agent->plannedExtensions()->points(false);
 
     labelCurrentPoints->setText(QString("<span class=\"current\">%L1</span><br/>%2")
                                 .arg(currentPoints).arg(Formatter::formatTimeSpan(currentPoints * 60)));
