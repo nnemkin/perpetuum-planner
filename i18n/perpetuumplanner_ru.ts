@@ -136,6 +136,10 @@ Error on line %1: %2</source>
         <source>(Depends on previous choice)</source>
         <translation>(Зависит от предыдущего выбора)</translation>
     </message>
+    <message>
+        <source>Starting EP: %1</source>
+        <translation>Начальные EP: %1</translation>
+    </message>
 </context>
 <context>
     <name>BonusesModel</name>

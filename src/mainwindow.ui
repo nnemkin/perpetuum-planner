@@ -114,6 +114,24 @@
             <normaloff>:/flag-sl.png</normaloff>:/flag-sl.png</iconset>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string notr="true">Dutch (Nederlands)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/flag-nl.png</normaloff>:/flag-nl.png</iconset>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">Polish (Polski)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../res/resources.qrc">
+            <normaloff>:/flag-pl.png</normaloff>:/flag-pl.png</iconset>
+          </property>
+         </item>
         </widget>
        </item>
        <item>

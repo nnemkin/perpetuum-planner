@@ -8,6 +8,8 @@
         <file>compiled/lang_ru.dat</file>
         <file>compiled/lang_fr.dat</file>
         <file>compiled/lang_sl.dat</file>
+        <file>compiled/lang_nl.dat</file>
+        <file>compiled/lang_pl.dat</file>
         <file>icons/def_alligior.png</file>
         <file>icons/def_biotichrin.png</file>
         <file>icons/def_chollonin.png</file>
@@ -279,5 +281,28 @@
         <file>icons/icon_material_epriton_rare.png</file>
         <file>icons/icon_material_helioptris_rare.png</file>
         <file>icons/icon_material_crude_rare.png</file>
+        <file>icons/icon_scarab.png</file>
+        <file>icons/icon_wallbuilder_ammo.png</file>
+        <file>icons/icon_wallbuilder.png</file>
+        <file>icons/icon_wall_healer.png</file>
+        <file>icons/icon_wall.png</file>
+        <file>icons/icon_outpost_scanner.png</file>
+        <file>icons/icon_mission_token_tm.png</file>
+        <file>icons/icon_mission_token_ics.png</file>
+        <file>icons/icon_mission_token_asi.png</file>
+        <file>icons/icon_kernel_i6.png</file>
+        <file>icons/icon_kernel_i7.png</file>
+        <file>icons/icon_plant_seed_bonsai.png</file>
+        <file>icons/icon_plant_seed_coppertree.png</file>
+        <file>icons/icon_plant_seed_helioptris.png</file>
+        <file>icons/icon_plant_seed_pinetree.png</file>
+        <file>icons/icon_plant_seed_poffeteg.png</file>
+        <file>icons/icon_plant_seed_prismocitae.png</file>
+        <file>icons/icon_plant_seed_quag.png</file>
+        <file>icons/icon_plant_seed_rango.png</file>
+        <file>icons/icon_plant_seed_titanplant.png</file>
+        <file>icons/icon_plant_seed_triandlus.png</file>
+        <file>icons/icon_proximity_probe.png</file>
+        <file>icons/icon_bomb.png</file>
     </qresource>
 </RCC>

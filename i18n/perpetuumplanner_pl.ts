@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<TS version="2.0" language="pl_PL">
 <context>
     <name>Agent</name>
     <message>
@@ -13,11 +13,11 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Failed to save agent data.</source>
+        <source>Failed to import extension history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Failed to import extension history</source>
+        <source>Failed to save agent data.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -143,6 +143,11 @@ Error on line %1: %2</source>
 <context>
     <name>BonusesModel</name>
     <message>
+        <source>Effect</source>
+        <extracomment>entityinfo_bonus_aggregate</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Bonus</source>
         <extracomment>entityinfo_bonus_extensionbonus</extracomment>
         <translation type="unfinished"></translation>
@@ -150,11 +155,6 @@ Error on line %1: %2</source>
     <message>
         <source>Relevant extension</source>
         <extracomment>entityinfo_bonus_extensionname</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Effect</source>
-        <extracomment>entityinfo_bonus_aggregate</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -214,8 +214,16 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Current</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Progress</source>
         <extracomment>knowledgebaseupdate_progress</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Planned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -226,14 +234,6 @@ Error on line %1: %2</source>
     <message>
         <source>Prerequisites: %L1 EP</source>
         <extracomment>extensioninfo_requiredextensions</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Current</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Planned</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -248,15 +248,11 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Initial Extensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;New</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -264,7 +260,19 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Import...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Sa&amp;ve As...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -313,6 +321,10 @@ Error on line %1: %2</source>
     </message>
     <message>
         <source>Ctrl+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import extension history from Perpetuum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -377,14 +389,6 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import extension history from Perpetuum</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Import extension history</source>
         <translation type="unfinished"></translation>
     </message>
@@ -392,53 +396,43 @@ Error on line %1: %2</source>
         <source>CSV files (*.csv);;All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Initial Extensions</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Formatter</name>
     <message numerus="yes">
         <source>%n day(s)</source>
-        <translation>
-            <numerusform>%n day</numerusform>
-            <numerusform>%n days</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
-        <translation>
-            <numerusform>%n hour</numerusform>
-            <numerusform>%n hours</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minute</numerusform>
-            <numerusform>%n minutes</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nd</source>
-        <translation>
-            <numerusform>%nd</numerusform>
-            <numerusform>%nd</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nh</source>
-        <translation>
-            <numerusform>%nh</numerusform>
-            <numerusform>%nh</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%nm</source>
-        <translation>
-            <numerusform>%nm</numerusform>
-            <numerusform>%nm</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
         </translation>
     </message>
 </context>
@@ -469,6 +463,10 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Tiers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>No items found</source>
         <extracomment>market_itemnotfound</extracomment>
         <translation type="unfinished"></translation>
@@ -481,6 +479,11 @@ Error on line %1: %2</source>
     <message>
         <source>&amp;COMPONENTS</source>
         <extracomment>entityinfo_components</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lowest decoding level</source>
+        <extracomment>entityinfo_researchkitrequired</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -548,19 +551,9 @@ Error on line %1: %2</source>
     </message>
     <message numerus="yes">
         <source>%n items</source>
-        <translation>
-            <numerusform>%n item</numerusform>
-            <numerusform>%n items</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
         </translation>
-    </message>
-    <message>
-        <source>Lowest decoding level</source>
-        <extracomment>entityinfo_researchkitrequired</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tiers</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -807,15 +800,19 @@ Error on line %1: %2</source>
 <context>
     <name>Updater</name>
     <message>
+        <source>Perpetuum Planner - Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Waiting for application to close...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
+        <source>Downloading %1 MB...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to replace program file.</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -828,15 +825,11 @@ Error on line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Unable to replace program file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Downloading %1 MB of %2 MB...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Downloading %1 MB...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Perpetuum Planner - Update</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -9,7 +9,7 @@ import datetime
 from collections import OrderedDict, namedtuple, Mapping
 
 
-PERPETUUM_LANGUAGES = ['en', 'hu', 'de', 'ru', 'it', 'fr', 'sl']
+PERPETUUM_LANGUAGES = ['en', 'hu', 'de', 'ru', 'it', 'fr', 'sl', 'nl', 'pl']
 
 
 def genxy_parse(data, builder=None):

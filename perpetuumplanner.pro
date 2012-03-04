@@ -136,7 +136,9 @@ TRANSLATIONS = \
     i18n/perpetuumplanner_ru.ts \
     i18n/perpetuumplanner_it.ts \
     i18n/perpetuumplanner_fr.ts \
-    i18n/perpetuumplanner_sl.ts
+    i18n/perpetuumplanner_sl.ts \
+    i18n/perpetuumplanner_nl.ts \
+    i18n/perpetuumplanner_pl.ts
 
 RC_FILE = res/winres.rc
 

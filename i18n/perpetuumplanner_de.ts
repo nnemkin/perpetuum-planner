@@ -135,6 +135,10 @@ Error on line %1: %2</source>
         <source>(Depends on previous choice)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Starting EP: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BonusesModel</name>
