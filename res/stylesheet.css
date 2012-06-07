@@ -122,12 +122,17 @@ QPushButton {
     height: 15px;
     padding: 0;
     border: 1px solid;
-    border-color: #a6a6a6 #3e3e3e #2b2b2b #3e3e3e;
+    border-color: #9b9c9d #3e3e3e #2b2b2b #3e3e3e;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.095 #747474, stop:0.1 #343434, stop:0.85 #000, stop: 0.9 #262626);
 }
-QPushButton:hover:!pressed {
+QPushButton:hover {
     color: #fff;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.07 #888, stop:0.095 #888, stop: 0.1 #515151, stop:0.85 #1c1c1c, stop: 0.9 #3f3f3f);
+}
+QPushButton:pressed {
+    color: #fff;
+    border-color: #848687 #555555 #565656 #555555;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.07 #292929, stop:0.13 #313131, stop: 0.24 #343434, stop:0.45 #2c2c2c, stop:0.55 #2c2c2c, stop: 0.93 #4a4a4a);
 }
 QPushButton::menu-indicator {
     image: url(:/combo-dropdown.png);
@@ -147,12 +152,16 @@ QDialogButtonBox > QPushButton, QPushButton[role~="dialog-button"] {
     text-transform: uppercase;
     max-height: 13px;
     border-color: #98b3b6 #2c5b65 #24404a #286266;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.135 #90b0a8, stop:0.14 #507574,  stop: 1 #042529);
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.135 #90b0a8, stop:0.14 #507574, stop: 1 #042529);
 }
-QDialogButtonBox > QPushButton:hover:!pressed, QPushButton[role~="dialog-button"]:hover:!pressed {
+QDialogButtonBox > QPushButton:hover, QPushButton[role~="dialog-button"]:hover {
     color: #fff;
     border-color: #d4faf7 #237379 #315765 #306e75;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.07 #4fb4a4, stop:0.25 #2e7681, stop: 0.65 #094a55, stop: 0.655 #094a55, stop: 1 #063236);
+}
+QDialogButtonBox > QPushButton:pressed, QPushButton[role~="dialog-button"]:pressed {
+    border-color: #9dc8c9 #446e76 #3c6168 #47737b;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.07 #4fb4a4, stop:0.25 #2e7681, stop: 0.65 #094a55, stop: 0.655 #094a55, stop: 1 #063236);
 }
 QDialogButtonBox:horizontal > QPushButton { margin: 0 5px; }
 
