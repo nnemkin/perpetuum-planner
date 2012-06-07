@@ -5,8 +5,7 @@ from PyQt4 import QtCore, QtGui
 from perpetuum import *
 
 EXCLUDE_CATEGORIES = [
-    'cf_npc', 'cf_documents', 'cf_decor', 'cf_station_services', 'cf_structures',
-    'cf_groups', 'cf_mission_items', 'cf_items', 'cf_dynamic_cprg'] # 'cf_dogtags'
+    'cf_npc', 'cf_documents', 'cf_decor', 'cf_mission_items', 'cf_items', 'cf_dynamic_cprg']
 
 
 def translation_tokens(data):
@@ -15,6 +14,7 @@ def translation_tokens(data):
     keys = []
     def _collect(data):
         if data.type() == QtCore.QVariant.Map:
+            keys.extend(str(key) for key in data.toMap().keys())
             for value in data.toMap().values():
                 _collect(value)
         elif data.type() == QtCore.QVariant.List:
@@ -23,7 +23,8 @@ def translation_tokens(data):
         elif data.type() == QtCore.QVariant.String:
             keys.append(str(data.toString()))
     _collect(data)
-    return set(keys)
+
+    return keys
 
 
 def find_definitions(data, cat_names):
@@ -134,12 +135,13 @@ def main(dest_dir='compiled'):
     qvariant_dump(os.path.join(dest_dir, 'game.dat'), variant_data)
     print 'OK'
 
-    translation_keys = translation_tokens(variant_data)
+    translation_keys = set(translation_tokens(variant_data))
 
     for lang, translation in translations.items():
         print 'Translation', lang, '...',
-        translation_keys = translation_keys.intersection(translation.iterkeys())
-        translation = dict((key, translation[key].decode('utf-8')) for key in translation_keys)
+
+        translation = dict((key, translation[key].decode('utf-8')) for key in translation
+                                if translation_keys.intersection([key, key.lower(), key.replace('_unit', '')]))
 
         qvariant_dump(os.path.join(dest_dir, 'lang_%s.dat' % lang),
                       QtCore.QVariant.fromMap(translation))

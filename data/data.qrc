@@ -77,7 +77,9 @@
         <file>icons/icon_ammo_bmissle_heatx.png</file>
         <file>icons/icon_ammo_bmissle_smite.png</file>
         <file>icons/icon_ammo_bmissle_sonic.png</file>
+        <file>icons/icon_ammo_construction.png</file>
         <file>icons/icon_ammo_corebooster.png</file>
+        <file>icons/icon_ammo_deconstruction.png</file>
         <file>icons/icon_ammo_harvester.png</file>
         <file>icons/icon_ammo_laser.png</file>
         <file>icons/icon_ammo_laser_chemo.png</file>
@@ -86,19 +88,31 @@
         <file>icons/icon_ammo_laser_photo.png</file>
         <file>icons/icon_ammo_laser_sonic.png</file>
         <file>icons/icon_ammo_laser_volcano.png</file>
+        <file>icons/icon_ammo_mining_probe_colixum_area.png</file>
+        <file>icons/icon_ammo_mining_probe_colixum_directional.png</file>
+        <file>icons/icon_ammo_mining_probe_colixum_tile.png</file>
         <file>icons/icon_ammo_mining_probe_crude_area.png</file>
         <file>icons/icon_ammo_mining_probe_crude_tile.png</file>
         <file>icons/icon_ammo_mining_probe_epriton_area.png</file>
+        <file>icons/icon_ammo_mining_probe_epriton_directional.png</file>
         <file>icons/icon_ammo_mining_probe_epriton_tile.png</file>
         <file>icons/icon_ammo_mining_probe_gravel_area.png</file>
         <file>icons/icon_ammo_mining_probe_gravel_tile.png</file>
+        <file>icons/icon_ammo_mining_probe_hdt_directional.png</file>
         <file>icons/icon_ammo_mining_probe_imentium_area.png</file>
+        <file>icons/icon_ammo_mining_probe_imentium_directional.png</file>
         <file>icons/icon_ammo_mining_probe_imentium_tile.png</file>
         <file>icons/icon_ammo_mining_probe_liquizit_area.png</file>
+        <file>icons/icon_ammo_mining_probe_liquizit_directional.png</file>
         <file>icons/icon_ammo_mining_probe_liquizit_tile.png</file>
+        <file>icons/icon_ammo_mining_probe_silgium_area.png</file>
+        <file>icons/icon_ammo_mining_probe_silgium_directional.png</file>
+        <file>icons/icon_ammo_mining_probe_silgium_tile.png</file>
         <file>icons/icon_ammo_mining_probe_stermonit_area.png</file>
+        <file>icons/icon_ammo_mining_probe_stermonit_directional.png</file>
         <file>icons/icon_ammo_mining_probe_stermonit_tile.png</file>
         <file>icons/icon_ammo_mining_probe_titan_area.png</file>
+        <file>icons/icon_ammo_mining_probe_titan_directional.png</file>
         <file>icons/icon_ammo_mining_probe_titan_tile.png</file>
         <file>icons/icon_ammo_missle.png</file>
         <file>icons/icon_ammo_projectile.png</file>
@@ -121,10 +135,18 @@
         <file>icons/icon_ammo_rocket_heatx.png</file>
         <file>icons/icon_ammo_rocket_smite.png</file>
         <file>icons/icon_ammo_rocket_sonic.png</file>
+        <file>icons/icon_ammo_terraform_level.png</file>
+        <file>icons/icon_ammo_terraform_lower.png</file>
+        <file>icons/icon_ammo_terraform_raise.png</file>
+        <file>icons/icon_ammo_terraform_smooth.png</file>
         <file>icons/icon_armor_repairer_upgrade.png</file>
         <file>icons/icon_artifact_scanner.png</file>
         <file>icons/icon_autocannon.png</file>
+        <file>icons/icon_bomb.png</file>
         <file>icons/icon_briochit.png</file>
+        <file>icons/icon_colixum.png</file>
+        <file>icons/icon_concrete_layer.png</file>
+        <file>icons/icon_construction_module.png</file>
         <file>icons/icon_core_battery.png</file>
         <file>icons/icon_core_booster.png</file>
         <file>icons/icon_cpu_cortex.png</file>
@@ -134,7 +156,10 @@
         <file>icons/icon_damagemod_railgun.png</file>
         <file>icons/icon_decoder.png</file>
         <file>icons/icon_detection_modul.png</file>
+        <file>icons/icon_ecm_tuning.png</file>
         <file>icons/icon_electroplant_fruit.png</file>
+        <file>icons/icon_energy_storage_cell.png</file>
+        <file>icons/icon_enwar_upgrade.png</file>
         <file>icons/icon_erp_kinetic.png</file>
         <file>icons/icon_erp_seismic.png</file>
         <file>icons/icon_erp_thermal.png</file>
@@ -164,6 +189,7 @@
         <file>icons/icon_gang_assist_shield_calculations.png</file>
         <file>icons/icon_gang_assist_siege.png</file>
         <file>icons/icon_gang_assist_speed.png</file>
+        <file>icons/icon_gropho_reward.png</file>
         <file>icons/icon_interference_emitter.png</file>
         <file>icons/icon_interference_emitter_ammo.png</file>
         <file>icons/icon_kernel_b1.png</file>
@@ -181,6 +207,9 @@
         <file>icons/icon_kernel_i3.png</file>
         <file>icons/icon_kernel_i4.png</file>
         <file>icons/icon_kernel_i5.png</file>
+        <file>icons/icon_kernel_i6.png</file>
+        <file>icons/icon_kernel_i7.png</file>
+        <file>icons/icon_kernel_pbs.png</file>
         <file>icons/icon_kernel_r1.png</file>
         <file>icons/icon_kernel_r2.png</file>
         <file>icons/icon_kernel_r3.png</file>
@@ -188,6 +217,18 @@
         <file>icons/icon_kernel_r5.png</file>
         <file>icons/icon_kernel_w1.png</file>
         <file>icons/icon_laser.png</file>
+        <file>icons/icon_material_colixum_rare.png</file>
+        <file>icons/icon_material_crude_rare.png</file>
+        <file>icons/icon_material_electroplant_fruit_rare.png</file>
+        <file>icons/icon_material_epriton_rare.png</file>
+        <file>icons/icon_material_helioptris_rare.png</file>
+        <file>icons/icon_material_imentium_rare.png</file>
+        <file>icons/icon_material_liquizit_rare.png</file>
+        <file>icons/icon_material_prismocitae_rare.png</file>
+        <file>icons/icon_material_silgium_rare.png</file>
+        <file>icons/icon_material_stermonit_rare.png</file>
+        <file>icons/icon_material_titan_rare.png</file>
+        <file>icons/icon_material_triandlus_rare.png</file>
         <file>icons/icon_mech_arbalest.png</file>
         <file>icons/icon_mech_argano.png</file>
         <file>icons/icon_mech_arkhe2.png</file>
@@ -217,11 +258,13 @@
         <file>icons/icon_medium_driller.png</file>
         <file>icons/icon_medium_harvester.png</file>
         <file>icons/icon_medium_remote_armor_repairer.png</file>
+        <file>icons/icon_mining_ammo_colixum.png</file>
         <file>icons/icon_mining_ammo_crude.png</file>
         <file>icons/icon_mining_ammo_epriton.png</file>
         <file>icons/icon_mining_ammo_gravel.png</file>
         <file>icons/icon_mining_ammo_imentium.png</file>
         <file>icons/icon_mining_ammo_liquizit.png</file>
+        <file>icons/icon_mining_ammo_silgium.png</file>
         <file>icons/icon_mining_ammo_stermonit.png</file>
         <file>icons/icon_mining_ammo_titan.png</file>
         <file>icons/icon_mining_probe_ammo_one_tile.png</file>
@@ -229,25 +272,11 @@
         <file>icons/icon_mining_probe_result_area.png</file>
         <file>icons/icon_mining_probe_result_tile.png</file>
         <file>icons/icon_mining_probe_tile.png</file>
+        <file>icons/icon_mission_token_asi.png</file>
+        <file>icons/icon_mission_token_ics.png</file>
+        <file>icons/icon_mission_token_tm.png</file>
         <file>icons/icon_missle.png</file>
         <file>icons/icon_mobile_teleport.png</file>
-        <file>icons/icon_plant_seed_electroplant.png</file>
-        <file>icons/icon_railgun.png</file>
-        <file>icons/icon_range_extender.png</file>
-        <file>icons/icon_reactor_plasma_common.png</file>
-        <file>icons/icon_reactor_plasma_nuimqol.png</file>
-        <file>icons/icon_reactor_plasma_pelistal.png</file>
-        <file>icons/icon_reactor_plasma_thelodica.png</file>
-        <file>icons/icon_robot_inventory.png</file>
-        <file>icons/icon_sequer.png</file>
-        <file>icons/icon_small_harvester.png</file>
-        <file>icons/icon_small_remote_armor_repairer.png</file>
-        <file>icons/icon_stealth_modul.png</file>
-        <file>icons/icon_symbiont.png</file>
-        <file>icons/icon_target_painter.png</file>
-        <file>icons/icon_universal_armor.png</file>
-        <file>icons/icon_weapon_stabilizer.png</file>
-        <file>icons/noIconAvailable.png</file>
         <file>icons/icon_npc_egg_industrial_1.png</file>
         <file>icons/icon_npc_egg_industrial_1b.png</file>
         <file>icons/icon_npc_egg_industrial_2.png</file>
@@ -272,28 +301,25 @@
         <file>icons/icon_npc_egg_thelodica_2b.png</file>
         <file>icons/icon_npc_egg_thelodica_3.png</file>
         <file>icons/icon_npc_egg_thelodica_3b.png</file>
-        <file>icons/icon_material_triandlus_rare.png</file>
-        <file>icons/icon_material_titan_rare.png</file>
-        <file>icons/icon_material_imentium_rare.png</file>
-        <file>icons/icon_material_liquizit_rare.png</file>
-        <file>icons/icon_material_stermonit_rare.png</file>
-        <file>icons/icon_material_electroplant_fruit_rare.png</file>
-        <file>icons/icon_material_epriton_rare.png</file>
-        <file>icons/icon_material_helioptris_rare.png</file>
-        <file>icons/icon_material_crude_rare.png</file>
-        <file>icons/icon_scarab.png</file>
-        <file>icons/icon_wallbuilder_ammo.png</file>
-        <file>icons/icon_wallbuilder.png</file>
-        <file>icons/icon_wall_healer.png</file>
-        <file>icons/icon_wall.png</file>
         <file>icons/icon_outpost_scanner.png</file>
-        <file>icons/icon_mission_token_tm.png</file>
-        <file>icons/icon_mission_token_ics.png</file>
-        <file>icons/icon_mission_token_asi.png</file>
-        <file>icons/icon_kernel_i6.png</file>
-        <file>icons/icon_kernel_i7.png</file>
+        <file>icons/icon_pbs_battery.png</file>
+        <file>icons/icon_pbs_booster.png</file>
+        <file>icons/icon_pbs_control_tower.png</file>
+        <file>icons/icon_pbs_effect_emitter.png</file>
+        <file>icons/icon_pbs_facility.png</file>
+        <file>icons/icon_pbs_facility_upgrade.png</file>
+        <file>icons/icon_pbs_miner_tower.png</file>
+        <file>icons/icon_pbs_reactor.png</file>
+        <file>icons/icon_pbs_repairer.png</file>
+        <file>icons/icon_pbs_terminal_large.png</file>
+        <file>icons/icon_pbs_terminal_medium.png</file>
+        <file>icons/icon_pbs_terminal_small.png</file>
+        <file>icons/icon_pbs_transmitter.png</file>
+        <file>icons/icon_pbs_transmitter_xl.png</file>
+        <file>icons/icon_pbs_turret.png</file>
         <file>icons/icon_plant_seed_bonsai.png</file>
         <file>icons/icon_plant_seed_coppertree.png</file>
+        <file>icons/icon_plant_seed_electroplant.png</file>
         <file>icons/icon_plant_seed_helioptris.png</file>
         <file>icons/icon_plant_seed_pinetree.png</file>
         <file>icons/icon_plant_seed_poffeteg.png</file>
@@ -303,6 +329,33 @@
         <file>icons/icon_plant_seed_titanplant.png</file>
         <file>icons/icon_plant_seed_triandlus.png</file>
         <file>icons/icon_proximity_probe.png</file>
-        <file>icons/icon_bomb.png</file>
+        <file>icons/icon_railgun.png</file>
+        <file>icons/icon_range_extender.png</file>
+        <file>icons/icon_reactor_plasma_common.png</file>
+        <file>icons/icon_reactor_plasma_nuimqol.png</file>
+        <file>icons/icon_reactor_plasma_pelistal.png</file>
+        <file>icons/icon_reactor_plasma_thelodica.png</file>
+        <file>icons/icon_reactor_sealing.png</file>
+        <file>icons/icon_robot_inventory.png</file>
+        <file>icons/icon_scarab.png</file>
+        <file>icons/icon_sequer.png</file>
+        <file>icons/icon_seth_reward.png</file>
+        <file>icons/icon_silgium.png</file>
+        <file>icons/icon_small_harvester.png</file>
+        <file>icons/icon_small_remote_armor_repairer.png</file>
+        <file>icons/icon_stealth_modul.png</file>
+        <file>icons/icon_suppressor_tuning.png</file>
+        <file>icons/icon_symbiont.png</file>
+        <file>icons/icon_target_painter.png</file>
+        <file>icons/icon_terraform_beacon.png</file>
+        <file>icons/icon_terraform_beacon_charger.png</file>
+        <file>icons/icon_terraformer_module.png</file>
+        <file>icons/icon_universal_armor.png</file>
+        <file>icons/icon_wall.png</file>
+        <file>icons/icon_wall_healer.png</file>
+        <file>icons/icon_wallbuilder.png</file>
+        <file>icons/icon_wallbuilder_ammo.png</file>
+        <file>icons/icon_weapon_stabilizer.png</file>
+        <file>icons/noIconAvailable.png</file>
     </qresource>
 </RCC>
