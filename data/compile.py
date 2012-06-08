@@ -125,12 +125,14 @@ def main(dest_dir='compiled'):
 
     print 'Parsing ...',
     data = genxy_consolidate('fragments')
+    data.update(genxy_consolidate('versioned'))
     translations = genxy_consolidate('translations')
     excluded_defs = find_definitions(data, EXCLUDE_CATEGORIES)
     print 'OK'
 
     print 'Game data ...',
     variant_data = genxy_consolidate('fragments', build_variant(excluded_defs))
+    variant_data.update(genxy_consolidate('versioned', build_variant(excluded_defs)))
     variant_data = QtCore.QVariant.fromMap(variant_data)
     qvariant_dump(os.path.join(dest_dir, 'game.dat'), variant_data)
     print 'OK'
