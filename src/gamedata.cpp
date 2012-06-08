@@ -50,10 +50,7 @@ QVariantMap GameData::loadVariantMap(QIODevice *io)
     return data.toMap();
 }
 
-template <class T> struct remove_pointer {};
-template <class T> struct remove_pointer<T *> { typedef T type; };
-
-template <class ObjectMap>
+template <class ItemType, class ObjectMap>
 bool GameData::loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, const QString &idKey, bool create)
 {
     foreach (QVariant entry, dataMap) {
@@ -62,7 +59,7 @@ bool GameData::loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, con
 
         typename ObjectMap::mapped_type object = objectMap.value(id);
         if (!object && create) {
-            object = new remove_pointer<typename ObjectMap::mapped_type>::type(this);
+            object = new ItemType(this);
             objectMap.insert(id, object);
         }
         if (object) {
@@ -71,6 +68,22 @@ bool GameData::loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, con
             if (create)
                 m_objectsByName.insert(object->systemName(), object);
         }
+    }
+    return true;
+}
+
+bool GameData::loadConfigurationUnits(const QVariantMap &dataMap)
+{
+    int confUnitId = AggregateField::CU_Base;
+    for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i, ++confUnitId) {
+        AggregateField *aggregate = new AggregateField(this, confUnitId, i.key());
+        if (!aggregate->load(i.value().toMap()))
+            return false;
+
+        qDebug() << aggregate->name();
+
+        m_aggregateFields.insert(confUnitId, aggregate);
+        m_objectsByName.insert(aggregate->systemName(), aggregate);
     }
     return true;
 }
@@ -96,39 +109,41 @@ bool GameData::load(QIODevice *dataFile, QIODevice *translationFile)
 
     m_categories.insert(0, new Category(this)); // root category
 
-    bool ok = loadObjects(m_extensionCategories, dataMap.value("extensionCategoryList").toMap(), "ID")
-            && loadObjects(m_extensions, dataMap.value("extensionGetAll").toMap(), "extensionID")
-            && loadObjects(m_extensions, dataMap.value("extensionPrerequireList").toMap(), "extensionID", false)
+    // NB: loading order is important.
+    bool ok = loadObjects<ExtensionCategory>(m_extensionCategories, dataMap.value("extensionCategoryList").toMap(), "ID")
+            && loadObjects<Extension>(m_extensions, dataMap.value("extensionGetAll").toMap(), "extensionID")
+            && loadObjects<Extension>(m_extensions, dataMap.value("extensionPrerequireList").toMap(), "extensionID", false)
 
-            && loadObjects(m_categories, dataMap.value("categoryFlags").toMap(), "value")
+            && loadObjects<Category>(m_categories, dataMap.value("categoryFlags").toMap(), "value")
             // resolve forward refs
-            && loadObjects(m_categories, dataMap.value("categoryFlags").toMap(), "value", false)
+            && loadObjects<Category>(m_categories, dataMap.value("categoryFlags").toMap(), "value", false)
 
-            && loadObjects(m_fieldCategories, custom.value("aggregateCategories").toMap(), "ID")
-            && loadObjects(m_aggregateFields, dataMap.value("getAggregateFields").toMap(), "ID")
-            && loadObjects(m_aggregateFields, custom.value("genericFields").toMap(), "ID")
-            && loadObjects(m_aggregateFields, custom.value("aggregateDetails").toMap(), "ID", false)
+            && loadObjects<FieldCategory>(m_fieldCategories, custom.value("aggregateCategories").toMap(), "ID")
+            && loadObjects<StandardAggregateField>(m_aggregateFields, dataMap.value("getAggregateFields").toMap(), "ID")
+            && loadObjects<StandardAggregateField>(m_aggregateFields, custom.value("genericFields").toMap(), "ID")
+            && loadObjects<StandardAggregateField>(m_aggregateFields, custom.value("aggregateDetails").toMap(), "ID", false)
+            && loadConfigurationUnits(dataMap.value("getDefinitionConfigUnits").toMap())
 
-            && loadObjects(m_tiers, custom.value("tiers").toMap(), "name")
+            && loadObjects<Tier>(m_tiers, custom.value("tiers").toMap(), "name")
 
-            && loadObjects(m_definitions, dataMap.value("getEntityDefaults").toMap(), "definition")
+            && loadObjects<Definition>(m_definitions, dataMap.value("getEntityDefaults").toMap(), "definition")
             // resolve IDs in options
-            && loadObjects(m_definitions, dataMap.value("getEntityDefaults").toMap(), "definition", false)
-            && loadObjects(m_definitions, dataMap.value("definitionProperties").toMap(), "definition", false)
+            && loadObjects<Definition>(m_definitions, dataMap.value("getEntityDefaults").toMap(), "definition", false)
+            && loadObjects<Definition>(m_definitions, dataMap.value("definitionProperties").toMap(), "definition", false)
             // resolve copyfrom's
-            && loadObjects(m_definitions, dataMap.value("definitionProperties").toMap(), "definition", false)
-            && loadObjects(m_definitions, dataMap.value("productionComponentsList").toMap(), "definition", false)
-            && loadObjects(m_definitions, dataMap.value("getResearchLevels").toMap(), "definition", false);
+            && loadObjects<Definition>(m_definitions, dataMap.value("definitionProperties").toMap(), "definition", false)
+            && loadObjects<Definition>(m_definitions, dataMap.value("productionComponentsList").toMap(), "definition", false)
+            && loadObjects<Definition>(m_definitions, dataMap.value("getResearchLevels").toMap(), "definition", false);
 
     if (!ok) return false;
 
     // Load character wizard steps
     QVariantMap charWiz = dataMap.value("characterWizardData").toMap();
-    ok = loadObjects(m_charWizSteps[Race], charWiz.value("race").toMap(), "ID")
-            && loadObjects(m_charWizSteps[School], charWiz.value("school").toMap(), "ID")
-            && loadObjects(m_charWizSteps[Major], charWiz.value("major").toMap(), "ID")
-            && loadObjects(m_charWizSteps[Corporation], charWiz.value("corporation").toMap(), "ID")
-            && loadObjects(m_charWizSteps[Spark], charWiz.value("spark").toMap(), "ID");
+    ok = loadObjects<CharacterWizardStep>(m_charWizSteps[Race], charWiz.value("race").toMap(), "ID")
+            && loadObjects<CharacterWizardStep>(m_charWizSteps[School], charWiz.value("school").toMap(), "ID")
+            && loadObjects<CharacterWizardStep>(m_charWizSteps[Major], charWiz.value("major").toMap(), "ID")
+            && loadObjects<CharacterWizardStep>(m_charWizSteps[Corporation], charWiz.value("corporation").toMap(), "ID")
+            && loadObjects<CharacterWizardStep>(m_charWizSteps[Spark], charWiz.value("spark").toMap(), "ID");
 
     if (!ok) return false;
 
@@ -170,8 +185,10 @@ bool GameData::loadTranslation(const QString &languageCode, QIODevice *translati
 
     m_translation.clear();
     m_translation.reserve(transMap.size());
-    for (QVariantMap::const_iterator i = transMap.constBegin(); i != transMap.constEnd(); ++i)
+    for (QVariantMap::const_iterator i = transMap.constBegin(); i != transMap.constEnd(); ++i) {
         m_translation.insert(i.key(), i.value().toString());
+        m_translation.insert(i.key().toLower(), i.value().toString());
+    }
 
     m_languageCode = languageCode;
     return true;
@@ -399,29 +416,50 @@ bool FieldCategory::load(const QVariantMap &dataMap)
 }
 
 
-// AggregateField
+// AggregateField/StandardAggregateField
 
 bool AggregateField::load(const QVariantMap &dataMap)
+{
+    if (dataMap.contains("measurementUnit")) {
+        m_unitName = dataMap.value("measurementUnit").toString();
+    }
+    else {
+        m_unitName = m_name + "_unit";
+        if (!m_gameData->hasTranslation(m_unitName))
+            m_unitName.clear();
+    }
+    m_multiplier = dataMap.value("measurementMultiplier", 1.f).toFloat();
+    m_offset = dataMap.value("measurementOffset").toFloat();
+    m_digits = dataMap.value("digits", -1).toInt(); // -1 = auto
+    m_category = m_gameData->fieldCategories().value(dataMap.value("category", CategoryInfo).toInt());
+    if (!m_category) {
+        qDebug() << "Invalid aggregate category:" << m_name;
+        return false;
+    }
+    m_category->m_aggregates.append(this);
+    return true;
+}
+
+bool StandardAggregateField::load(const QVariantMap &dataMap)
 {
     if (dataMap.contains("name")) {
         m_id = dataMap.value("ID").toInt();
         m_name = dataMap.value("name").toString();
-        m_unitName = dataMap.value("measurementUnit").toString();
-        m_multiplier = dataMap.value("measurementMultiplier", 1.f).toFloat();
-        m_offset = dataMap.value("measurementOffset").toFloat();
-        m_digits = dataMap.value("digits", -1).toInt(); // -1 = auto
-        m_category = m_gameData->fieldCategories().value(dataMap.value("category").toInt());
-        if (!m_category) {
-            qDebug() << "Invalid aggregate category:" << m_name;
-            return false;
-        }
-        m_category->m_aggregates.append(this);
+        AggregateField::load(dataMap);
     }
     else {
         m_hidden = dataMap.value("hidden").toBool();
         m_lessIsBetter = dataMap.value("lessIsBetter").toBool();
+        m_compareLevel = static_cast<CompareLevel>(dataMap.value("compareLevel", CanCompare).toInt());
     }
     return true;
+}
+
+QString AggregateField::name() const
+{
+    if (m_id >= EI_ChassisSlot0 && m_id <= EI_ChassisSlotLast)
+        return QString("%1 #%2").arg(GameObject::name()).arg(m_id - EI_ChassisSlot0 + 1);
+    return GameObject::name();
 }
 
 QString AggregateField::format(const QVariant &value) const
@@ -430,6 +468,29 @@ QString AggregateField::format(const QVariant &value) const
 
     if (value.type() == QVariant::String)
         return m_gameData->translate(value.toString());
+
+    if (m_id >= EI_ChassisSlot0 && m_id <= EI_ChassisSlotLast) {
+        int slotFlags = value.toInt();
+        QStringList slotType, slotSize;
+
+        if (slotFlags & GameData::Turret)
+            slotType << m_gameData->translate("entityinfo_robot_slots_turret");
+        if (slotFlags & GameData::Missile)
+            slotType << m_gameData->translate("entityinfo_robot_slots_missile");
+        if (slotFlags & GameData::Industiral)
+            slotType << m_gameData->translate("entityinfo_robot_slots_industrial");
+        if (slotFlags & GameData::Ewar)
+            slotType << m_gameData->translate("entityinfo_robot_slots_ew");
+
+        if (slotFlags & GameData::Small)
+            slotSize << QString::fromWCharArray(L"\u2022");
+        if (slotFlags & GameData::Medium)
+            slotSize << QString::fromWCharArray(L"\u2022\u2022");
+        if (slotFlags & GameData::Large)
+            slotSize << QString::fromWCharArray(L"\u2022\u2022\u2022");
+
+        return QString("%1 (%2)").arg(slotType.join(", "), slotSize.join("/"));
+    }
 
     float fValue = value.toFloat();
     int digits = m_digits;
@@ -453,6 +514,15 @@ QString AggregateField::format(const QVariant &value) const
     sValue = QString::number(fValue * m_multiplier + m_offset, 'f', digits);
     if (!m_unitName.isEmpty())
         sValue = QString("%1 %2").arg(sValue, m_gameData->translate(m_unitName));
+
+    switch (m_id) {
+    case ResistChemical:
+    case ResistExplosive:
+    case ResistKinetic:
+    case ResistThermal:
+        float resistPercentage = 100.f * fValue / (fValue + 100.f);
+        sValue = QString("%1 (%2%)").arg(sValue).arg(resistPercentage, 0, 'f', 2);
+    }
 
     return sValue;
 }
@@ -590,6 +660,13 @@ bool Definition::load(const QVariantMap &dataMap)
                     m_extensions.append(extension);
             }
 
+            QVariantMap config = dataMap.value("config").toMap();
+            for (QVariantMap::const_iterator i = config.constBegin(); i != config.constEnd(); ++i) {
+                AggregateField *aggregate = m_gameData->findByName<AggregateField *>(i.key().toLower());
+                if (aggregate)
+                    m_aggregates.insert(aggregate, i.value());
+            }
+
             QVariantMap options = dataMap.value("options").toMap();
 
             m_tier = m_gameData->tiers().value(options.value("tier").toString());
@@ -607,7 +684,8 @@ bool Definition::load(const QVariantMap &dataMap)
             m_calibrationProgram = 0;
 
             m_hidden = dataMap.value("hidden").toBool();
-            m_inMarket = dataMap.value("purchasable").toBool();
+            m_inMarket = dataMap.value("purchasable", true).toBool();
+
             if (!m_hidden && m_inMarket)
                 m_category->setInMarket(m_inMarket);
         }
@@ -636,6 +714,8 @@ bool Definition::load(const QVariantMap &dataMap)
                 m_bonuses.unite(m_chassis->m_bonuses);
                 m_bonuses.unite(m_leg->m_bonuses);
 
+                for (int i = 0; i < m_chassis->m_slotFlags.size(); ++i)
+                    addAggregate(AggregateField::EI_ChassisSlot0 + i, m_chassis->m_slotFlags.at(i));
                 addAggregate(AggregateField::EI_HeadSlots, m_head->m_slotFlags.size());
                 addAggregate(AggregateField::EI_ChassisSlots, m_chassis->m_slotFlags.size());
                 addAggregate(AggregateField::EI_LegSlots, m_leg->m_slotFlags.size());
@@ -699,7 +779,8 @@ bool Definition::load(const QVariantMap &dataMap)
 QPixmap Definition::icon(int size, bool decorated) const
 {
     QPixmap pixmap;
-    pixmap.load(QString(":/icons/%1.png").arg(m_icon.isEmpty() ? "noIconAvailable" : m_icon), 0, Qt::NoOpaqueDetection);
+    if (!pixmap.load(QString(":/icons/%1.png").arg(m_icon.isEmpty() ? "noIconAvailable" : m_icon), 0, Qt::NoOpaqueDetection))
+        qDebug() << "Missing icon: " << m_icon;
 
     if (decorated && (m_tier || slotFlag() || sizeFlag())) {
         QPixmap tierIcon, slotIcon, sizeIcon;

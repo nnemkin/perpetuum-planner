@@ -82,6 +82,7 @@ public:
     QString starterName(QString steps) const;
 
     QString translate(const QString &key) const { return m_translation.value(key, key); }
+    bool hasTranslation(const QString &key) const { return m_translation.contains(key); }
     QString persistentName(const QString &name) const { return m_persistentNames.value(name, name); }
 
     QString wikiToHtml(const QString &wiki) const;
@@ -111,8 +112,9 @@ private:
 
     QMap<int, CharacterWizardStep *> m_charWizSteps[NumCharWizSteps];
 
-    template <class ObjectMap>
+    template <class ItemType, class ObjectMap>
     bool loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, const QString &idKey, bool create = true);
+    bool loadConfigurationUnits(const QVariantMap &dataMap);
 
     QVector<CharacterWizardStep *> decodeCharWizSteps(const QString &choices) const;
 };
@@ -131,7 +133,7 @@ class GameObject : public QObject {
     Q_OBJECT
 
 public:
-    GameObject(GameData *gameData) : m_gameData(gameData), m_hidden(false) {}
+    GameObject(GameData *gameData, const QString &name = QString()) : m_gameData(gameData), m_name(name), m_hidden(false) {}
 
     virtual bool load(const QVariantMap &dataMap) = 0;
 
@@ -222,16 +224,30 @@ public:
     enum {
         // Some aggregate IDs
         ShieldAbsorbtion = 318, Slope = 326,
+        ResistChemical = 0x12f, ResistExplosive = 0x132, ResistKinetic = 0x135, ResistThermal = 0x138,
 
         // Artificial IDs for generic entity info fields
         EI_Mass = 9001, EI_Volume, EI_RepackedVolume, EI_Quantity, EI_Capacity, EI_Tier, EI_AmmoCapacity, EI_AmmoType,
-        EI_ActiveModule, EI_SlotType, EI_HeadSlots, EI_ChassisSlots, EI_LegSlots
+        EI_ActiveModule, EI_SlotType,
+        EI_ChassisSlot0, EI_ChassisSlot1, EI_ChassisSlot2, EI_ChassisSlot3, EI_ChassisSlot4,
+        EI_ChassisSlot5, EI_ChassisSlot6, EI_ChassisSlot7, EI_ChassisSlotLast = EI_ChassisSlot7,
+        EI_HeadSlots, EI_ChassisSlots, EI_LegSlots,
+
+        // Definition configuration units (no fixed ID assignment)
+        CU_Base = 10001
     };
 
-    AggregateField(GameData *gameData)
-        : GameObject(gameData), m_id(0), m_multiplier(1), m_offset(0), m_digits(0), m_category(0), m_lessIsBetter(false) {}
+    enum Categories { CategoryInfo = 6 };
+
+    enum CompareLevel { CanCompare, NoCompare, OnlyCompare };
+
+    AggregateField(GameData *gameData, int id, const QString &name)
+        : GameObject(gameData, name),
+          m_id(id), m_multiplier(1), m_offset(0), m_digits(0), m_compareLevel(CanCompare), m_category(0), m_lessIsBetter(false) {}
 
     bool load(const QVariantMap &dataMap);
+
+    QString name() const;
 
     QString unit() const { return m_unitName.isEmpty() ? QString() : gameData()->translate(m_unitName); }
     int digits() const { return m_digits; }
@@ -243,16 +259,28 @@ public:
 
     bool isAggregate() const { return m_id < EI_Mass; }
 
-private:
+    CompareLevel compareLevel() const { return m_compareLevel; }
+
+protected:
     bool m_lessIsBetter;
 
     int m_id;
     QString m_unitName;
     float m_multiplier, m_offset;
     int m_digits;
+    CompareLevel m_compareLevel;
     FieldCategory *m_category;
 
     QString formatAuto(float value) const;
+};
+
+
+class StandardAggregateField : public AggregateField
+{
+public:
+    StandardAggregateField(GameData *gameData) : AggregateField(gameData, 0, QString()) {}
+
+    bool load(const QVariantMap &dataMap);
 };
 
 

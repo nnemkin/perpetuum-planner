@@ -474,6 +474,10 @@ void AggregatesModel::setDefinitions(const QList<Definition *> &definitions)
                 if (aggregate->hidden())
                     continue;
 
+                if (aggregate->compareLevel() == AggregateField::NoCompare && definitions.size() > 1
+                        || aggregate->compareLevel() == AggregateField::OnlyCompare && definitions.size() <= 1)
+                    continue;
+
                 Node *aggregateNode = aggregateNodes.value(aggregate);
                 if (!aggregateNode) {
                     FieldCategory *category = aggregate->category();
