@@ -116,9 +116,9 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QCheckBox" name="checkLogicalOrder">
+          <widget class="QCheckBox" name="checkAlphabeticalOrder">
            <property name="text">
-            <string>Logical order</string>
+            <string>Alphabetical order</string>
            </property>
           </widget>
          </item>

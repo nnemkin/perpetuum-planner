@@ -468,7 +468,7 @@ Error on line %1: %2</source>
         <translation>&amp;Počisti</translation>
     </message>
     <message>
-        <source>Logical order</source>
+        <source>Alphabetical order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

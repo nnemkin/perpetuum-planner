@@ -121,7 +121,7 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
     listItems->setModel(m_itemsModel);
 
     QStringList hiddenTiers = settings.value("ItemsView/HideTiers").toStringList();
-    bool logicalOrder = settings.value("ItemsView/LogicalOrder").toBool();
+    bool alphabeticalOrder = !settings.value("ItemsView/LogicalOrder").toBool();
     bool tierIcons = settings.value("ItemsView/TierIcons").toBool();
     if (settings.contains("ItemsView/HidePrototypes")) {
         if (settings.value("ItemsView/HidePrototypes").toBool())
@@ -129,9 +129,9 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
         settings.remove("ItemsView/HidePrototypes");
     }
     m_itemsModel->setHiddenTiers(hiddenTiers);
-    m_itemsModel->setLogicalOrder(logicalOrder);
+    m_itemsModel->setAlphabeticalOrder(alphabeticalOrder);
     m_itemsModel->setShowTierIcons(tierIcons);
-    checkLogicalOrder->setChecked(logicalOrder);
+    checkAlphabeticalOrder->setChecked(alphabeticalOrder);
     m_tierFilter->setHiddenTiers(hiddenTiers);
 
     ForegroundFixDelegate *fgFixDelefate = new ForegroundFixDelegate(this);
@@ -200,7 +200,7 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
     connect(m_itemsModel, SIGNAL(layoutChanged()), this, SLOT(itemSelectionChanged()));
 
     connect(textFilter, SIGNAL(textChanged(QString)), m_itemsModel, SLOT(setNameFilter(QString)));
-    connect(checkLogicalOrder, SIGNAL(clicked(bool)), m_itemsModel, SLOT(setLogicalOrder(bool)));
+    connect(checkAlphabeticalOrder, SIGNAL(clicked(bool)), m_itemsModel, SLOT(setAlphabeticalOrder(bool)));
     connect(m_tierFilter, SIGNAL(changed(QStringList)), m_itemsModel, SLOT(setHiddenTiers(QStringList)));
 
     connect(treeParameters, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(tableContextMenuRequested(QPoint)));
@@ -210,7 +210,7 @@ void ItemsView::initialize(QSettings &settings, GameData *gameData)
 
 void ItemsView::finalize(QSettings &settings)
 {
-    settings.setValue(QLatin1String("ItemsView/LogicalOrder"), checkLogicalOrder->isChecked());
+    settings.setValue(QLatin1String("ItemsView/LogicalOrder"), !checkAlphabeticalOrder->isChecked());
     settings.setValue(QLatin1String("ItemsView/Splitter1"), splitterInfo->saveState());
     settings.setValue(QLatin1String("ItemsView/Splitter2"), splitterItems->saveState());
     settings.setValue(QLatin1String("ItemsView/ActiveTab"), tabWidget->currentIndex());

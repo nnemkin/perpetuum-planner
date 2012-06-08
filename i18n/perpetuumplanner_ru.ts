@@ -474,8 +474,8 @@ Error on line %1: %2</source>
         <translation>&amp;Отмена</translation>
     </message>
     <message>
-        <source>Logical order</source>
-        <translation>Логич. порядок</translation>
+        <source>Alphabetical order</source>
+        <translation>Алфавит. порядок</translation>
     </message>
     <message>
         <source>No items found</source>

@@ -276,16 +276,16 @@ QVariant MarketTreeModel::data(const QModelIndex &index, int role) const
 // DefinitionListModel
 
 DefinitionListModel::DefinitionListModel(QObject *parent)
-    : SimpleTreeModel(parent), m_category(0), m_logicalOrder(false), m_showTierIcons(true)
+    : SimpleTreeModel(parent), m_category(0), m_alphabeticalOrder(false), m_showTierIcons(true)
 {
     setFilterEnabled(true);
 }
 
-void DefinitionListModel::setLogicalOrder(bool logical)
+void DefinitionListModel::setAlphabeticalOrder(bool alpha)
 {
-    if (m_logicalOrder != logical) {
-        m_logicalOrder = logical;
-        setSort(0, logical ? SortKeyRole : Qt::DisplayRole);
+    if (m_alphabeticalOrder != alpha) {
+        m_alphabeticalOrder = alpha;
+        setSort(0, alpha ? Qt::DisplayRole : SortKeyRole);
         invalidateSortFilter();
     }
 }
@@ -325,7 +325,7 @@ void DefinitionListModel::setCategory(Category *category)
 {
     beginResetModel();
     if (category) {
-        setSort(0, m_logicalOrder ? SortKeyRole : Qt::DisplayRole);
+        setSort(0, m_alphabeticalOrder ? Qt::DisplayRole : SortKeyRole);
 
         foreach (Definition *definition, category->definitions())
             if (!definition->hidden() && definition->inMarket())

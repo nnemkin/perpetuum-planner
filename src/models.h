@@ -126,7 +126,7 @@ public:
     void setShowTierIcons(bool show);
 
 public slots:
-    void setLogicalOrder(bool logical);
+    void setAlphabeticalOrder(bool alpha);
     void setNameFilter(const QString& filter) { m_nameFilter = filter; invalidateSortFilter(); }
     void setHiddenTiers(const QStringList &tiers) { m_hiddenTiers = tiers; invalidateSortFilter(); }
 
@@ -137,7 +137,7 @@ private:
     Category *m_category;
 
     QStringList m_hiddenTiers;
-    bool m_logicalOrder;
+    bool m_alphabeticalOrder;
     bool m_showTierIcons;
     QString m_nameFilter;
 };
