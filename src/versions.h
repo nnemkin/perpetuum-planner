@@ -23,13 +23,13 @@
 #define VER_PRODUCTNAME_STR "Perpetuum Planner"
 #define VER_COMPANYNAME_STR "Nikita Nemkin"
 #define VER_LEGALCOPYRIGHT_STR "Copyright (c) 2010, 2011, 2012 Nikita Nemkin"
-#define VER_PRODUCTVERSION 1,2,6,0
-#define VER_PRODUCTVERSION_STR "1.2.6"
-#define VER_PRODUCTVERSION_DATE "2012-03-04"
+#define VER_PRODUCTVERSION 1,2,7,0
+#define VER_PRODUCTVERSION_STR "1.2.7"
+#define VER_PRODUCTVERSION_DATE "2012-06-09"
 #define VER_PROGID "PerpetuumPlanner.Agent"
 
-#define VER_FILEVERSION 1,2,6,0
-#define VER_FILEVERSION_STR "1.2.6"
+#define VER_FILEVERSION 1,2,7,0
+#define VER_FILEVERSION_STR "1.2.7"
 #define VER_FILEDESCRIPTION_STR "Perpetuum Planner"
 #define VER_INTERNALNAME_STR "PerpetuumPlanner"
 #define VER_ORIGINALFILENAME_STR "PerpetuumPlanner.exe"
