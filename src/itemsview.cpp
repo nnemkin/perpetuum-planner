@@ -366,7 +366,7 @@ void ItemsView::setDefinitions(QList<Definition *> definitions, bool retranslate
             labelName->setText(definition->name());
             textDescription->setText(definition->description());
             labelIcon->setVisible(true);
-            labelIcon->setPixmap(definition->icon());
+            labelIcon->setPixmap(definition->icon(-1, true));
 
             if (definition->researchLevel()) {
                 //: def_research_kit_1

@@ -37,7 +37,8 @@
     |11=[|ID=ib|name=$tierlevel_t4|color=cFFCA2EA3]
     |12=[|ID=ic|name=$tierlevel_t4+|color=cFFCA2EA3]
     |13=[|ID=id|name=$tierlevel_t4_pr|color=cFFF06F11]
-    |14=[|ID=ie|name=$tierlevel_mk2|color=cFF3C20B7]
+    |14=[|ID=ie|name=$tierlevel_pr|color=cFFF06F11]
+    |15=[|ID=if|name=$tierlevel_mk2|color=cFF3C20B7]
 ]
 #genericFields=[
     |1=[|ID=n9001|name=$mass|measurementUnit=$mass_unit|category=i5]
@@ -161,7 +162,6 @@
     |3=[|name=$ext_electronics_upgrades|value=$Optimized electronics]
 
     |4=[|name=$ext_production_repair_basic|value=$Basic repair technologies]
-    |5=[|name=$ext_parallel_missions_basic|value=$Basic parallel assignments]
     |6=[|name=$ext_production_max_mill_slots_basic|value=$Basic extensive mass production]
     |7=[|name=$ext_production_max_mill_slots_advanced|value=$Advanced extensive mass production]
     |8=[|name=$ext_production_max_mill_slots_expert|value=$Expert extensive mass production]

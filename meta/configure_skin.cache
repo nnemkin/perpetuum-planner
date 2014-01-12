@@ -7,7 +7,6 @@
 -no-libmng
 -no-libtiff
 -qt-libjpeg
--qt-gif
 -no-dsp
 -no-vcproj
 -qt-zlib
@@ -32,6 +31,7 @@
 -no-audio-backend
 -no-phonon-backend
 -no-openssl
+-system-proxies
 -nomake
 examples
 -nomake

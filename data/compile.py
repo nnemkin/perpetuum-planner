@@ -38,7 +38,7 @@ def find_definitions(data, cat_names):
     result = []
     for definition in data['getEntityDefaults'].itervalues():
         for flag in cat_flags:
-            if (definition['categoryflags'] & flag) == flag:
+            if (definition['categoryflags'] & flag) == flag and definition['definitionname'] != 'def_ice':
                 result.append(definition['definition'])
                 break
 

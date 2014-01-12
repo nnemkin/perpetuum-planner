@@ -80,8 +80,6 @@ bool GameData::loadConfigurationUnits(const QVariantMap &dataMap)
         if (!aggregate->load(i.value().toMap()))
             return false;
 
-        qDebug() << aggregate->name();
-
         m_aggregateFields.insert(confUnitId, aggregate);
         m_objectsByName.insert(aggregate->systemName(), aggregate);
     }
