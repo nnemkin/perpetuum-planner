@@ -23,7 +23,7 @@ Game data is used without any specific license.
 Game data
 ---------
 
-Game data is provided separately: [planner_data_2014_01_11.zip](http://www.perpetuum-planner.com/planner_data_2014_01_11.zip).
+Game data is provided separately: http://www.perpetuum-planner.com/planner_data_2014_01_11.zip.
 It is a set of text files in JSON-like format native to Perpetuum client.
 Parser and converters for this format can be found in `data/perpetuum.py` and `data/tools.py`.
 
