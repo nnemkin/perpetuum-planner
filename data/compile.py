@@ -41,24 +41,29 @@ def main(dest_dir='compiled'):
     excluded_defs = find_definitions(data, EXCLUDE_CATEGORIES)
     print 'OK'
 
-    json_settings = {'separators': (',', ':'), 'allow_nan': False}
+    def write_json(data, filename):
+        filename = os.path.join(dest_dir, filename)
+        # NB: with mixed str/unicode input, we can't dump to the file directly
+        data = json.dumps(data, encoding='utf8', separators=(',', ':'),
+                          allow_nan=False, ensure_ascii=False)
+        with open(filename, 'wb') as f:
+            f.write(data.encode('utf-8'))
 
     print 'Serializing ...',
-    with open(os.path.join(dest_dir, 'game.json'), 'wb') as f:
-        json.dump(data, f, **json_settings)
-
+    write_json(data, 'game.json')
     print 'OK'
 
+    # collect all potential translation strings
     translation_keys = set(translation_tokens(data))
 
     for lang, translation in translations.items():
         print 'Translation', lang, '...',
 
+        # remove unused translation strings
         translation = dict((key, translation[key].decode('utf-8')) for key in translation
                                 if translation_keys.intersection([key, key.lower(), key.replace('_unit', '')]))
 
-        with open(os.path.join(dest_dir, 'lang_%s.json' % lang), 'wb') as f:
-            json.dump(translation, f, **json_settings)
+        write_json(translation, 'lang_%s.json' % lang)
         print 'OK'
 
 
