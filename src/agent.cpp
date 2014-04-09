@@ -23,11 +23,10 @@
 #include <QDebug>
 #include <QFileInfo>
 
-#include "parser.h"
-#include "serializer.h"
 #include "gamedata.h"
 #include "agent.h"
 #include "versions.h"
+#include "json.h"
 
 
 // ExtensionLevels
@@ -107,10 +106,10 @@ ExtensionLevelMap ExtensionLevels::requirements(Extension *extension) const
     return reqs;
 }
 
-bool ExtensionLevels::load(GameData *gameData, const QVariantMap &dataMap)
+bool ExtensionLevels::load(GameData *gameData, const JsonValue &value)
 {
     m_levels.clear();
-    for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i) {
+    for (JsonValue::const_iterator i = value.begin(); i != value.end(); ++i) {
         Extension *extension = gameData->findByName<Extension *>(i.key());
         if (extension)
             m_levels.insert(extension, i.value().toInt());
@@ -121,14 +120,13 @@ bool ExtensionLevels::load(GameData *gameData, const QVariantMap &dataMap)
     return true;
 }
 
-QVariantMap ExtensionLevels::save() const
+void ExtensionLevels::save(JsonWriter &writer) const
 {
-    QVariantMap dataMap;
+    writer.startObject();
     for (ExtensionLevelMap::const_iterator i = m_levels.constBegin(); i != m_levels.constEnd(); ++i)
         if (i.value() > baseLevel(i.key()))
-            dataMap.insert(i.key()->persistentName(), i.value());
-
-    return dataMap;
+            writer.writeString(i.key()->persistentName()).writeInt(i.value());
+    writer.endObject();
 }
 
 int ExtensionLevels::points(bool withBase) const
@@ -219,19 +217,15 @@ void Agent::plannedExtensionsChanged()
 
 bool Agent::load(QIODevice *io)
 {
-    QJson::Parser parser;
-    bool ok = true;
-
-    QVariantMap data = parser.parse(io, &ok).toMap();
-    if (!ok) {
-        m_lastError = tr("Failed to load agent data.\nError on line %1: %2").arg(parser.errorLine()).arg(parser.errorString());
+    JsonDocument data(io->readAll());
+    if (data.hasError()) {
+        m_lastError = data.errorString();
         return false;
     }
 
-    setStarterChoices(data.value("starterChoices").toString());
-
-    m_currentExtensions->load(m_gameData, data.value("currentExtensions").toMap());
-    m_plannedExtensions->load(m_gameData, data.value("plannedExtensions").toMap());
+    setStarterChoices(data["starterChoices"].toString());
+    m_currentExtensions->load(m_gameData, data["currentExtensions"]);
+    m_plannedExtensions->load(m_gameData, data["plannedExtensions"]);
 
     QFile *file = qobject_cast<QFile *>(io);
     m_fileName = file ? file->fileName() : QString();
@@ -244,6 +238,10 @@ bool Agent::load(QIODevice *io)
 bool Agent::load(const QString& fileName)
 {
     QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        m_lastError = file.errorString();
+        return false;
+    }
     return load(&file);
 }
 
@@ -286,20 +284,18 @@ bool Agent::importHistory(const QString& fileName)
 
 bool Agent::save(QIODevice *io)
 {
-    QVariantMap dataMap;
+    JsonWriter writer(io);
 
-    dataMap.insert("version", VER_PRODUCTVERSION_STR);
-    dataMap.insert("starterChoices", m_starterChoices);
-    dataMap.insert("currentExtensions", m_currentExtensions->save());
-    dataMap.insert("plannedExtensions", m_plannedExtensions->save());
+    writer.startObject();
+    writer.writeString("version").writeString(VER_PRODUCTVERSION_STR);
+    writer.writeString("starterChoices").writeString(m_starterChoices);
+    writer.writeString("currentExtensions");
+    m_currentExtensions->save(writer);
+    writer.writeString("plannedExtensions");
+    m_plannedExtensions->save(writer);
+    writer.endObject();
 
-    QJson::Serializer serializer;
-    bool ok = true;
-    serializer.serialize(dataMap, io, &ok);
-    if (!ok) {
-        m_lastError = tr("Failed to save agent data.");
-        return false;
-    }
+    // XXX: report IO errors
 
     QFile *file = qobject_cast<QFile* >(io);
     m_fileName = file ? file->fileName() : QString();
@@ -316,6 +312,10 @@ bool Agent::save(const QString& fileName)
         return false;
 
     QFile file(saveFileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        m_lastError = file.errorString();
+        return false;
+    }
     return save(&file);
 }
 

@@ -28,34 +28,18 @@
 #include <QRegExp>
 
 #include "gamedata.h"
+#include "json.h"
 
 using namespace std;
 
 
 // GameData
 
-QVariantMap GameData::loadVariantMap(QIODevice *io)
-{
-    if (!io->isOpen())
-        if (!io->open(QIODevice::ReadOnly))
-            return QVariantMap();
-
-    QDataStream stream(io);
-    stream.setVersion(QDataStream::Qt_4_7);
-    stream.setByteOrder(QDataStream::LittleEndian);
-    stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
-
-    QVariant data;
-    stream >> data;
-    return data.toMap();
-}
-
 template <class ItemType, class ObjectMap>
-bool GameData::loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, const QString &idKey, bool create)
+bool GameData::loadObjects(ObjectMap& objectMap, const JsonValue &value, const char *idKey, bool create)
 {
-    foreach (QVariant entry, dataMap) {
-        QVariantMap entryMap = entry.toMap();
-        typename ObjectMap::key_type id = entryMap.value(idKey).value<typename ObjectMap::key_type>();
+    foreach (JsonValue entry, value) {
+        typename ObjectMap::key_type id = entry[idKey].value<typename ObjectMap::key_type>();
 
         typename ObjectMap::mapped_type object = objectMap.value(id);
         if (!object && create) {
@@ -63,7 +47,7 @@ bool GameData::loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, con
             objectMap.insert(id, object);
         }
         if (object) {
-            if (!object->load(entryMap))
+            if (!object->load(entry))
                 return false;
             if (create)
                 m_objectsByName.insert(object->systemName(), object);
@@ -72,12 +56,12 @@ bool GameData::loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, con
     return true;
 }
 
-bool GameData::loadConfigurationUnits(const QVariantMap &dataMap)
+bool GameData::loadConfigurationUnits(const JsonValue &value)
 {
     int confUnitId = AggregateField::CU_Base;
-    for (QVariantMap::const_iterator i = dataMap.constBegin(); i != dataMap.constEnd(); ++i, ++confUnitId) {
+    for (JsonValue::const_iterator i = value.begin(); i != value.end(); ++i, ++confUnitId) {
         AggregateField *aggregate = new AggregateField(this, confUnitId, i.key());
-        if (!aggregate->load(i.value().toMap()))
+        if (!aggregate->load(i.value()))
             return false;
 
         m_aggregateFields.insert(confUnitId, aggregate);
@@ -88,60 +72,66 @@ bool GameData::loadConfigurationUnits(const QVariantMap &dataMap)
 
 bool GameData::load(QIODevice *dataFile, QIODevice *translationFile)
 {
-    QVariantMap dataMap = loadVariantMap(dataFile);
+    if (!dataFile->open(QIODevice::ReadOnly) || !translationFile->open(QIODevice::ReadOnly))
+        return false;
 
-    m_version = dataMap.value("version").toString();
+    JsonDocument gameData(dataFile->readAll());
+    if (gameData.hasError()) {
+        qDebug() << gameData.errorString();
+        return false;
+    }
+
+    m_version = gameData["version"].toString();
     if (m_version.isEmpty())
         return false;
 
-    QVariantMap custom = dataMap.value("_custom").toMap();
+    JsonValue custom = gameData["_custom"];
 
     // Note: QVariantMap forces string type and string sorting on keys, therefore loading order
     // may be different from the source file.
 
     // Slot types
-    foreach (const QVariant &entry, custom.value("slotTypes").toMap()) {
-        QVariantMap &entryMap = entry.toMap();
-        m_slotTypes.insert(entryMap.value("flag").toInt(), entryMap.value("name").toString());
-    }
+    foreach (JsonValue slotType, custom["slotTypes"])
+        if (slotType.isObject())
+            m_slotTypes.insert(slotType["flag"].toInt(), slotType["name"].toString());
 
     m_categories.insert(0, new Category(this)); // root category
 
     // NB: loading order is important.
-    bool ok = loadObjects<ExtensionCategory>(m_extensionCategories, dataMap.value("extensionCategoryList").toMap(), "ID")
-            && loadObjects<Extension>(m_extensions, dataMap.value("extensionGetAll").toMap(), "extensionID")
-            && loadObjects<Extension>(m_extensions, dataMap.value("extensionPrerequireList").toMap(), "extensionID", false)
+    bool ok = loadObjects<ExtensionCategory>(m_extensionCategories, gameData["extensionCategoryList"], "ID")
+            && loadObjects<Extension>(m_extensions, gameData["extensionGetAll"], "extensionID")
+            && loadObjects<Extension>(m_extensions, gameData["extensionPrerequireList"], "extensionID", false)
 
-            && loadObjects<Category>(m_categories, dataMap.value("categoryFlags").toMap(), "value")
+            && loadObjects<Category>(m_categories, gameData["categoryFlags"], "value")
             // resolve forward refs
-            && loadObjects<Category>(m_categories, dataMap.value("categoryFlags").toMap(), "value", false)
+            && loadObjects<Category>(m_categories, gameData["categoryFlags"], "value", false)
 
-            && loadObjects<FieldCategory>(m_fieldCategories, custom.value("aggregateCategories").toMap(), "ID")
-            && loadObjects<StandardAggregateField>(m_aggregateFields, dataMap.value("getAggregateFields").toMap(), "ID")
-            && loadObjects<StandardAggregateField>(m_aggregateFields, custom.value("genericFields").toMap(), "ID")
-            && loadObjects<StandardAggregateField>(m_aggregateFields, custom.value("aggregateDetails").toMap(), "ID", false)
-            && loadConfigurationUnits(dataMap.value("getDefinitionConfigUnits").toMap())
+            && loadObjects<FieldCategory>(m_fieldCategories, custom["aggregateCategories"], "ID")
+            && loadObjects<StandardAggregateField>(m_aggregateFields, gameData["getAggregateFields"], "ID")
+            && loadObjects<StandardAggregateField>(m_aggregateFields, custom["genericFields"], "ID")
+            && loadObjects<StandardAggregateField>(m_aggregateFields, custom["aggregateDetails"], "ID", false)
+            && loadConfigurationUnits(gameData["getDefinitionConfigUnits"])
 
-            && loadObjects<Tier>(m_tiers, custom.value("tiers").toMap(), "name")
+            && loadObjects<Tier>(m_tiers, custom["tiers"], "name")
 
-            && loadObjects<Definition>(m_definitions, dataMap.value("getEntityDefaults").toMap(), "definition")
+            && loadObjects<Definition>(m_definitions, gameData["getEntityDefaults"], "definition")
             // resolve IDs in options
-            && loadObjects<Definition>(m_definitions, dataMap.value("getEntityDefaults").toMap(), "definition", false)
-            && loadObjects<Definition>(m_definitions, dataMap.value("definitionProperties").toMap(), "definition", false)
+            && loadObjects<Definition>(m_definitions, gameData["getEntityDefaults"], "definition", false)
+            && loadObjects<Definition>(m_definitions, gameData["definitionProperties"], "definition", false)
             // resolve copyfrom's
-            && loadObjects<Definition>(m_definitions, dataMap.value("definitionProperties").toMap(), "definition", false)
-            && loadObjects<Definition>(m_definitions, dataMap.value("productionComponentsList").toMap(), "definition", false)
-            && loadObjects<Definition>(m_definitions, dataMap.value("getResearchLevels").toMap(), "definition", false);
+            && loadObjects<Definition>(m_definitions, gameData["definitionProperties"], "definition", false)
+            && loadObjects<Definition>(m_definitions, gameData["productionComponentsList"], "definition", false)
+            && loadObjects<Definition>(m_definitions, gameData["getResearchLevels"], "definition", false);
 
     if (!ok) return false;
 
     // Load character wizard steps
-    QVariantMap charWiz = dataMap.value("characterWizardData").toMap();
-    ok = loadObjects<CharacterWizardStep>(m_charWizSteps[Race], charWiz.value("race").toMap(), "ID")
-            && loadObjects<CharacterWizardStep>(m_charWizSteps[School], charWiz.value("school").toMap(), "ID")
-            && loadObjects<CharacterWizardStep>(m_charWizSteps[Major], charWiz.value("major").toMap(), "ID")
-            && loadObjects<CharacterWizardStep>(m_charWizSteps[Corporation], charWiz.value("corporation").toMap(), "ID")
-            && loadObjects<CharacterWizardStep>(m_charWizSteps[Spark], charWiz.value("spark").toMap(), "ID");
+    JsonValue charWiz = gameData["characterWizardData"];
+    ok = loadObjects<CharacterWizardStep>(m_charWizSteps[Race], charWiz["race"], "ID")
+            && loadObjects<CharacterWizardStep>(m_charWizSteps[School], charWiz["school"], "ID")
+            && loadObjects<CharacterWizardStep>(m_charWizSteps[Major], charWiz["major"], "ID")
+            && loadObjects<CharacterWizardStep>(m_charWizSteps[Corporation], charWiz["corporation"], "ID")
+            && loadObjects<CharacterWizardStep>(m_charWizSteps[Spark], charWiz["spark"], "ID");
 
     if (!ok) return false;
 
@@ -150,26 +140,26 @@ bool GameData::load(QIODevice *dataFile, QIODevice *translationFile)
         m_definitionsByCategory.insertMulti(definition->category()->order(), definition);
 
     // Persistent names
-    QVariantMap transMap = loadVariantMap(translationFile);
-    if (transMap.isEmpty())
+    JsonDocument transMap(translationFile->readAll());
+    if (transMap.hasError()) {
+        qDebug() << transMap.errorString();
         return false;
+    }
 
     m_persistentNames.reserve(m_extensions.size() + 10);
     foreach (Extension *extension, m_extensions) {
-        QString persistentName = transMap.value(extension->systemName()).toString();
+        QByteArray sysName = extension->systemName().toUtf8(); // XXX
+        QString persistentName = transMap[sysName.constData()].toString();
         m_persistentNames.insert(extension->systemName(), persistentName);
         m_objectsByName.insert(persistentName, extension);
     }
-    foreach (const QVariant &entry, custom.value("historicNames").toMap()) {
-        QVariantMap &entryMap = entry.toMap();
-        QString name = entryMap.value("name").toString();
-        QString persistentName = entryMap.value("value").toString();
-        if (Extension *extension = findByName<Extension *>(name)) {
+    foreach (JsonValue entry, custom["historicNames"]) {
+        QString name = entry["name"].toString();
+        QString persistentName = entry["value"].toString();
+        if (Extension *extension = findByName<Extension *>(name))
             m_objectsByName.insert(persistentName, extension);
-        }
-        else {
-            qDebug() << "Invalid historic name:" << entry;
-        }
+        else
+            qDebug() << "Invalid historic name:" << name;
     }
 
     return true;
@@ -177,13 +167,18 @@ bool GameData::load(QIODevice *dataFile, QIODevice *translationFile)
 
 bool GameData::loadTranslation(const QString &languageCode, QIODevice *translationFile)
 {
-    QVariantMap transMap = loadVariantMap(translationFile);
-    if (transMap.isEmpty())
+    if (!translationFile->open(QIODevice::ReadOnly))
         return false;
 
+    JsonDocument transMap(translationFile->readAll());
+    if (transMap.hasError()) {
+        qDebug() << transMap.errorString();
+        return false;
+    }
+
     m_translation.clear();
-    m_translation.reserve(transMap.size());
-    for (QVariantMap::const_iterator i = transMap.constBegin(); i != transMap.constEnd(); ++i) {
+    m_translation.reserve(transMap.size() + 10);
+    for (JsonValue::const_iterator i = transMap.begin(); i != transMap.end(); ++i) {
         m_translation.insert(i.key(), i.value().toString());
         m_translation.insert(i.key().toLower(), i.value().toString());
     }
@@ -276,40 +271,40 @@ void ExtensionLevelMap::sum(const ExtensionLevelMap &other)
 
 // ExtensionCategory
 
-bool ExtensionCategory::load(const QVariantMap &dataMap)
+bool ExtensionCategory::load(const JsonValue &value)
 {
-    m_id = dataMap.value("ID").toInt();
-    m_name = dataMap.value("name").toString();
-    m_hidden = dataMap.value("hidden").toBool();
+    m_id = value["ID"].toInt();
+    m_name = value["name"].toString();
+    m_hidden = value["hidden"].toInt();
     return true;
 }
 
 
 // Extension
 
-bool Extension::load(const QVariantMap &dataMap)
+bool Extension::load(const JsonValue &value)
 {
-    if (dataMap.contains("name")) {
-        m_id = dataMap.value("extensionId").toInt();
-        m_name = dataMap.value("name").toString();
-        m_description = dataMap.value("description").toString();
-        m_description = dataMap.value("description").toString();
-        m_rank = dataMap.value("rank").toInt();
-        m_price = dataMap.value("price").toInt();
-        m_bonus = dataMap.value("bonus").toFloat();
-        m_hidden = dataMap.value("hidden").toBool();
+    if (value.contains("name")) {
+        m_id = value["extensionId"].toInt();
+        m_name = value["name"].toString();
+        m_description = value["description"].toString();
+        m_description = value["description"].toString();
+        m_rank = value["rank"].toInt();
+        m_price = value["price"].toInt();
+        m_bonus = value["bonus"].toFloat();
+        m_hidden = value["hidden"].toInt();
 
-        m_category = m_gameData->extensionCategories().value(dataMap.value("category").toInt());
+        m_category = m_gameData->extensionCategories().value(value["category"].toInt());
         if (!m_category) {
             qDebug() << "Invalid extension category:" << m_name;
             return false;
         }
         m_category->m_extensions.append(this);
     }
-    else if (dataMap.contains("requiredExtension")) {
-        Extension *extension = m_gameData->extensions().value(dataMap.value("requiredExtension").toInt());
+    else if (value.contains("requiredExtension")) {
+        Extension *extension = m_gameData->extensions().value(value["requiredExtension"].toInt());
         if (extension)
-            m_requirements.insert(extension, dataMap.value("requiredLevel").toInt());
+            m_requirements.insert(extension, value["requiredLevel"].toInt());
     }
     return true;
 }
@@ -343,12 +338,12 @@ const ExtensionLevelMap &Extension::transitiveReqs() const
 
 // Category
 
-bool Category::load(const QVariantMap &dataMap)
+bool Category::load(const JsonValue &value)
 {
     if (!m_id) {
-        m_id = dataMap.value("value").toULongLong();
-        m_name = dataMap.value("name").toString();
-        m_hidden = dataMap.value("hidden").toBool();
+        m_id = value["value"].toUInt64();
+        m_name = value["name"].toString();
+        m_hidden = value["hidden"].toInt();
         m_order = _byteswap_uint64(m_id);
     }
     else {
@@ -406,30 +401,28 @@ bool Category::hasCategory(const Category *other)
 
 // FieldCategory
 
-bool FieldCategory::load(const QVariantMap &dataMap)
+bool FieldCategory::load(const JsonValue &value)
 {
-    m_id = dataMap.value("ID").toInt();
-    m_name = dataMap.value("name").toString();
+    m_id = value["ID"].toInt();
+    m_name = value["name"].toString();
     return true;
 }
 
 
 // AggregateField/StandardAggregateField
 
-bool AggregateField::load(const QVariantMap &dataMap)
+bool AggregateField::load(const JsonValue &value)
 {
-    if (dataMap.contains("measurementUnit")) {
-        m_unitName = dataMap.value("measurementUnit").toString();
-    }
-    else {
+    m_unitName = value["measurementUnit"].toString();
+    if (m_unitName.isNull()) {
         m_unitName = m_name + "_unit";
         if (!m_gameData->hasTranslation(m_unitName))
             m_unitName.clear();
     }
-    m_multiplier = dataMap.value("measurementMultiplier", 1.f).toFloat();
-    m_offset = dataMap.value("measurementOffset").toFloat();
-    m_digits = dataMap.value("digits", -1).toInt(); // -1 = auto
-    m_category = m_gameData->fieldCategories().value(dataMap.value("category", CategoryInfo).toInt());
+    m_multiplier = value["measurementMultiplier"].toFloat(1.f);
+    m_offset = value["measurementOffset"].toFloat();
+    m_digits = value["digits"].toInt(-1); // -1 = auto
+    m_category = m_gameData->fieldCategories().value(value["category"].toInt(CategoryInfo));
     if (!m_category) {
         qDebug() << "Invalid aggregate category:" << m_name;
         return false;
@@ -438,17 +431,17 @@ bool AggregateField::load(const QVariantMap &dataMap)
     return true;
 }
 
-bool StandardAggregateField::load(const QVariantMap &dataMap)
+bool StandardAggregateField::load(const JsonValue &value)
 {
-    if (dataMap.contains("name")) {
-        m_id = dataMap.value("ID").toInt();
-        m_name = dataMap.value("name").toString();
-        AggregateField::load(dataMap);
+    if (value.contains("name")) {
+        m_id = value["ID"].toInt();
+        m_name = value["name"].toString();
+        AggregateField::load(value);
     }
     else {
-        m_hidden = dataMap.value("hidden").toBool();
-        m_lessIsBetter = dataMap.value("lessIsBetter").toBool();
-        m_compareLevel = static_cast<CompareLevel>(dataMap.value("compareLevel", CanCompare).toInt());
+        m_hidden = value["hidden"].toInt();
+        m_lessIsBetter = value["lessIsBetter"].toInt();
+        m_compareLevel = static_cast<CompareLevel>(value["compareLevel"].toInt(CanCompare));
     }
     return true;
 }
@@ -541,11 +534,14 @@ bool AggregateField::lessIsBetter(Definition *definition) const
 
 // Tier
 
-bool Tier::load(const QVariantMap &dataMap)
+bool Tier::load(const JsonValue &value)
 {
-    m_id = dataMap.value("ID").toInt();
-    m_name = dataMap.value("name").toString();
-    m_color = dataMap.value("color").value<QColor>();
+    m_id = value["ID"].toInt();
+    m_name = value["name"].toString();
+    uint color = value["color"].toUInt();
+    // Decode BGRA color value
+    m_color = QColor(color & 0xff, (color >> 8) & 0xff,
+                     (color >> 16) & 0xff, (color >> 24) & 0xff);
     return true;
 }
 
@@ -581,12 +577,12 @@ QPixmap Tier::icon(bool overlay) const
 
 // Bonus
 
-Bonus::Bonus(GameData *gameData, const QVariantMap &dataMap)
+Bonus::Bonus(GameData *gameData, const JsonValue &value)
 {
-    m_aggregate = gameData->aggregateFields().value(dataMap.value("aggregate").toInt());
-    m_extension = gameData->extensions().value(dataMap.value("extensionID").toInt());
-    m_bonus = dataMap.value("bonus").toFloat();
-    m_effectEnhancer = dataMap.value("effectenhancer").toBool();
+    m_aggregate = gameData->aggregateFields().value(value["aggregate"].toInt());
+    m_extension = gameData->extensions().value(value["extensionID"].toInt());
+    m_bonus = value["bonus"].toFloat();
+    m_effectEnhancer = value["effectenhancer"].toInt();
 }
 
 QString Bonus::format() const
@@ -606,18 +602,18 @@ void Definition::addAggregate(int id, const QVariant &value)
         qDebug() << "Aggregate not found:" << id;
 }
 
-bool Definition::load(const QVariantMap &dataMap)
+bool Definition::load(const JsonValue &value)
 {
-    if (dataMap.contains("definitionname")) {
+    if (value.contains("definitionname")) {
         if (!m_id) {
-            m_id = dataMap.value("definition").toInt();
-            m_name = dataMap.value("definitionname").toString();
-            m_description = dataMap.value("descriptiontoken").toString();
-            m_quantity = dataMap.value("quantity").toInt();
+            m_id = value["definition"].toInt();
+            m_name = value["definitionname"].toString();
+            m_description = value["descriptiontoken"].toString();
+            m_quantity = value["quantity"].toInt();
 
-            m_attributeFlags = dataMap.value("attributeflags").toULongLong();
+            m_attributeFlags = value["attributeflags"].toUInt64();
 
-            m_categoryFlags = dataMap.value("categoryflags").toULongLong();
+            m_categoryFlags = value["categoryflags"].toUInt64();
             m_category = m_gameData->categories().value(m_categoryFlags);
             if (m_category) {
                 m_category->m_definitions.append(this);
@@ -627,68 +623,65 @@ bool Definition::load(const QVariantMap &dataMap)
                 m_category = m_gameData->rootCategory();
             }
 
-            // m_health = dataMap.value("health").toFloat();
-            m_mass = dataMap.value("mass").toFloat();
-            m_volume = dataMap.value("volume").toFloat();
-            m_repackedVolume = dataMap.value("repackedvolume").toFloat();
+            // m_health = value["health"].toFloat();
+            m_mass = value["mass"].toFloat();
+            m_volume = value["volume"].toFloat();
+            m_repackedVolume = value["repackedvolume"].toFloat();
 
-            foreach (const QVariant &entry, dataMap.value("enablerExtension").toMap()) {
-                QVariantMap entryMap = entry.toMap();
-                Extension *extension = m_gameData->extensions().value(entryMap.value("extensionID").toInt());
+            foreach (JsonValue  &entry, value["enablerExtension"]) {
+                Extension *extension = m_gameData->extensions().value(entry["extensionID"].toInt());
                 if (extension)
-                    m_enablerExtensions.insert(extension, entryMap.value("extensionLevel").toInt());
+                    m_enablerExtensions.insert(extension, entry["extensionLevel"].toInt());
             }
 
-            foreach (const QVariant &entry, dataMap.value("accumulator").toMap()) {
-                QVariantMap entryMap = entry.toMap();
-                addAggregate(entryMap.value("ID").toInt(), entryMap.value("value"));
-            }
+            foreach (JsonValue entry, value["accumulator"])
+                addAggregate(entry["ID"].toInt(), entry["value"].toVariant());
 
-            foreach (const QVariant &entry, dataMap.value("bonus").toMap()) {
-                Bonus *bonus = new Bonus(m_gameData, entry.toMap());
+            foreach (JsonValue entry, value["bonus"]) {
+                Bonus *bonus = new Bonus(m_gameData, entry);
                 if (bonus->isValid())
                     m_bonuses.insert(bonus->aggregate(), bonus);
                 else
                     delete bonus;
             }
 
-            foreach (const QVariant &entry, dataMap.value("extensions").toList()) {
+            foreach (JsonValue entry, value["extensions"].asArray()) {
                 Extension *extension = m_gameData->extensions().value(entry.toInt());
                 if (extension)
                     m_extensions.append(extension);
             }
 
-            QVariantMap config = dataMap.value("config").toMap();
-            for (QVariantMap::const_iterator i = config.constBegin(); i != config.constEnd(); ++i) {
+            JsonValue config = value["config"];
+            for (JsonValue::const_iterator i = config.begin(); i != config.end(); ++i) {
                 AggregateField *aggregate = m_gameData->findByName<AggregateField *>(i.key().toLower());
                 if (aggregate)
-                    m_aggregates.insert(aggregate, i.value());
+                    m_aggregates.insert(aggregate, i.value().toVariant());
             }
 
-            QVariantMap options = dataMap.value("options").toMap();
+            JsonValue options = value["options"];
 
-            m_tier = m_gameData->tiers().value(options.value("tier").toString());
-            foreach (const QVariant &entry, options.value("slotFlags").toList())
+            m_tier = m_gameData->tiers().value(options["tier"].toString());
+            foreach (JsonValue entry, options["slotFlags"].asArray())
                 m_slotFlags.append(entry.toInt());
 
-            m_capacity = options.value("capacity").toFloat();
-            m_moduleFlag = options.value("moduleFlag").toInt();
+            m_capacity = options["capacity"].toFloat();
+            m_moduleFlag = options["moduleFlag"].toInt();
 
-            m_ammoType = m_gameData->categories().value(options.value("ammoType").toULongLong());
+            m_ammoType = m_gameData->categories().value(options["ammoType"].toUInt64());
             if (!m_ammoType->id())
                 m_ammoType = 0;
 
             m_researchLevel = 0;
             m_calibrationProgram = 0;
 
-            m_hidden = dataMap.value("hidden").toBool();
-            m_inMarket = dataMap.value("purchasable", true).toBool();
+            m_hidden = value["hidden"].toInt();
+            m_inMarket = value["purchasable"].toInt(true);
 
             if (!m_hidden && m_inMarket)
                 m_category->setInMarket(m_inMarket);
         }
         else {
-            QVariantMap options = dataMap.value("options").toMap();
+            JsonValue options = value["options"];
 
             addAggregate(AggregateField::EI_Mass, m_mass);
             addAggregate(AggregateField::EI_Volume, m_volume);
@@ -698,10 +691,10 @@ bool Definition::load(const QVariantMap &dataMap)
             if (options.contains("head")) {
                 // we are the robots
 
-                m_head = m_gameData->definitions().value(options.value("head").toInt());
-                m_chassis = m_gameData->definitions().value(options.value("chassis").toInt());
-                m_leg = m_gameData->definitions().value(options.value("leg").toInt());
-                Definition *inventory = m_gameData->definitions().value(options.value("inventory").toInt());
+                m_head = m_gameData->definitions().value(options["head"].toInt());
+                m_chassis = m_gameData->definitions().value(options["chassis"].toInt());
+                m_leg = m_gameData->definitions().value(options["leg"].toInt());
+                Definition *inventory = m_gameData->definitions().value(options["inventory"].toInt());
 
                 if (!m_head || !m_chassis || !m_leg || !inventory) {
                     qDebug() << "Invalid bot:" << m_name;
@@ -738,7 +731,7 @@ bool Definition::load(const QVariantMap &dataMap)
                     }
                 }
 
-                int ammoCapacity = options.value("ammoCapacity").toInt();
+                int ammoCapacity = options["ammoCapacity"].toInt();
                 if (ammoCapacity)
                     addAggregate(AggregateField::EI_AmmoCapacity, ammoCapacity);
             }
@@ -749,27 +742,26 @@ bool Definition::load(const QVariantMap &dataMap)
                 addAggregate(AggregateField::EI_AmmoType, m_ammoType->systemName());
         }
     }
-    else if (dataMap.contains("icon")) {
-        m_icon = dataMap.value("icon").toString();
+    else if (value.contains("icon")) {
+        m_icon = value["icon"].toString();
     }
-    else if (dataMap.contains("copyfrom")) {
+    else if (value.contains("copyfrom")) {
         if (m_icon.isEmpty()) {
-            Definition *definition = m_gameData->definitions().value(dataMap.value("copyfrom").toInt());
+            Definition *definition = m_gameData->definitions().value(value["copyfrom"].toInt());
             if (definition)
                 m_icon = definition->m_icon;
         }
     }
-    else if (dataMap.contains("components")) {
-        foreach (const QVariant &entry, dataMap.value("components").toMap()) {
-            QVariantMap entryMap = entry.toMap();
-            Definition *component = m_gameData->definitions().value(entryMap.value("definition").toInt());
+    else if (value.contains("components")) {
+        foreach (JsonValue entry, value["components"]) {
+            Definition *component = m_gameData->definitions().value(entry["definition"].toInt());
             if (component)
-                m_components.insert(component, entryMap.value("amount").toInt());
+                m_components.insert(component, entry["amount"].toInt());
         }
     }
-    else if (dataMap.contains("researchLevel")) {
-        m_researchLevel = dataMap.value("researchLevel").toInt();
-        m_calibrationProgram = m_gameData->definitions().value(dataMap.value("calibrationProgram").toInt());
+    else if (value.contains("researchLevel")) {
+        m_researchLevel = value["researchLevel"].toInt();
+        m_calibrationProgram = m_gameData->definitions().value(value["calibrationProgram"].toInt());
     }
     return true;
 }
@@ -833,24 +825,23 @@ bool Definition::hasCategory(const QString &name) const
 
 // CharacterWizardStep
 
-bool CharacterWizardStep::load(const QVariantMap &dataMap)
+bool CharacterWizardStep::load(const JsonValue &value)
 {
-    m_id = dataMap.value("ID").toInt();
-    m_name = dataMap.value("name").toString();
-    m_description = dataMap.value("description").toString();
-    m_baseEID = dataMap.value("baseEID").toInt();
+    m_id = value["ID"].toInt();
+    m_name = value["name"].toString();
+    m_description = value["description"].toString();
+    m_baseEID = value["baseEID"].toInt();
 
-    foreach (const QVariant &entry, dataMap.value("extension").toMap()) {
-        QVariantMap entryMap = entry.toMap();
-        Extension *extension = m_gameData->extensions().value(entryMap.value("extensionID").toInt());
+    foreach (JsonValue entry, value["extension"]) {
+        Extension *extension = m_gameData->extensions().value(entry["extensionID"].toInt());
         if (extension)
-            m_extensions.insert(extension, entryMap.value("add").toInt());
+            m_extensions.insert(extension, entry["add"].toInt());
     }
 
-    if (dataMap.contains("raceID"))
-        m_baseStep = m_gameData->charWizSteps(GameData::Race).value(dataMap.value("raceID").toInt());
-    else if (dataMap.contains("schoolID"))
-        m_baseStep = m_gameData->charWizSteps(GameData::School).value(dataMap.value("schoolID").toInt());
+    if (value.contains("raceID"))
+        m_baseStep = m_gameData->charWizSteps(GameData::Race).value(value["raceID"].toInt());
+    else if (value.contains("schoolID"))
+        m_baseStep = m_gameData->charWizSteps(GameData::School).value(value["schoolID"].toInt());
 
     return true;
 }

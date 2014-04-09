@@ -26,13 +26,6 @@ SOURCES += src/main.cpp\
     src/delegates.cpp \
     src/models.cpp \
     src/util.cpp \
-    3rdparty/qjson/src/serializerrunnable.cpp \
-    3rdparty/qjson/src/serializer.cpp \
-    3rdparty/qjson/src/qobjecthelper.cpp \
-    3rdparty/qjson/src/parserrunnable.cpp \
-    3rdparty/qjson/src/parser.cpp \
-    3rdparty/qjson/src/json_scanner.cpp \
-    3rdparty/qjson/src/json_parser.cc \
     src/agent.cpp \
     3rdparty/qtsingleapplication/src/qtsinglecoreapplication.cpp \
     3rdparty/qtsingleapplication/src/qtsingleapplication.cpp \
@@ -70,26 +63,19 @@ HEADERS += src/mainwindow.h \
     src/models.h \
     src/util.h \
     src/agent.h \
-    3rdparty/qjson/src/serializerrunnable.h \
-    3rdparty/qjson/src/serializer.h \
-    3rdparty/qjson/src/qobjecthelper.h \
-    3rdparty/qjson/src/qjson_export.h \
-    3rdparty/qjson/src/qjson_debug.h \
-    3rdparty/qjson/src/parserrunnable.h \
-    3rdparty/qjson/src/parser_p.h \
-    3rdparty/qjson/src/parser.h \
-    3rdparty/qjson/src/json_scanner.h \
+    src/application.h \
+    src/gridtreeview.h \
+    src/modeltest.h \
+    src/updater.h \
+    src/tierfilter.h \
+    src/json.h \
     3rdparty/qtsingleapplication/src/qtsinglecoreapplication.h \
     3rdparty/qtsingleapplication/src/qtsingleapplication.h \
     3rdparty/qtsingleapplication/src/qtlockedfile.h \
     3rdparty/qtsingleapplication/src/qtlocalpeer.h \
-    src/application.h \
     3rdparty/gdi++/override.h \
     3rdparty/gdi++/gdipp.h \
     3rdparty/gdi++/hooklist.h \
-    src/gridtreeview.h \
-    src/modeltest.h \
-    src/updater.h \
     3rdparty/quazip/src/zip.h \
     3rdparty/quazip/src/unzip.h \
     3rdparty/quazip/src/quazipnewinfo.h \
@@ -98,7 +84,18 @@ HEADERS += src/mainwindow.h \
     3rdparty/quazip/src/quazip.h \
     3rdparty/quazip/src/ioapi.h \
     3rdparty/quazip/src/crypt.h \
-    src/tierfilter.h
+    3rdparty/rapidjson/include/rapidjson/allocators.h \
+    3rdparty/rapidjson/include/rapidjson/document.h \
+    3rdparty/rapidjson/include/rapidjson/encodedstream.h \
+    3rdparty/rapidjson/include/rapidjson/encodings.h \
+    3rdparty/rapidjson/include/rapidjson/filereadstream.h \
+    3rdparty/rapidjson/include/rapidjson/filestream.h \
+    3rdparty/rapidjson/include/rapidjson/filewritestream.h \
+    3rdparty/rapidjson/include/rapidjson/prettywriter.h \
+    3rdparty/rapidjson/include/rapidjson/rapidjson.h \
+    3rdparty/rapidjson/include/rapidjson/reader.h \
+    3rdparty/rapidjson/include/rapidjson/stringbuffer.h \
+    3rdparty/rapidjson/include/rapidjson/writer.h
 
 FORMS += src/mainwindow.ui \
     src/titlebar.ui \
@@ -118,6 +115,7 @@ OTHER_FILES += \
     res/3rdparty.html \
     res/lgpl-2.1-standalone.html \
     res/gpl-3.0-standalone.html \
+    res/rapidjson-mit-license.html \
     res/stylesheet.css \
     res/stylesheet-big.css \
     res/doc-stylesheet.css \
@@ -145,10 +143,10 @@ RC_FILE = res/winres.rc
 INCLUDEPATH += \
     inc \
     3rdparty/qtsingleapplication/src \
-    3rdparty/qjson/src \
     3rdparty/gdi++ \
     3rdparty/quazip/src \
-    3rdparty/zlib
+    3rdparty/zlib \
+    3rdparty/rapidjson/include
 
 QMAKE_RESOURCE_FLAGS += -threshold 0 -compress 9
 

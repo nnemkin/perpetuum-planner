@@ -2,6 +2,7 @@
 
 import os
 import re
+import math
 import struct
 import array
 import fnmatch
@@ -64,6 +65,9 @@ def genxy_parse(data, builder=None):
                     value = int(value, 16)
                 elif type == 't':
                     value = struct.unpack('f', value.decode('hex'))[0]
+                    # rapidjson can't handle Infinity/NaN input
+                    if math.isinf(value):
+                        value = 1e308 if value > 0 else -1e308
                 elif type == '5':
                     value = [s.strip() for s in value.split(',')]
                 elif type in '64':
@@ -180,7 +184,7 @@ def translation_tokens(data):
         elif isinstance(data, basestring):
             keys.append(data)
     _collect(data)
-    return set(keys)
+    return keys
 
 
 class DataFile(object):

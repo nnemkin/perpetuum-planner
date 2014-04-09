@@ -1,15 +1,15 @@
 <RCC>
     <qresource prefix="/">
-        <file>compiled/game.dat</file>
-        <file>compiled/lang_de.dat</file>
-        <file>compiled/lang_en.dat</file>
-        <file>compiled/lang_hu.dat</file>
-        <file>compiled/lang_it.dat</file>
-        <file>compiled/lang_ru.dat</file>
-        <file>compiled/lang_fr.dat</file>
-        <file>compiled/lang_sl.dat</file>
-        <file>compiled/lang_nl.dat</file>
-        <file>compiled/lang_pl.dat</file>
+        <file>compiled/game.json</file>
+        <file>compiled/lang_de.json</file>
+        <file>compiled/lang_en.json</file>
+        <file>compiled/lang_hu.json</file>
+        <file>compiled/lang_it.json</file>
+        <file>compiled/lang_ru.json</file>
+        <file>compiled/lang_fr.json</file>
+        <file>compiled/lang_sl.json</file>
+        <file>compiled/lang_nl.json</file>
+        <file>compiled/lang_pl.json</file>
         <file>icons/def_alligior.png</file>
         <file>icons/def_chollonin.png</file>
         <file>icons/def_crude.png</file>

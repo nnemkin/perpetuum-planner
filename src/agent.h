@@ -27,7 +27,8 @@
 class QIODevice;
 class QUndoCommand;
 class ExtensionLevels;
-
+class JsonWriter;
+class JsonValue;
 
 class Agent : public QObject {
     Q_OBJECT
@@ -113,8 +114,8 @@ public:
 
     void setBase(const ExtensionLevels *base);
 
-    bool load(GameData *gameData, const QVariantMap &dataMap);
-    QVariantMap save() const;
+    bool load(GameData *gameData, const JsonValue &value);
+    void save(JsonWriter &writer) const;
 
 signals:
     void levelChanged(Extension *extension, int level);

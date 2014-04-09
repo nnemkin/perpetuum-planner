@@ -37,6 +37,7 @@ class Tier;
 class Definition;
 class ExtensionLevelMap;
 class CharacterWizardStep;
+class JsonValue;
 
 
 class GameData : public QObject {
@@ -113,8 +114,8 @@ private:
     QMap<int, CharacterWizardStep *> m_charWizSteps[NumCharWizSteps];
 
     template <class ItemType, class ObjectMap>
-    bool loadObjects(ObjectMap& objectMap, const QVariantMap &dataMap, const QString &idKey, bool create = true);
-    bool loadConfigurationUnits(const QVariantMap &dataMap);
+    bool loadObjects(ObjectMap& objectMap, const JsonValue &value, const char *idKey, bool create = true);
+    bool loadConfigurationUnits(const JsonValue &value);
 
     QVector<CharacterWizardStep *> decodeCharWizSteps(const QString &choices) const;
 };
@@ -135,7 +136,7 @@ class GameObject : public QObject {
 public:
     GameObject(GameData *gameData, const QString &name = QString()) : m_gameData(gameData), m_name(name), m_hidden(false) {}
 
-    virtual bool load(const QVariantMap &dataMap) = 0;
+    virtual bool load(const JsonValue &value) = 0;
 
     GameData *gameData() const { return m_gameData; }
 
@@ -157,7 +158,7 @@ class ExtensionCategory : public GameObject {
 public:
     ExtensionCategory(GameData *gameData) : GameObject(gameData), m_id(0) {}
 
-    bool load(const QVariantMap &dataMap);
+    bool load(const JsonValue &value);
 
     int id() const { return m_id; }
     const QList<Extension *> &extensions() const { return m_extensions; }
@@ -176,7 +177,7 @@ class Extension : public GameObject {
 public:
     Extension(GameData *gameData) : GameObject(gameData), m_id(0), m_rank(0), m_price(0), m_category(0) {}
 
-    bool load(const QVariantMap &dataMap);
+    bool load(const JsonValue &value);
 
     QString description() const;
     int complexity() const { return m_rank; }
@@ -204,7 +205,7 @@ class FieldCategory : public GameObject {
 public:
     FieldCategory(GameData *gameData) : GameObject(gameData) {}
 
-    bool load(const QVariantMap &dataMap);
+    bool load(const JsonValue &value);
 
     int id() const { return m_id; }
     const QList<AggregateField *> &aggregates() const { return m_aggregates; }
@@ -245,7 +246,7 @@ public:
         : GameObject(gameData, name),
           m_id(id), m_multiplier(1), m_offset(0), m_digits(0), m_compareLevel(CanCompare), m_category(0), m_lessIsBetter(false) {}
 
-    bool load(const QVariantMap &dataMap);
+    bool load(const JsonValue &value);
 
     QString name() const;
 
@@ -280,7 +281,7 @@ class StandardAggregateField : public AggregateField
 public:
     StandardAggregateField(GameData *gameData) : AggregateField(gameData, 0, QString()) {}
 
-    bool load(const QVariantMap &dataMap);
+    bool load(const JsonValue &value);
 };
 
 
@@ -291,7 +292,7 @@ public:
     Category(GameData *gameData)
         : GameObject(gameData), m_id(0), m_order(0), m_inMarket(false), m_marketCount(-1), m_parent(0) {}
 
-    bool load(const QVariantMap &dataMap);
+    bool load(const JsonValue &value);
 
     quint64 id() const { return m_id; }
     quint64 order() const { return m_order; }
@@ -326,7 +327,7 @@ class Tier : public GameObject {
 public:
     Tier(GameData *gameData) : GameObject(gameData), m_id(0) {}
 
-    bool load(const QVariantMap &dataMap);
+    bool load(const JsonValue &value);
 
     int id() const { return m_id; }
     QColor color() const { return m_color; }
@@ -340,7 +341,7 @@ private:
 
 class Bonus {
 public:
-    Bonus(GameData *gameData, const QVariantMap &dataMap);
+    Bonus(GameData *gameData, const JsonValue &value);
 
     AggregateField *aggregate() const { return m_aggregate; }
     Extension *extension() const { return m_extension; }
@@ -351,8 +352,6 @@ public:
     QString format() const;
 
 private:
-    bool load(GameData *gameData, const QVariantMap &dataMap);
-
     AggregateField * m_aggregate;
     Extension *m_extension;
     float m_bonus;
@@ -381,7 +380,7 @@ public:
         m_researchLevel(0), m_calibrationProgram(0), m_tier(0), m_head(0), m_chassis(0), m_leg(0) {}
     ~Definition() { qDeleteAll(m_bonuses); }
 
-    bool load(const QVariantMap &dataMap);
+    bool load(const JsonValue &value);
 
     int id() const { return m_id; }
     QString description() const { return m_gameData->wikiToHtml(m_gameData->translate(m_description)); }
@@ -451,7 +450,7 @@ class CharacterWizardStep : public GameObject
 public:
     CharacterWizardStep(GameData *gameData) : GameObject(gameData), m_id(0), m_baseStep(0), m_baseEID(0) {}
 
-    bool load(const QVariantMap &dataMap);
+    bool load(const JsonValue &value);
 
     int id() const { return m_id; }
     QString description() const { return m_gameData->translate(m_description); }

@@ -97,7 +97,7 @@ int Application::exec()
         m_updater->show();
     }
     else {
-        QFile gameDataFile(":/compiled/game.dat"), translationFile(":/compiled/lang_en.dat");
+        QFile gameDataFile(":/compiled/game.json"), translationFile(":/compiled/lang_en.json");
         if (!m_gameData->load(&gameDataFile, &translationFile)) {
             MessageBox::exec(0, QApplication::translate("Main", "Error"), tr("Invalid data file."));
             return -1;
@@ -256,7 +256,7 @@ void Application::applySettings()
         if (m_translator.load(QLatin1Literal("perpetuumplanner_") % langCode, QLatin1String(":/i18n")))
             installTranslator(&m_translator);
 
-        QFile transFile(QString(":/compiled/lang_%1.dat").arg(langCode));
+        QFile transFile(QString(":/compiled/lang_%1.json").arg(langCode));
         m_gameData->loadTranslation(langCode, &transFile);
 
         QPixmapCache::clear();

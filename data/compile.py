@@ -1,30 +1,13 @@
 """Convert a bunch of perpetuum data files to serialized QVariant for PP consumption."""
 
 import re
-from PyQt4 import QtCore, QtGui
+import collections
+import json
 from perpetuum import *
+
 
 EXCLUDE_CATEGORIES = [
     'cf_npc', 'cf_documents', 'cf_decor', 'cf_mission_items', 'cf_items', 'cf_dynamic_cprg']
-
-
-def translation_tokens(data):
-    """Collect all strings recursively from a given QVatiantMap. (Map keys are not included.)"""
-
-    keys = []
-    def _collect(data):
-        if data.type() == QtCore.QVariant.Map:
-            keys.extend(str(key) for key in data.toMap().keys())
-            for value in data.toMap().values():
-                _collect(value)
-        elif data.type() == QtCore.QVariant.List:
-            for value in data.toList():
-                _collect(value)
-        elif data.type() == QtCore.QVariant.String:
-            keys.append(str(data.toString()))
-    _collect(data)
-
-    return keys
 
 
 def find_definitions(data, cat_names):
@@ -45,78 +28,6 @@ def find_definitions(data, cat_names):
     return result
 
 
-def build_variant(exclude_definitions=[]):
-    """Builder for genxy_parse that produces QVariants."""
-
-    exclude_definitions = set(exclude_definitions)
-
-    def _build(events, top_level=True):
-        d = OrderedDict()
-        prefix = None
-        for type, value in events:
-            if type == '[':
-                value = _build(events, False)
-                if value is not None:
-                    d[key] = value
-            elif type == ']':
-                break
-            elif type in '#|':
-                key = value
-                if prefix is None and key.endswith('0'):
-                    prefix = key[:-1]
-            else:
-                if type == '$':
-                    if key == 'options' and value.strip().startswith('#'):
-                        value = genxy_parse(value, lambda events: _build(events, False))
-                    else:
-                        value = value.decode('utf-8')
-                elif type == '2':
-                    value = QtCore.QByteArray(value)
-                elif type in ('p', '3', 'r'):
-                    continue
-                elif type == 'c':
-                    # BGRA to RGBA
-                    value = value & 0xff000000 | (value << 16) & 0xff0000 | value & 0xff00 | (value >> 16) & 0xff
-                    value = QtGui.QColor.fromRgba(value)
-                elif type == 'd':
-                    value = QtCore.QDateTime(QtCore.QDate(*value[:3]), QtCore.QTime(*value[3:]), QtCore.Qt.UTC)
-                elif type in ('4', '6', 'N'):
-                    value = QtCore.QVariant.fromList(value)
-                elif type == '5':
-                    value = QtCore.QVariant.fromList([item.decode('utf-8') for item in value])
-                d[key] = value
-
-        if d.get('definition') in exclude_definitions:
-            return None
-
-        if top_level and len(d) == 1: # flatten single-element root
-            d = d.values()[0]
-
-        if isinstance(d, OrderedDict):
-            #if all(key.isdigit() for key in d) or prefix and all(key.startswith(prefix) for key in d):
-            #    d = QtCore.QVariant.fromList(d.values())
-            #else:
-            d = QtCore.QVariant.fromMap(d)
-        return d
-
-    return _build
-
-
-def qvariant_dump(filename, variant):
-    """Serialize QVariant structure to a file."""
-
-    file = QtCore.QFile(filename)
-    if file.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.Truncate):
-        stream = QtCore.QDataStream(file)
-        stream.setVersion(QtCore.QDataStream.Qt_4_7)
-        stream.setFloatingPointPrecision(QtCore.QDataStream.SinglePrecision)
-        stream.setByteOrder(QtCore.QDataStream.LittleEndian)
-        stream << variant
-        file.close()
-    else:
-        raise Exception('Failed to open ' + filename)
-
-
 def main(dest_dir='compiled'):
     try:
         os.makedirs(dest_dir)
@@ -130,14 +41,15 @@ def main(dest_dir='compiled'):
     excluded_defs = find_definitions(data, EXCLUDE_CATEGORIES)
     print 'OK'
 
-    print 'Game data ...',
-    variant_data = genxy_consolidate('fragments', build_variant(excluded_defs))
-    variant_data.update(genxy_consolidate('versioned', build_variant(excluded_defs)))
-    variant_data = QtCore.QVariant.fromMap(variant_data)
-    qvariant_dump(os.path.join(dest_dir, 'game.dat'), variant_data)
+    json_settings = {'separators': (',', ':'), 'allow_nan': False}
+
+    print 'Serializing ...',
+    with open(os.path.join(dest_dir, 'game.json'), 'wb') as f:
+        json.dump(data, f, **json_settings)
+
     print 'OK'
 
-    translation_keys = set(translation_tokens(variant_data))
+    translation_keys = set(translation_tokens(data))
 
     for lang, translation in translations.items():
         print 'Translation', lang, '...',
@@ -145,19 +57,8 @@ def main(dest_dir='compiled'):
         translation = dict((key, translation[key].decode('utf-8')) for key in translation
                                 if translation_keys.intersection([key, key.lower(), key.replace('_unit', '')]))
 
-        qvariant_dump(os.path.join(dest_dir, 'lang_%s.dat' % lang),
-                      QtCore.QVariant.fromMap(translation))
-        print 'OK'
-
-    try:
-        import yaml
-        import yaml_use_ordered_dict
-    except ImportError:
-        pass
-    else:
-        print 'YAML dump ...',
-        with open(os.path.join(dest_dir, 'game.yaml'), 'wb') as f:
-            yaml.dump(data, f)
+        with open(os.path.join(dest_dir, 'lang_%s.json' % lang), 'wb') as f:
+            json.dump(translation, f, **json_settings)
         print 'OK'
 
 
