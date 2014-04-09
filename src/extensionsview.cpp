@@ -261,10 +261,10 @@ void ExtensionsView::initialize(QSettings &settings, GameData *gameData, const Q
     QFileInfo defaultAgent(QFileInfo(settings.fileName()).dir(), "default.agent");
     QString startFileName = !fileName.isEmpty() ? fileName : settings.value("LastFileName", defaultAgent.filePath()).toString();
     if (!startFileName.isEmpty()) {
-        QFile agentFile(startFileName);
-        if (!m_agent->load(&agentFile)) {
+        if (!m_agent->load(startFileName)) {
             //: combatlog_error
-            MessageBox::exec(this, tr("Error"), tr("Unable to load\n%1").arg(QDir::toNativeSeparators(startFileName)));
+            MessageBox::exec(this, tr("Error"), tr("Unable to load\n%1\n%2").arg(
+                                 QDir::toNativeSeparators(startFileName), m_agent->lastError()));
         }
     }
 
@@ -488,7 +488,8 @@ void ExtensionsView::on_actionSave_triggered()
     if (m_agent->fileName().isEmpty())
         actionSaveAs->trigger();
     else if (!m_agent->save())
-        MessageBox::exec(this, tr("Error"), tr("Unable to save\n%1").arg(QDir::toNativeSeparators(m_agent->fileName())));
+        MessageBox::exec(this, tr("Error"), tr("Unable to save\n%1\n%2").arg(
+                             QDir::toNativeSeparators(m_agent->fileName()), m_agent->lastError()));
 }
 
 void ExtensionsView::on_actionSaveAs_triggered()
@@ -500,7 +501,8 @@ void ExtensionsView::on_actionSaveAs_triggered()
     if (!fileName.isEmpty()) {
         settings.setValue("LastUsedDir", QFileInfo(fileName).dir().canonicalPath());
         if (!m_agent->save(fileName))
-            MessageBox::exec(this, tr("Error"), tr("Unable to save\n%1").arg(QDir::toNativeSeparators(fileName)));
+            MessageBox::exec(this, tr("Error"), tr("Unable to save\n%1\n%2").arg(
+                                 QDir::toNativeSeparators(fileName), m_agent->lastError()));
     }
 }
 
